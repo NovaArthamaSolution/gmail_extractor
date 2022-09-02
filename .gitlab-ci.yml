@@ -5,6 +5,7 @@ stages:
   - testing
   - build
   - deploy
+  - scheduled
 
 variables:
   PATH_CREDENTIAL: "/tmp/gmail2bq.id_rsa"
@@ -81,6 +82,6 @@ run_schedules:
     name: artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest
   only:
     - schedules
-  stage: run
+  stage: scheduled
   script:
     - ${CONFIG_DIRPATH} -s ${DSTART} 
