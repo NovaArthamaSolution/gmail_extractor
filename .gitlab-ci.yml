@@ -42,7 +42,7 @@ testing:config:
 build:docker:  
   except:
     - schedules
-image: docker:latest
+  image: docker:latest
   stage: build
   services:
     - docker:18.09.7-dind
