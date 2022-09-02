@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# set -x
+set -eo pipefail
+
+
+DIR_SANDBOX="$(cd $(dirname $0); pwd)"
+REPO_ROOT=`realpath ${DIR_SANDBOX}/..`
+DIR_WORKING="${REPO_ROOT}"
+
+cd ${DIR_WORKING}
+
+
+source .app.conf
+echo "-- activate google credentials --"
+gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+gcloud config set project data-gojek-access
+
+f=$1
+if [ ! -f $1 ]; then
+    if [ -f $1/config.yaml ]; then
+        f=$1/config.yaml
+    fi
+fi
+
+python3 ${REPO_ROOT}/lib/gmail2bq.py "$f" ${@:2}

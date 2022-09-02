@@ -1,0 +1,143 @@
+account:
+  type: dict 
+  required: false
+  schema:
+    name: 
+      type: string
+      required: false
+    token_file:
+      type: string
+      required: false
+mail_filter:
+  required: true
+  type: dict
+  schema:
+    subject: 
+      type: string
+      required: false
+    after: 
+      type: integer
+      required: false
+    before:
+      type: integer
+      required: false
+    from:
+      type: string 
+      required: false
+    attachment:
+      type: boolean
+      required: false
+
+file_to_extract:
+  required: true
+  type: dict
+  schema:
+    source:
+      type: string 
+      required: true
+      allowed:
+        - attachment
+        - url_in_body
+    file_pattern:
+      type: string   
+      required: false
+    mime_type:
+      type: string
+      required: false
+    url_xpath:
+      type: string
+      required: false
+    password_xpath:
+      type: string
+      required: false
+
+file_etl:
+  required: true 
+  type: dict
+  schema:
+    etl_model:
+      type: string
+    etl_params:
+      type: dict
+      nullable: true        
+    filename_format:
+      type: string
+      required: false
+    zip_password:
+      type: string
+      nullable: true
+
+export_destination:
+  type: dict
+  required: true
+  schema:
+    protocol:
+      type: string
+      allowed:
+        - sftp
+        - gcs
+        - bq 
+    bucket:
+      type: string
+      dependencies:
+        protocol: gcs
+    dir:
+      type: string
+      required: false
+    hostname:
+      type: string
+      required: false
+      dependencies:
+        protocol: sftp
+    username:
+      type: string
+      required: false
+      dependencies:
+        protocol: sftp
+    port:
+      type: integer
+      required: false
+      dependencies:
+        protocol: sftp
+    password: 
+      type: string
+      required: false
+      dependencies:
+        protocol: sftp
+    private_key:
+      type: string
+      required: false
+      dependencies:
+        protocol: sftp
+    table_id: 
+      type: string
+      required: false
+    dataframe:
+      type: dict
+      dependencies: table_id
+    schema_file:
+      type: string 
+      required: false
+      dependencies: table_id
+    partition:
+      type: string
+      required: false
+      dependencies: table_id
+    replace:
+      type: boolean
+      required: false
+      dependencies: table_id
+    clustering_fields:
+      type: string
+      required: false
+      dependencies: table_id
+    time_partitioning_field:
+      type: string
+      dependencies: table_id
+    schema:
+      type: dict
+      dependencies: table_id
+
+ignore_after:
+  type: integer
+  required: false

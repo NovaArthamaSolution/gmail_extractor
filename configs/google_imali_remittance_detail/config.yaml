@@ -1,0 +1,23 @@
+mail_filter:
+  from: settlement.report@midtrans.com
+  subject: Remittance detail for Google from MRT
+  after: {{ datetime_start.timestamp()  | int }}
+  before: {{ datetime_end.timestamp()  | int }}
+  
+file_to_extract:
+  source : attachment
+  file_pattern: mrt_GOPAY*.xlsx
+  mime_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+
+file_etl:
+  etl_model: Unzip
+  filename_format: MIDTRANS_{{ now.strftime("%y%m%d%H%M%S") }}_{source}
+
+
+export_destination:
+  protocol: sftp
+  hostname: ftp.blackline.com
+  username: sapgojek
+  port: 22
+  private_key: /root/.ssh/id_rsa.finrec
+  dir: /SB/TEST

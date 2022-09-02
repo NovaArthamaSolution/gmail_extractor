@@ -1,0 +1,22 @@
+mail_filter:
+  subject: GOPAY BILLER - Raw Payment Aggregator Report from Rintis
+  after: {{ datetime_start.timestamp()  | int }}
+  before: {{ datetime_end.timestamp() | int }}
+
+file_to_extract:
+  source : attachment
+  file_pattern: gpy*.zip
+  mime_type: application/x-zip-compressed
+
+file_etl:
+  etl_model: Unzip
+  zip_password: {{env['RINTIS_ZIP_PASSWORD']}}
+  filename_format: TM_DS_{{ now.strftime("%y%m%d%H%M%S") }}_{source_filename}
+
+export_destination:
+  protocol: sftp
+  hostname: ftp.blackline.com
+  username: sapgojek
+  port: 22
+  private_key: /root/.ssh/id_rsa.finrec
+  dir: /SB/TEST

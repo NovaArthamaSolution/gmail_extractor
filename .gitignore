@@ -1,0 +1,13 @@
+.env
+.vscode/*
+.pytest_cache
+*.pyc
+*.local
+tmp/*
+.config
+.vscode
+.cache
+__pycache__
+.DS_Store
+*.json
+samples/

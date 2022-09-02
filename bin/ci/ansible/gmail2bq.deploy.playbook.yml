@@ -1,0 +1,25 @@
+---
+- name: deploy gmail2bq
+  hosts: airflow
+  connection: ssh
+  vars:
+    - DOCKER_IMAGE_NAMES:
+        - "asia.gcr.io/bi-gojek/gmail2bq"
+
+  tasks: 
+    - name: Login to asia.gcr.io
+      command: bash -c "cat /home/airflow/.config/gcloud/legacy_credentials/bi-etl@bi-gojek.iam.gserviceaccount.com/adc.json | docker login -u _json_key --password-stdin asia.gcr.io"
+
+    - name: pull image gmail2bq
+      docker_image:
+        name: "{{ item }}"
+        source: pull
+        repository: "{{ item }}"
+        force_source: yes
+      with_items:
+        - "{{ DOCKER_IMAGE_NAMES }}"
+
+    - name: remove old docker image
+      command: bash -c 'docker images asia.gcr.io/bi-gojek/gmail2bq --filter "before=asia.gcr.io/bi-gojek/gmail2bq:latest" -q | xargs docker rmi -f || true'
+  
+  

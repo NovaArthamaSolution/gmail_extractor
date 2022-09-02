@@ -1,0 +1,72 @@
+image:
+  name: asia.gcr.io/bi-gojek/gmail2bq-base
+
+stages:
+  - testing
+  - build
+  - deploy
+
+variables:
+  PATH_CREDENTIAL: "/tmp/gmail2bq.id_rsa"
+  ANSIBLE_HOST_KEY_CHECKING: "false"
+  IMAGE_NAME: gmail2bq
+
+testing:config:
+  stage: testing
+  tags:
+    - docker
+    - docker_artifactory
+  variables:
+    export_dir: data/in
+  script:
+    - mkdir -p $export_dir
+    - cp $GOOGLE_APPLICATION_CREDENTIALS $export_dir
+    - cp $FILE_ENTBI_GMAIL_TOKEN $export_dir/token.json
+    - cp $FILE_GMAIL_CREDENTIALS $export_dir/credentials.json
+    - cp configs/concur_travel_to_bq/config.yaml $export_dir
+    - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile .
+    - DSTART=`date -d"-1 day" +"%Y-%m-%d"`
+    - docker run -v `pwd`/$export_dir:/$export_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/$export_dir/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART
+
+# testing: library:
+#   stage: testing
+#   script:
+#     - tests/test-check-email.sh
+#     - tests/test-extractor.sh
+#     - tests/test-etls.sh
+#     - tests/test-delivery.sh
+
+build:docker:
+  image: docker:latest
+  stage: build
+  services:
+    - docker:18.09.7-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+  tags:
+    - docker
+    - docker_artifactory
+    # - dind
+  script:
+    - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest -f $( pwd )/Dockerfile .
+    - docker push artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest
+  only:
+    - master
+
+ID:deploy:airflow-server:
+  image:
+    name: asia.gcr.io/bi-gojek/bi-ansible:latest
+  stage: deploy
+  when: manual
+  before_script:
+    - echo "${RSA64_GITLAB_RUNNER}" | base64 -d > ${PATH_CREDENTIAL}
+    - chmod 600 ${PATH_CREDENTIAL}
+  script: 
+    - >
+      ansible-playbook
+      --inventory=$(pwd)/bin/ci/ansible/hosts
+      --private-key=${PATH_CREDENTIAL}
+      $(pwd)/bin/ci/ansible/gmail2bq.deploy.playbook.yml
+  only:
+    - master
