@@ -13,6 +13,9 @@ variables:
 
 testing:config:
   stage: testing
+  except:
+    - schedules
+
   tags:
     - docker
     - docker_artifactory
@@ -36,8 +39,10 @@ testing:config:
 #     - tests/test-etls.sh
 #     - tests/test-delivery.sh
 
-build:docker:
-  image: docker:latest
+build:docker:  
+  except:
+    - schedules
+image: docker:latest
   stage: build
   services:
     - docker:18.09.7-dind
@@ -70,3 +75,12 @@ ID:deploy:airflow-server:
       $(pwd)/bin/ci/ansible/gmail2bq.deploy.playbook.yml
   only:
     - master
+
+run_schedules:
+  image:
+    name: artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest
+  only:
+    - schedules
+  stage: run
+  script:
+    - ${CONFIG_DIRPATH} -s ${DSTART} 
