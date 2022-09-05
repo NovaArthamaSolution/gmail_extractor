@@ -58,7 +58,7 @@ def main():
 
 
   print(f"Starting GMAIL Extractor with config file {config_fullpath} for {d_start}")
-  print(f"Config:\n{config_rendered})
+  print(f"Config:\n{config_rendered}")
 
   return gmail_extract( configurations )
 
