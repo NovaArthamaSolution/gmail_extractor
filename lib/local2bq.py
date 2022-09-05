@@ -168,6 +168,10 @@ def load_schema(schema_file):
             dtypes[field['name']] = np.int64
         elif field['type'] == 'BOOLEAN':
             dtypes[field['name']] = np.bool
+        elif field['type'] == 'DATE':
+            dtypes[field['name']] = datetime.date
+        elif field['type'] == 'DATETIME':
+            dtypes[field['name']] = datetime.datetime
         else: 
             dtypes[field['name']] = str 
 
