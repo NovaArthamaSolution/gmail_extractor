@@ -11,6 +11,15 @@ variables:
   PATH_CREDENTIAL: "/tmp/gmail2bq.id_rsa"
   ANSIBLE_HOST_KEY_CHECKING: "false"
   IMAGE_NAME: gmail2bq
+  tmp_dir: tmp
+  export_dir: data/in
+
+before_script:
+    - mkdir -p $export_dir $tmp_dir
+    - cp $GOOGLE_APPLICATION_CREDENTIALS $tmp_dir/
+    - cp $GMAIL_TOKEN_FILE $tmp_dir/token.json
+    - cp $GMAIL_CREDENTIAL_FILE $tmp_dir/credentials.json
+
 
 testing:config:
   stage: testing
@@ -19,11 +28,8 @@ testing:config:
   tags:
     - docker
     - docker_artifactory
-  variables:
-    tmp_dir: tmp
-    export_dir: data/in
   script:
-    - echo $GOOGLE_APPLICATION_CREDENTIALS $FILE_ENTBI_GMAIL_TOKEN $FILE_GMAIL_CREDENTIALS
+    - echo $GOOGLE_APPLICATION_CREDENTIALS $GMAIL_TOKEN_FILE $GMAIL_CREDENTIAL_FILE
     - mkdir -p $export_dir $tmp_dir
     - cp $GOOGLE_APPLICATION_CREDENTIALS $tmp_dir/
     - cp $GMAIL_TOKEN_FILE $tmp_dir/token.json
@@ -55,6 +61,9 @@ build:docker:
     - docker
     - docker_artifactory
     # - dind
+  variables:
+    tmp_dir: tmp
+    export_dir: data/in
   script:
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest -f $( pwd )/Dockerfile .
     - docker push artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest
@@ -91,4 +100,5 @@ run_schedules:
     - schedules
   stage: scheduled
   script:
+    - cp ${CONFIG_DIRPATH}/* /$except/ 
     - ${CONFIG_DIRPATH} -s ${DSTART} 
