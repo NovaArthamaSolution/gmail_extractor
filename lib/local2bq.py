@@ -43,7 +43,7 @@ def file_to_bq(file_path,table_id,*args,**kwargs):
         schema, dtypes = load_schema(schema_file)
 
         if fmt.upper() == 'JSON' :
-            return csv_to_bq(file_path,table_id,schema=schema,**kwargs)
+            return json_to_bq(file_path,table_id,schema=schema,**kwargs)
         else:
             return csv_to_bq(file_path,table_id,schema=schema,**kwargs)
 
