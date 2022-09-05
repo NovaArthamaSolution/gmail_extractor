@@ -17,8 +17,8 @@ variables:
 before_script:
     - mkdir -p $export_dir $tmp_dir
     - cp $GOOGLE_APPLICATION_CREDENTIALS $tmp_dir/
-    - cp $GMAIL_TOKEN_FILE $tmp_dir/token.json
-    - cp $GMAIL_CREDENTIAL_FILE $tmp_dir/credentials.json
+    - cp $GMAIL_TOKEN_FILE $export_dir/token.json
+    - cp $GMAIL_CREDENTIAL_FILE $export_dir/credentials.json
 
 
 testing:config:
@@ -62,8 +62,6 @@ build:docker:
   script:
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest -f $( pwd )/Dockerfile .
     - docker push artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest
-    - |-
-        [[ ! -z $CI_COMMIT_TAG ]] && docker push artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:${CI_COMMIT_TAG}
 
   only:
     - master
