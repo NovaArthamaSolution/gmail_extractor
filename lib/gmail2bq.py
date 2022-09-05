@@ -73,7 +73,7 @@ def gmail_extract(config):
 
   creds_file = os.environ.get('GMAIL_CREDENTIAL_FILE')
   
-  tmp_local_dir = str(os.environ.get('TMP_DIR', 'tmp/')).rstrip('/') 
+  tmp_local_dir = str(os.environ.get('TMP_DIR', '/data/out')).rstrip('/') 
 
   try:
     gMailApp = GmailApp(token_file)
