@@ -3,7 +3,6 @@ image:
 
 stages:
   - testing
-  - build
   - deploy
   - scheduled
 
@@ -46,7 +45,7 @@ build:docker:
   except:
     - schedules
   image: docker:latest
-  stage: build
+  stage: deploy
   services:
     - docker:18.09.7-dind
   # variables:
@@ -63,23 +62,6 @@ build:docker:
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest -f $( pwd )/Dockerfile .
     - docker push artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest
 
-  only:
-    - master
-
-ID:deploy:airflow-server:
-  image:
-    name: asia.gcr.io/bi-gojek/bi-ansible:latest
-  stage: deploy
-  when: manual
-  before_script:
-    - echo "${RSA64_GITLAB_RUNNER}" | base64 -d > ${PATH_CREDENTIAL}
-    - chmod 600 ${PATH_CREDENTIAL}
-  script: 
-    - >
-      ansible-playbook
-      --inventory=$(pwd)/bin/ci/ansible/hosts
-      --private-key=${PATH_CREDENTIAL}
-      $(pwd)/bin/ci/ansible/gmail2bq.deploy.playbook.yml
   only:
     - master
 
