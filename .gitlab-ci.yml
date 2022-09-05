@@ -24,7 +24,7 @@ testing:config:
     export_dir: data/in
   script:
     - echo $GOOGLE_APPLICATION_CREDENTIALS $FILE_ENTBI_GMAIL_TOKEN $FILE_GMAIL_CREDENTIALS
-    - mkdir -p $export_dir $tmp
+    - mkdir -p $export_dir $tmp_dir
     - cp $GOOGLE_APPLICATION_CREDENTIALS $tmp_dir/
     - cp $GMAIL_TOKEN_FILE $tmp_dir/token.json
     - cp $GMAIL_CREDENTIAL_FILE $tmp_dir/credentials.json
