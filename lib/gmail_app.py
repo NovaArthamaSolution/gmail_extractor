@@ -1,5 +1,6 @@
 from __future__ import print_function
 import os.path
+import profile
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -37,11 +38,12 @@ class GmailApp():
     def __init__(self,token_file='token.json'):
         creds = Credentials.from_authorized_user_file(token_file, SCOPES)
         if creds and creds.expired and creds.refresh_token:
+            print(f"token_file:{token_file} expired, refresshing")
             creds.refresh(Request())
 
         self.service = build('gmail', 'v1', credentials=creds)
         self.profile = self.service.users().getProfile(userId='me').execute()
-        
+        print(f"Logged in to gmail for user: {self.profile}")
 
     
     def get_emails(self,**kwargs):
