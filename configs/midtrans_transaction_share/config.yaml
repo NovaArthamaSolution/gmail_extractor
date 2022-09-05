@@ -9,7 +9,7 @@ file_to_extract:
   url_xpath: //a[text()='Download Report']
   password_xpath: "//p/b"
 
-file_etl:
+transform:
   etl_model: Unzip
   filename_format: MIDTRANS_{{ now.strftime("%y%m%d%H%M%S") }}_{source}
 

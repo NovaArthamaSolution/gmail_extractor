@@ -9,7 +9,7 @@ file_to_extract:
   file_pattern: PLN *.zip
   mime_type: application/x-zip-compressed
 
-file_etl:
+transform:
   etl_model: excel_split_sheet
   filename_format : TM007C10_DS0014_{{ now.strftime("%y%m%d%H%M%S") }}_{source_file}
 

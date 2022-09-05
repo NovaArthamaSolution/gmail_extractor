@@ -9,7 +9,7 @@ file_to_extract:
   source : url_in_body
   url_xpath: //td/a[contains(text(),'txt')]
 
-file_etl:
+transform:
   etl_model: mkm_remove_version
   filename_format: TM007C00_DS0012_{{now.strftime('%y%m%d%H%M%S')}}_{file_date}_{source_file}
 

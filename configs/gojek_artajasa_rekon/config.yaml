@@ -9,7 +9,7 @@ file_to_extract:
   file_pattern: RPT_HASIL*
   # mime_type: application/x-zip-compressed
 
-file_etl:
+transform:
   etl_model: rpt_cleaner
   filename_format: TM007C02_DS0059_{{ now.strftime("%y%m%d%H%M%S") }}_{file_date}_{source_file}
 

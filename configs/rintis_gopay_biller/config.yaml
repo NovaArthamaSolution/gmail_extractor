@@ -8,7 +8,7 @@ file_to_extract:
   file_pattern: gpy*.zip
   mime_type: application/x-zip-compressed
 
-file_etl:
+transform:
   etl_model: Unzip
   zip_password: {{env['RINTIS_ZIP_PASSWORD']}}
   filename_format: TM_DS_{{ now.strftime("%y%m%d%H%M%S") }}_{source_filename}

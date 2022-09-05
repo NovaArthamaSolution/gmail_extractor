@@ -9,7 +9,7 @@ file_to_extract:
   file_pattern: BHN_Go*
   # mime_type: application/x-zip-compressed
 
-file_etl:
+transform:
   filename_format: TM007C03_DS0054_{{now.strftime("%y%m%d%H%M%S")}}_{source_file}
 
 export_destination:

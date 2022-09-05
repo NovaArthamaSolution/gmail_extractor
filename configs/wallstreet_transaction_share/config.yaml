@@ -9,7 +9,7 @@ file_to_extract:
   url_xpath: //a[text()='here']
   password_xpath: "//strong"
 
-file_etl:
+transform:
   filename_format: WALLSTREET_{{ now.strftime("%y%m%d%H%M%S") }}
 
 export_destination:

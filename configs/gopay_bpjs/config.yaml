@@ -8,7 +8,7 @@ file_to_extract:
   file_pattern: PT*RPT.zip
   mime_type: application/x-zip-compressed
 
-file_etl:
+transform:
   etl_model: rpt_cleaner
   filename_format: TM007C01_DS0059_{{ now.strftime("%y%m%d%H%M%S") }}_{source_file}
 

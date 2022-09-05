@@ -125,7 +125,7 @@ def gmail_extract(config):
 
   if filenames:
     ## ETL
-    filenames = process_file_etl(config['file_etl'],filenames)
+    filenames = process_file_etl(config['transform'],filenames)
     # print(filenames)
 
     ## SEND THE FILES
@@ -143,8 +143,8 @@ def gmail_extract(config):
 
 def process_file_etl(etl_config, filenames):
   etlfnames = []
-  if etl_config.get('etl_model'):
-    etl = ETL.get_model(etl_config.pop('etl_model'),etl_config )
+  if etl_config.get('transform_model'):
+    etl = ETL.get_model(etl_config.pop('transform_model'),etl_config )
 
     for fname in filenames:
       try:

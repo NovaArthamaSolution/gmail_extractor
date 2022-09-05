@@ -9,7 +9,7 @@ file_to_extract:
   file_pattern: mrt_GOPAY*.xlsx
   mime_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 
-file_etl:
+transform:
   etl_model: Unzip
   filename_format: MIDTRANS_{{ now.strftime("%y%m%d%H%M%S") }}_{source}
 
