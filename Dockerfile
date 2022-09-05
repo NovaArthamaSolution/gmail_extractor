@@ -8,7 +8,7 @@ RUN pip3 install -r requirements.txt
 ADD ./tmp/. /tmp/
 
 WORKDIR /data/in 
-COPY data/in/* /data/in/
+ADD ./data/in/ /data/in/
 
 FROM gmail2bq-base
 
