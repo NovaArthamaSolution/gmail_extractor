@@ -29,7 +29,7 @@ testing:config:
     - docker_artifactory
   script:
     - cp configs/concur_travel_to_bq/config.yaml $export_dir
-    - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile .
+    - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . |  sed '/^Step/d; /^--->/d'
     - DSTART=`date -d"-1 day" +"%Y-%m-%d"`
     - docker run -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART
 
@@ -59,7 +59,7 @@ build:docker:
     tmp_dir: tmp
     export_dir: data/in
   script:
-    - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest -f $( pwd )/Dockerfile .
+    - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest -f $( pwd )/Dockerfile . | sed '/^Step/d; /^--->/d' 
     - docker push artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest
 
   only:

@@ -27,6 +27,7 @@ def main():
   config_fullpath = parser.config_fullpath
   os.environ['CONFIG_DIRPATH'] = os.path.dirname(config_fullpath)  
 
+
   if parser.datetime_start is not None:
     datetime_start = datetime.fromisoformat(parser.datetime_start)
   else:
@@ -44,6 +45,7 @@ def main():
 
   config_name = os.path.splitext(os.path.basename(config_fullpath))[0]
 
+
   with open(config_fullpath) as file_:
     config_template = jinja2.Template(file_.read())
 
@@ -53,6 +55,10 @@ def main():
     configurations = yaml.safe_load(config_rendered)
   except yaml.YAMLError as exc:
     print(exc)
+
+
+  print(f"Starting GMAIL Extractor with config file {config_fullpath} for {d_start}")
+  print(f"Config:\n{config_rendered})
 
   return gmail_extract( configurations )
 
