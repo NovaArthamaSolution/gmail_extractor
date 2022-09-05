@@ -10,6 +10,7 @@ variables:
   PATH_CREDENTIAL: "/tmp/gmail2bq.id_rsa"
   ANSIBLE_HOST_KEY_CHECKING: "false"
   IMAGE_NAME: gmail2bq
+  IMAGE_URL: artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest
   tmp_dir: tmp
   export_dir: data/in
 
@@ -30,7 +31,7 @@ testing:config:
   script:
     - DSTART=`date -d"-1 day" +"%Y-%m-%d"`
     - cp configs/concur_travel_to_bq/config.yaml $export_dir
-    - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . |  sed '/^Step/d; /^--->/d'
+    - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
     - docker run -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART
 
 # testing: library:
@@ -57,8 +58,8 @@ build:docker:
     tmp_dir: tmp
     export_dir: data/in
   script:
-    - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest -f $( pwd )/Dockerfile . | sed '/^Step/d; /^--->/d' 
-    - docker push artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest
+    - docker build  --no-cache -t $IMAGE_URL -f $( pwd )/Dockerfile . 
+    - docker push $IMAGE_URL
 
   only:
     - master
@@ -76,4 +77,5 @@ run_schedules:
   stage: scheduled
   script:
     - cp ${CONFIG_DIRPATH}/* $export_dir/
-    - docker run -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/$tmp_dir/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest /$export_dir/config.yaml -s $DSTART
+    - docker run -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/$tmp_dir/GOOGLE_APPLICATION_CREDENTIALS \
+      $IMAGE_URL /$export_dir/config.yaml -s $DSTART
