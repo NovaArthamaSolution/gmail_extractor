@@ -20,17 +20,18 @@ testing:config:
     - docker
     - docker_artifactory
   variables:
+    tmp_dir: tmp
     export_dir: data/in
   script:
     - echo $GOOGLE_APPLICATION_CREDENTIALS $FILE_ENTBI_GMAIL_TOKEN $FILE_GMAIL_CREDENTIALS
-    - mkdir -p $export_dir
-    - cp $GOOGLE_APPLICATION_CREDENTIALS $export_dir/
-    - cp $GMAIL_TOKEN_FILE $export_dir/token.json
-    - cp $GMAIL_CREDENTIAL_FILE $export_dir/credentials.json
+    - mkdir -p $export_dir $tmp
+    - cp $GOOGLE_APPLICATION_CREDENTIALS $tmp_dir/
+    - cp $GMAIL_TOKEN_FILE $tmp_dir/token.json
+    - cp $GMAIL_CREDENTIAL_FILE $tmp_dir/credentials.json
     - cp configs/concur_travel_to_bq/config.yaml $export_dir
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile .
     - DSTART=`date -d"-1 day" +"%Y-%m-%d"`
-    - docker run -v `pwd`/$export_dir:/$export_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/$export_dir/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART
+    - docker run -v `pwd`/$export_dir:/$export_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART
 
 # testing: library:
 #   stage: testing
@@ -47,9 +48,9 @@ build:docker:
   stage: build
   services:
     - docker:18.09.7-dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
+  # variables:
+  #   DOCKER_HOST: tcp://docker:2375/
+  #   DOCKER_DRIVER: overlay2
   tags:
     - docker
     - docker_artifactory
