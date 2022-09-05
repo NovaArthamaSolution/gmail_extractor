@@ -58,6 +58,9 @@ build:docker:
   script:
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest -f $( pwd )/Dockerfile .
     - docker push artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest
+    - |-
+        [[ ! -z $CI_COMMIT_TAG ]] && docker push artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:${CI_COMMIT_TAG}
+
   only:
     - master
 
