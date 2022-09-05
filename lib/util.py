@@ -27,18 +27,20 @@ _filename_ascii_strip_re = re.compile(r'[^A-Za-z0-9_.-]')
 
 def parse_arg():
   parser = argparse.ArgumentParser(description="Extract Big Query to SFTP")
-  parser.add_argument("config_fullpath", help="Path to config YAML")
+  parser.add_argument("config_fullpath", help="Path to config YAML",default='/data/in/config.yaml')
   parser.add_argument(
       "-s",
       action='store',
       dest="datetime_start",
-      help="datetime start parameter")
+      help="datetime start parameter",
+      default=os.getenv('DSTART'))
 
   parser.add_argument(
       "-e",
       action='store',
       dest="datetime_end",
-      help="datetime end parameter")
+      help="datetime end parameter",
+      default=os.getenv('DEND'))
   result = parser.parse_args()
 
   return result

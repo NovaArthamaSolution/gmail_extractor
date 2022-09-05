@@ -24,7 +24,10 @@ from pprint import pprint
 
 def main():
   parser = parse_arg()
-  config_fullpath = parser.config_fullpath
+  if parser.config_fullpath:
+    config_fullpath = parser.config_fullpath
+  else:
+    config_fullpath = '/data/in/config.yaml'
   os.environ['CONFIG_DIRPATH'] = os.path.dirname(config_fullpath)  
 
 
@@ -42,9 +45,6 @@ def main():
 
   d_start = datetime_start.strftime('%Y%m%d')
   d_end = datetime_end.strftime("%Y%m%d")
-
-  config_name = os.path.splitext(os.path.basename(config_fullpath))[0]
-
 
   with open(config_fullpath) as file_:
     config_template = jinja2.Template(file_.read())
