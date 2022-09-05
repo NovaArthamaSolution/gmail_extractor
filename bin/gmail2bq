@@ -11,7 +11,11 @@ DIR_WORKING="${REPO_ROOT}"
 cd ${DIR_WORKING}
 
 
+set -o allexport
 source .app.conf
+set +o allexport
+
+
 echo "-- activate google credentials --"
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 gcloud config set project data-gojek-access
@@ -22,5 +26,6 @@ if [ ! -f $1 ]; then
         f=$1/config.yaml
     fi
 fi
-
-python3 ${REPO_ROOT}/lib/gmail2bq.py "$f" ${@:2}
+echo $REPO_ROOT 
+echo $DIR_WORKING
+python3 /opt/gmail2bq/lib/gmail2bq.py "$f" ${@:2}

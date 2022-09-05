@@ -29,11 +29,6 @@ testing:config:
     - docker
     - docker_artifactory
   script:
-    - echo $GOOGLE_APPLICATION_CREDENTIALS $GMAIL_TOKEN_FILE $GMAIL_CREDENTIAL_FILE
-    - mkdir -p $export_dir $tmp_dir
-    - cp $GOOGLE_APPLICATION_CREDENTIALS $tmp_dir/
-    - cp $GMAIL_TOKEN_FILE $tmp_dir/token.json
-    - cp $GMAIL_CREDENTIAL_FILE $tmp_dir/credentials.json
     - cp configs/concur_travel_to_bq/config.yaml $export_dir
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile .
     - DSTART=`date -d"-1 day" +"%Y-%m-%d"`
