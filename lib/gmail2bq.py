@@ -18,16 +18,14 @@ from local2sftp import put_files as send_sftp_files
 from local2bq import file_to_bq
 
 
-from etl import ETL
-
-from pprint import pprint
+JOB_DIR=os.getenv('JOB_DIR','/data')
 
 def main():
   parser = parse_arg()
   if parser.config_fullpath:
     config_fullpath = parser.config_fullpath
   else:
-    config_fullpath = '/data/in/config.yaml'
+    config_fullpath = f'{JOB_DIR}/in/config.yaml'
   os.environ['CONFIG_DIRPATH'] = os.path.dirname(config_fullpath)  
 
 
@@ -109,7 +107,7 @@ def gmail_extract(config):
         password_xpath = config['file_to_extract']['password_xpath']
         password = extract_string_xmlfile(mail_body_file,password_xpath,'text()')
         if password:
-          config['file_etl']['zip_password'] = password
+          config['transform']['zip_password'] = password
 
       # except Exception as ex:
       #   print(ex)
@@ -125,7 +123,7 @@ def gmail_extract(config):
 
   if filenames:
     ## ETL
-    filenames = process_file_etl(config['transform'],filenames)
+    filenames = process_file_transform(config['transform'],filenames)
     # print(filenames)
 
     ## SEND THE FILES
@@ -141,21 +139,28 @@ def gmail_extract(config):
   
   return True
 
-def process_file_etl(etl_config, filenames):
+def process_file_transform(transform_config, filenames):
   etlfnames = []
-  if etl_config.get('transform_model'):
-    etl = ETL.get_model(etl_config.pop('transform_model'),etl_config )
+  if transform_config.get('transform_model'):
+    import importlib.util
+    import sys
+    transformation = transform_config.get('transform_model')
+    if os.path.exists(f"{JOB_DIR}/in/{transformation}.py") :
+      spec = importlib.util.spec_from_file_location(transformation, f"{JOB_DIR}/in/{transformation}.py")
+    else:
+      spec = importlib.util.spec_from_file_location(transformation, f"{transformation}.py")
 
+    transform = importlib.util.module_from_spec(spec)
     for fname in filenames:
       try:
-        etlfnames += etl.perform(fname)
+        etlfnames += transform[transform](fname)
       except Exception as ex:
-        print("Failed to process file %s : %s" % (fname, ex ))
+        print("Failed to process file transformation %s : %s" % (fname, ex ))
         etlfnames += [fname]
 
-  elif etl_config.get('filename_format'):
+  elif transform_config.get('filename_format'):
     for fname in filenames:
-      etlfnames.append( safe_rename(fname,etl_config.get('filename_format'),{}) ) 
+      etlfnames.append( safe_rename(fname,transform_config.get('filename_format'),{}) ) 
   else: 
     etlfnames = filenames
 

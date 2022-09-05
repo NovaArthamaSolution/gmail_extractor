@@ -28,9 +28,12 @@ def snake_to_camel(string):
     return re.sub('([a-z0-9])([A-Z])', r'\1_\2', string).lower().replace(' ','').replace('/_','/')
 
 
-def xlsx2csv(filepath,multi=False):
+def xlsx2csv(filepath,target_file=None,multi=False):
     def sheet_to_csv(sh):
-        csv_filepath = "%s_%s.%s"  %   (filepath.rsplit('.',1)[0] ,sh.name, 'csv')
+        if not target_file:
+            target_file = filepath
+
+        csv_filepath = "%s_%s.%s"  %   (target_file.rsplit('.',1)[0] ,sh.name, 'csv')
         csv_fh = open(csv_filepath, 'w')
         wr = csv.writer(csv_fh, dialect='excel', quoting=csv.QUOTE_ALL,delimiter=DELIMITER, lineterminator="\n", strict=True)
         # headers = map(snake_to_camel, sh.row_values(0))
@@ -67,7 +70,7 @@ def xlsx2csv(filepath,multi=False):
 class ExcelToCsv():
 
     def perform(self,filename):
-        return xlsx2csv(filepath)
+        return xlsx2csv(filepath,filename)
 
 if __name__ == '__main__':
     import sys
