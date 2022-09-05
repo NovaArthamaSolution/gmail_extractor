@@ -28,9 +28,9 @@ testing:config:
     - docker
     - docker_artifactory
   script:
+    - DSTART=`date -d"-1 day" +"%Y-%m-%d"`
     - cp configs/concur_travel_to_bq/config.yaml $export_dir
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . |  sed '/^Step/d; /^--->/d'
-    - DSTART=`date -d"-1 day" +"%Y-%m-%d"`
     - docker run -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART
 
 # testing: library:
@@ -42,8 +42,6 @@ testing:config:
 #     - tests/test-delivery.sh
 
 build:docker:  
-  except:
-    - schedules
   image: docker:latest
   stage: deploy
   services:
@@ -64,6 +62,8 @@ build:docker:
 
   only:
     - master
+  except:
+    - schedules
 
 run_schedules:
   tags:

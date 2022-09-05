@@ -10,7 +10,6 @@ DIR_WORKING="${REPO_ROOT}"
 
 cd ${DIR_WORKING}
 
-
 set -o allexport
 source .app.conf
 set +o allexport
@@ -26,6 +25,7 @@ if [ ! -f $1 ]; then
         f=$1/config.yaml
     fi
 fi
-echo $REPO_ROOT 
-echo $DIR_WORKING
-python3 /opt/gmail2bq/lib/gmail2bq.py "$f" ${@:2}
+
+echo  ${@} $f
+
+python3 $DIR_WORKING/lib/gmail2bq.py "$f" ${@:2}
