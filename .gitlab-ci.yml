@@ -22,11 +22,11 @@ testing:config:
   variables:
     export_dir: data/in
   script:
-    - mkdir -p /$export_dir
     - echo $GOOGLE_APPLICATION_CREDENTIALS
-    - cp $GOOGLE_APPLICATION_CREDENTIALS /$export_dir/
-    - cp $FILE_ENTBI_GMAIL_TOKEN /$export_dir/token.json
-    - cp $FILE_GMAIL_CREDENTIALS /$export_dir/credentials.json
+    - mkdir -p $export_dir
+    - cp $GOOGLE_APPLICATION_CREDENTIALS $export_dir/
+    - cp $FILE_ENTBI_GMAIL_TOKEN $export_dir/token.json
+    - cp $FILE_GMAIL_CREDENTIALS $export_dir/credentials.json
     - cp configs/concur_travel_to_bq/config.yaml $export_dir
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile .
     - DSTART=`date -d"-1 day" +"%Y-%m-%d"`
