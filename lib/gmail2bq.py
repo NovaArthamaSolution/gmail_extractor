@@ -78,7 +78,7 @@ def gmail_extract(config):
   try:
     gMailApp = GmailApp(token_file)
   except:
-    print('Please proceed this link with respectfully account')
+    print('TOKEN LOGIN FAILED: Please proceed this link with respectfully account')
     gMailApp = GmailApp.login(token_file,credentials_file=creds_file)
 
   emails = gMailApp.get_emails( from_=config['mail_filter'].get('from'),
