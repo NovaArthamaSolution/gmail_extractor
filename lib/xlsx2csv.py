@@ -28,7 +28,7 @@ def snake_to_camel(string):
     return re.sub('([a-z0-9])([A-Z])', r'\1_\2', string).lower().replace(' ','').replace('/_','/')
 
 
-def xlsx2csv(filepath,target_file=None,multi=False):
+def xlsx2csv(filepath,config=None,target_file=None,multi=False):
     def sheet_to_csv(sh):
         if not target_file:
             target_file = filepath
