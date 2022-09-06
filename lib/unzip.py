@@ -1,9 +1,11 @@
-
+import glob
 import os
 import tempfile
 import pyminizip
 
 def unzip(filename: str,password=None) -> list: 
+
+    print(f"unzip: {filename}")
     dest_path = tempfile.mkdtemp(prefix='gmail_extractor_')
     
     pyminizip.uncompress(filename, password, dest_path, int(True) )

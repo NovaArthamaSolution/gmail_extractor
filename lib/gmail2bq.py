@@ -131,8 +131,7 @@ def gmail_extract(config):
 
     ## Mark proceesed email 
     processed_label_id = gMailApp.get_processed_label_id()
-    for email in emails:
-      gMailApp.mark_label(email['id'],processed_label_id)
+    [ gMailApp.mark_label(email['id'],processed_label_id) for email in emails ]
   else:
     if  datetime.now().hour >= config.get('ignore_after',23) : return True
     raise Exception("No expected files  match found from email")      
@@ -144,16 +143,25 @@ def process_file_transform(transform_config, filenames):
   if transform_config.get('transform_model'):
     import importlib.util
     import sys
-    transformation = transform_config.get('transform_model')
-    if os.path.exists(f"{JOB_DIR}/in/{transformation}.py") :
-      spec = importlib.util.spec_from_file_location(transformation, f"{JOB_DIR}/in/{transformation}.py")
-    else:
-      spec = importlib.util.spec_from_file_location(transformation, f"{transformation}.py")
+    from inspect import getmembers, isfunction
+    libdir = os.path.dirname(__file__)
+    print(libdir)
+    sys.path.append(libdir)
+    sys.path.append(os.path.dirname(f'{JOB_DIR}/in'))
 
+    transformation = transform_config.get('transform_model')
+    # try:
+    spec = importlib.util.spec_from_file_location(transformation, f"{libdir}/{transformation}.py")
+    # if os.path.exists(f"{JOB_DIR}/in/{transformation}.py") :
+    # spec = importlib.util.spec_from_file_location(transformation, f"{JOB_DIR}/in/{transformation}.py")
+    # else:
     transform = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(transform)
+    # print(getattr(transform,transformation))
+
     for fname in filenames:
       try:
-        etlfnames += transform[transform](fname)
+        etlfnames += getattr(transform,transformation)(fname)
       except Exception as ex:
         print("Failed to process file transformation %s : %s" % (fname, ex ))
         etlfnames += [fname]

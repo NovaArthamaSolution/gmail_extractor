@@ -10,7 +10,7 @@ file_to_extract:
 
 transform:
   transform_model: unzip
-  filename_format : {source_file}_{{ now.strftime("%Y%m%d") }}
+  filename_format : '{source_file}_{{ now.strftime("%Y%m%d") }}'
 
 export_destination:
   protocol: gcs
