@@ -1,0 +1,18 @@
+mail_filter:
+  subject: "RTTL Test Email"
+  attachment: true
+  after: {{ datetime_start.timestamp()  | int }}
+  before: {{ datetime_end.timestamp()  | int }}
+
+file_to_extract:
+  source : attachment
+  file_pattern: "Detail Blank Cust code SAP*.zip"
+
+transform:
+  transform_model: unzip
+  filename_format : {source_file}_{{ now.strftime("%Y%m%d") }}
+
+export_destination:
+  protocol: gcs
+  bucket: access_sap_bq
+  dir: rtt_testing/
