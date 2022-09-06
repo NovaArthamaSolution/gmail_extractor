@@ -77,4 +77,4 @@ run_schedules:
   stage: scheduled
   script:
     - cp ${CONFIG_DIRPATH}/* $export_dir/
-    - docker run -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/$tmp_dir/GOOGLE_APPLICATION_CREDENTIALS $IMAGE_URL /$export_dir/config.yaml -s $DSTART
+    - docker run -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/$tmp_dir/GOOGLE_APPLICATION_CREDENTIALS $IMAGE_URL /$export_dir/config.yaml -s `date -d"-1 day" +"%Y-%m-%d"`
