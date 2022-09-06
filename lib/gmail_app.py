@@ -38,7 +38,7 @@ class GmailApp():
     def __init__(self,token_file='token.json'):
         creds = Credentials.from_authorized_user_file(token_file, SCOPES)
         if creds and creds.expired and creds.refresh_token:
-            print(f"token_file:{token_file} expired, refresshing")
+            print(f"Token file:{token_file} expired, refreshing...")
             creds.refresh(Request())
 
         self.service = build('gmail', 'v1', credentials=creds)

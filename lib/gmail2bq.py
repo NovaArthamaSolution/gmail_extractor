@@ -98,8 +98,6 @@ def gmail_extract(config):
       url_xpath = config['file_to_extract']['url_xpath']
       urls = extract_urls_xmlfile(mail_body_file, url_xpath)
       for idx,file_url in enumerate(urls): 
-        # basename = config['file_to_extract'].get('force_filename','').replace('*',str(idx))
-        # dest_path = os.path.join(working_dir,basename)
         downloaded_file = download_file(file_url, working_dir)
         filenames.append(downloaded_file)
 
@@ -142,28 +140,24 @@ def process_file_transform(transform_config, filenames):
   etlfnames = []
   if transform_config.get('transform_model'):
     import importlib.util
-    import sys
-    from inspect import getmembers, isfunction
-    libdir = os.path.dirname(__file__)
-    print(libdir)
-    sys.path.append(libdir)
-    sys.path.append(os.path.dirname(f'{JOB_DIR}/in'))
 
     transformation = transform_config.get('transform_model')
-    # try:
-    spec = importlib.util.spec_from_file_location(transformation, f"{libdir}/{transformation}.py")
-    # if os.path.exists(f"{JOB_DIR}/in/{transformation}.py") :
-    # spec = importlib.util.spec_from_file_location(transformation, f"{JOB_DIR}/in/{transformation}.py")
-    # else:
-    transform = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(transform)
-    # print(getattr(transform,transformation))
+  
+    try:
+      libdir = os.path.dirname(__file__)
+      spec = importlib.util.spec_from_file_location(transformation, f"{libdir}/{transformation}.py")
+      transform = importlib.util.module_from_spec(spec)
+      spec.loader.exec_module(transform)
+    except FileNotFoundError as ex:
+      spec = importlib.util.spec_from_file_location(transformation, f"{os.getenv('CONFIG_DIRPATH')}/{transformation}.py")
+      transform = importlib.util.module_from_spec(spec)
+      spec.loader.exec_module(transform)
 
     for fname in filenames:
       try:
         etlfnames += getattr(transform,transformation)(fname)
       except Exception as ex:
-        print("Failed to process file transformation %s : %s" % (fname, ex ))
+        print(f"Failed to process file transformation {fname} : {ex} : {type(ex)}")
         etlfnames += [fname]
 
   elif transform_config.get('filename_format'):

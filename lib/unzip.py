@@ -1,17 +1,15 @@
-import glob
 import os
 import tempfile
 import pyminizip
+from glob import glob
 
 def unzip(filename: str,password=None) -> list: 
-
-    print(f"unzip: {filename}")
     dest_path = tempfile.mkdtemp(prefix='gmail_extractor_')
-    
     pyminizip.uncompress(filename, password, dest_path, int(True) )
-
-    files = glob("%s/*.*" % dest_path )
-
+    
+    files = glob(f"{dest_path}/*.*")
+    print(f"unzip: {filename} to {dest_path} \nresult: {files}")
+    
     return list(filter(lambda f: list(os.path.splitext('.')).pop() != 'zip' , files))
 
 
