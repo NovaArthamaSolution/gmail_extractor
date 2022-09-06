@@ -1,11 +1,14 @@
+from xlsx2csv import xlsx2csv
 
-from .finrec_etl import FinrectETL
-from .xlsx2csv import xlsx2csv
+def excel_split_sheet(source_file)-> list:
+    return xlsx2csv(source_file)
 
-class ExcelSplitSheet(FinrectETL):
 
-    def __init__(self):
-        self.source_file = source_file
-    
-    def perform(self,source_file) -> list:
-        return xlsx2csv(source_file)
+def main():
+    fn = sys.argv[1]
+    ret = excel_split_sheet(fn)
+    print(ret)
+
+
+if __name__ == '__main__':
+    main()
