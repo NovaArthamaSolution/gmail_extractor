@@ -1,4 +1,3 @@
-ignore_after: 15
 mail_filter:
   from: no-reply@go-pay.co.id
   subject: '[ARS][PROD] BILL MKM Report'
@@ -21,3 +20,5 @@ export_destination:
   port: 22
   private_key: /root/.ssh/id_rsa.finrec
   dir: /SB/TEST
+
+ignore_after: 15
