@@ -1,12 +1,12 @@
 mail_filter:
-  subject: "*ESG Report v2_Rail"
+  subject: "*Sustainability ESG Report"
   attachment: true
   after: {{ datetime_start.timestamp()  | int }}
   before: {{ datetime_end.timestamp()  | int }}
 
 file_to_extract:
   source : attachment
-  file_pattern: "*ESG Report v2_Rail.csv"
+  file_pattern: "*Sustainability_ESG_Report_*.xlsx"
 
 transform:
   filename_format : concur_integration_{{ now.strftime("%Y%m%d") }}_{source_file}
