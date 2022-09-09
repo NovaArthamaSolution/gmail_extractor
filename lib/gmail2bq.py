@@ -157,7 +157,7 @@ def process_file_transform(transform_config, filenames):
       try:
         etlfnames += getattr(transform,transformation)(fname, transform_config)
       except Exception as ex:
-        print(f"Failed to process file transformation {fname} : {ex} : {type(ex)}")
+        print(f"Failed to process file transformation {fname} : {transformation} : {ex}")
         etlfnames += [fname]
 
   elif transform_config.get('filename_format'):
