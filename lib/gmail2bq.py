@@ -129,7 +129,8 @@ def gmail_extract(config):
 
     ## Mark proceesed email 
     processed_label_id = gMailApp.get_processed_label_id()
-    [ gMailApp.mark_label(email['id'],processed_label_id) for email in emails ]
+    if os.getenv('env') != 'TEST_CONFIG' :
+      [ gMailApp.mark_label(email['id'],processed_label_id) for email in emails ]
   else:
     if  datetime.now().hour >= config.get('ignore_after',23) : return True
     raise Exception("No expected files  match found from email")      
