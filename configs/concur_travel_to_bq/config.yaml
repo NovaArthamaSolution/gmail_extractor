@@ -9,9 +9,10 @@ file_to_extract:
   file_pattern: "*Sustainability_ESG_Report_*.xlsx"
 
 transform:
-  filename_format : concur_integration_{{ now.strftime("%Y%m%d") }}_{source_file}
+  transform_model: xlsx2csv
+  filename_format : coupa_sustainability_{{ now.strftime("%Y%m%d") }}_{source_file}
 
 export_destination:
   protocol: gcs
-  bucket: access_sap_bq
-  dir: ocean/data-gojek-id-raw-internal/enterprise_platform/concur_integration_rail
+  bucket: integration_exchange
+  dir: workato/ocean/data-gojek-id-raw-internal/enterprise_platform/coupa_esg_purchase_of_goods_and_services
