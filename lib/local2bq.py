@@ -39,6 +39,8 @@ def file_to_bq(file_path,table_id,*args,**kwargs):
         
     try:
         schema_file = kwargs.pop('schema') 
+        if os.path.exists(schema_file):
+            raise Exception('Cannot load without schema file')
         fmt = kwargs.pop('format') 
         schema, dtypes = load_schema(schema_file)
 
