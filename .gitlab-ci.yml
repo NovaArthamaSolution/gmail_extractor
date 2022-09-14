@@ -31,7 +31,7 @@ testing:config:
   variables:
     env : TEST_CONFIG 
   script:
-    - DSTART=`date -d"-1 day" +"%Y-%m-%d"`
+    - DSTART=`date +"%Y-%m-%d"`
     - cp configs/coupa_sustainability/config.yaml $export_dir
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
     - docker run -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART
@@ -79,5 +79,5 @@ run_schedules:
   stage: scheduled
   script:
     - cp ${CONFIG_DIRPATH}/* $export_dir/
-    - DSTART=`date +"%Y-%m-%d"`
+    - DSTART=`date +"%Y-%m-%d" -d"+1 day"`
     - docker run -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/$tmp_dir/GOOGLE_APPLICATION_CREDENTIALS -e DSTART=$DSTART $IMAGE_URL /$export_dir/config.yaml -s $DSTART
