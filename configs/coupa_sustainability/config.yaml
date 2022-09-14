@@ -1,4 +1,5 @@
 mail_filter:
+  from: coupa.com
   subject: "*Sustainability ESG Report"
   attachment: true
   after: {{ datetime_start.timestamp()  | int }}
