@@ -31,7 +31,7 @@ def snake_to_camel(string):
 def xlsx2csv(filepath,config=None,multi=False):
     def sheet_to_csv(sh):
         
-        target_file = config_file.get('filename_format',filepath)        
+        target_file = config.get('filename_format',filepath)        
 
         csv_filepath = "%s_%s.%s"  %   (target_file.rsplit('.',1)[0] ,sh.name, 'csv')
         csv_fh = open(csv_filepath, 'w')
