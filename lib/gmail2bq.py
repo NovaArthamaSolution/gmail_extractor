@@ -154,9 +154,14 @@ def process_file_transform(transform_config, filenames):
       transform = importlib.util.module_from_spec(spec)
       spec.loader.exec_module(transform)
 
+    print(f"\nProcessing file {transformation} transformation to {filenames} ")
     for fname in filenames:
       try:
+        if '{source_file}' in transform_config.get('filename_format',''):
+          transform_config['filename_format'] = transform_config.get('filename_format').format(**{'source_file': os.path.basename(fname)})
+
         etlfnames += getattr(transform,transformation)(fname, transform_config)
+      
       except Exception as ex:
         print(f"Failed to process file transformation {fname} : {transformation} : {ex}")
         etlfnames += [fname]

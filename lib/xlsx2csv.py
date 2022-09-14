@@ -31,12 +31,12 @@ def snake_to_camel(string):
 def xlsx2csv(filepath,config=None,multi=False):
     def sheet_to_csv(sh):
         
-        target_file = config.get('filename_format',filepath)        
+        target_file = config.get('filename_format',filepath)  if config else filepath
 
         csv_filepath = "%s_%s.%s"  %   (target_file.rsplit('.',1)[0] ,sh.name, 'csv')
         csv_fh = open(csv_filepath, 'w')
         wr = csv.writer(csv_fh, dialect='excel', quoting=csv.QUOTE_ALL,delimiter=DELIMITER, lineterminator="\n", strict=True)
-        # headers = map(snake_to_camel, sh.row_values(0))
+        headers = map(snake_to_camel, sh.row_values(0))
         headers = sh.row_values(0)
         wr.writerow(headers)
         for rownum in range(1,sh.nrows):
@@ -62,7 +62,7 @@ def xlsx2csv(filepath,config=None,multi=False):
             ret.append(sheet_to_csv(sh))
     else:
         sh = wb.sheet_by_index(0)
-        return ret.append(sheet_to_csv(sh))
+        ret.append(sheet_to_csv(sh))
 
     return ret
 
