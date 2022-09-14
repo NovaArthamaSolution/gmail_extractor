@@ -32,7 +32,7 @@ def main():
   if parser.datetime_start is not None:
     datetime_start = datetime.fromisoformat(parser.datetime_start)
   else:
-    datetime_start = datetime.now() - timedelta(days=1)
+    datetime_start = datetime.now() #- timedelta(days=1)
 
   if parser.datetime_end is None:
     parser.datetime_end = datetime_start + timedelta(days=1)
