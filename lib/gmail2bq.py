@@ -69,6 +69,12 @@ def gmail_extract(config):
   if config.get('account') and config.get('account').get('token_file'):
     token_file = config.get('account').get('token_file')
 
+  if not os.path.isfile(token_file):
+      tmp_token_file = f"{JOB_DIR}/token.json"
+      with open(tmp_token_file,'w') as tmpfile:
+          tmpfile.write(token_file)
+      token_file = tmp_token_file
+      
   creds_file = os.environ.get('GMAIL_CREDENTIAL_FILE')
   
   tmp_local_dir = str(os.environ.get('TMP_DIR', '/data/out')).rstrip('/') 
