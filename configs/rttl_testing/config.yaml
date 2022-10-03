@@ -12,7 +12,7 @@ transform:
   transform_model: unzip
   filename_format : '{source_file}_{{ now.strftime("%Y%m%d") }}'
 
-export_destination:
+load_destination:
   protocol: gcs
   bucket: access_sap_bq
   dir: rtt_testing/

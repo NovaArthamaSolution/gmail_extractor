@@ -14,7 +14,7 @@ transform:
   filename_format: MIDTRANS_{{ now.strftime("%y%m%d%H%M%S") }}_{source}
 
 
-export_destination:
+load_destination:
   protocol: sftp
   hostname: ftp.blackline.com
   username: sapgojek

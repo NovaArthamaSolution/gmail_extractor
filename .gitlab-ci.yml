@@ -80,4 +80,4 @@ run_schedules:
   script:
     - cp ${CONFIG_DIRPATH}/* $export_dir/
     - DSTART=`date +"%Y-%m-%d"`
-    - docker run -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/$tmp_dir/GOOGLE_APPLICATION_CREDENTIALS -e DSTART=$DSTART $IMAGE_URL /$export_dir/config.yaml -s $DSTART
+    - docker run -v `pwd`/$export_dir:/$export_dir  -e env:TEST_CONFIG -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/$tmp_dir/GOOGLE_APPLICATION_CREDENTIALS -e DSTART=$DSTART $IMAGE_URL /$export_dir/config.yaml -s $DSTART

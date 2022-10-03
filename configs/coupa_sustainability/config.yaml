@@ -13,7 +13,7 @@ transform:
   transform_model: xlsx2csv
   filename_format : coupa_sustainability_{{ now.strftime("%Y%m%d") }}_{source_file}
 
-export_destination:
+load_destination:
   protocol: gcs
   bucket: integration_exchange
   dir: workato/ocean/data-gojek-id-raw-internal/enterprise_platform/coupa_esg_purchase_of_goods_and_services

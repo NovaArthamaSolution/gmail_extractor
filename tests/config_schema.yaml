@@ -67,7 +67,7 @@ file_etl:
       type: string
       nullable: true
 
-export_destination:
+load_destination:
   type: dict
   required: true
   schema:

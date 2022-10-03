@@ -12,7 +12,7 @@ transform:
   etl_model: rpt_cleaner
   filename_format: TM007C01_DS0059_{{ now.strftime("%y%m%d%H%M%S") }}_{source_file}
 
-export_destination:
+load_destination:
   protocol: sftp
   hostname: ftp.blackline.com
   username: sapgojek
