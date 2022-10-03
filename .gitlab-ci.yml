@@ -25,7 +25,7 @@ testing:config:
   stage: testing
   script:
     - pip install -r requirements.txt
-    - python tests/validator/config_validation.py tests/validator/config_schema.yaml tests/config/
+    - python tests/config_validation.py tests/config_schema.yaml configs/
 
 
 
@@ -40,7 +40,7 @@ testing:unit:
     env : TEST_CONFIG 
   script:
     - DSTART=`date +"%Y-%m-%d"`
-    - cp configs/coupa_sustainability/config.yaml $export_dir
+    - cp configs/${CONFIG_DIRPATH}/config.yaml $export_dir
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
     - docker run -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART
 
