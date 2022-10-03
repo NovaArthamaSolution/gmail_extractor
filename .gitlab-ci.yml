@@ -17,7 +17,6 @@ variables:
 before_script:
     - mkdir -p $export_dir $tmp_dir
     - cp $GOOGLE_APPLICATION_CREDENTIALS $tmp_dir/
-    - cp $GMAIL_TOKEN_FILE $export_dir/token.json
     - cp $GMAIL_CREDENTIAL_FILE $export_dir/credentials.json
 
 testing:config:
