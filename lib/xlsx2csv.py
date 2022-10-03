@@ -8,7 +8,7 @@ import re
 from datetime import datetime
 
 
-DELIMITER = os.environ.get('DELIMITER','\t')
+DELIMITER = os.environ.get('DELIMITER',r'\t')
 DATE_FORMAT  = os.environ.get("DATE_FORMAT","%Y-%m-%d")
 DATETIME_FORMAT  = os.environ.get("DATETIME_FORMAT","%Y-%m-%dT%H:%M:%S%z")
 
