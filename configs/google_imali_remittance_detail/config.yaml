@@ -10,7 +10,7 @@ file_to_extract:
   mime_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 
 transform:
-  etl_model: Unzip
+  transform_model: Unzip
   filename_format: MIDTRANS_{{ now.strftime("%y%m%d%H%M%S") }}_{source}
 
 

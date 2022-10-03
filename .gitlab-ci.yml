@@ -20,8 +20,16 @@ before_script:
     - cp $GMAIL_TOKEN_FILE $export_dir/token.json
     - cp $GMAIL_CREDENTIAL_FILE $export_dir/credentials.json
 
-
 testing:config:
+  image: "python:3.8"
+  stage: testing
+  script:
+    - pip install -r requirements.txt
+    - python tests/validator/config_validation.py tests/validator/config_schema.yaml tests/config/
+
+
+
+testing:unit:
   stage: testing
   except:
     - schedules

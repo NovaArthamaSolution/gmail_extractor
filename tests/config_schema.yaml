@@ -51,11 +51,11 @@ file_to_extract:
       type: string
       required: false
 
-file_etl:
+transform:
   required: true 
   type: dict
   schema:
-    etl_model:
+    transform_model:
       type: string
     etl_params:
       type: dict
