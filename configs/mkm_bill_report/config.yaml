@@ -13,7 +13,7 @@ transform:
   filename_format: TM007C00_DS0012_{{now.strftime('%y%m%d%H%M%S')}}_{file_date}_{source_file}
 
 
-export_destination:
+load_destination:
   protocol: sftp
   hostname: ftp.blackline.com
   username: sapgojek

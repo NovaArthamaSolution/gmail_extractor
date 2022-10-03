@@ -125,7 +125,7 @@ def gmail_extract(config):
     # print(filenames)
 
     ## SEND THE FILES
-    filenames = send_files(filenames,config['export_destination'])
+    filenames = send_files(filenames,config['load_destination'])
 
     ## Mark proceesed email 
     processed_label_id = gMailApp.get_processed_label_id()
