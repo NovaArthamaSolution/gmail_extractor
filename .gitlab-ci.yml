@@ -40,10 +40,9 @@ testing:unit:
   script:
     - DSTART=`date +"%Y-%m-%d"`
     - echo "GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" > app.env
-    - cat app.env
     - cp configs/${CONFIG_DIRPATH}/config.yaml $export_dir
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
-    - docker run --env-file ./app.env -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART
+    - docker run  -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART
 
 # testing: library:
 #   stage: testing

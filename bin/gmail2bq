@@ -11,7 +11,7 @@ DIR_WORKING="${REPO_ROOT}"
 cd ${DIR_WORKING}
 
 set -o allexport
-source .app.conf
+source app.env
 set +o allexport
 
 
@@ -25,5 +25,7 @@ if [ ! -f $1 ]; then
         f=$1/config.yaml
     fi
 fi
+
+ls -alr 
 
 python3 $DIR_WORKING/lib/gmail2bq.py "$f" ${@:2}
