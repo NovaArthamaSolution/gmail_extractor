@@ -9,13 +9,10 @@ REPO_ROOT=`realpath ${DIR_SANDBOX}/..`
 DIR_WORKING="${REPO_ROOT}"
 
 cd ${DIR_WORKING}
-pwd 
 
 set -o allexport
 source app.env
 set +o allexport
-
-env 
 
 echo "-- activate google credentials --"
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS

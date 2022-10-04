@@ -70,6 +70,7 @@ build:docker:
     tmp_dir: tmp
     export_dir: data/in
   script:
+    - echo "GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" > app.env
     - docker build  --no-cache -t $IMAGE_URL -f $( pwd )/Dockerfile . 
     - docker push $IMAGE_URL
 

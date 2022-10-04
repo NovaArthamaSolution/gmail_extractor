@@ -26,6 +26,4 @@ if [ ! -f $1 ]; then
     fi
 fi
 
-ls -alr 
-
 python3 $DIR_WORKING/lib/gmail2bq.py "$f" ${@:2}
