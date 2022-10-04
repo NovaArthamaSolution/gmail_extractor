@@ -9,9 +9,14 @@ REPO_ROOT=`realpath ${DIR_SANDBOX}/..`
 DIR_WORKING="${REPO_ROOT}"
 
 cd ${DIR_WORKING}
+pwd 
 
+set -o allexport
+source app.env
+set +o allexport
 
-source .app.conf
+env 
+
 echo "-- activate google credentials --"
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 gcloud config set project data-gojek-access
@@ -23,4 +28,4 @@ if [ ! -f $1 ]; then
     fi
 fi
 
-python3 ${REPO_ROOT}/lib/gmail2bq.py "$f" ${@:2}
+python3 ${DIR_WORKING}/lib/gmail2bq.py "$f" ${@:2}

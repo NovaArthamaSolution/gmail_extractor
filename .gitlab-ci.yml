@@ -22,6 +22,8 @@ before_script:
 testing:config:
   image: "python:3.8"
   stage: testing
+  except:
+    - schedules
   script:
     - pip install -r requirements.txt
     - python tests/config_validation.py tests/config_schema.yaml configs/
