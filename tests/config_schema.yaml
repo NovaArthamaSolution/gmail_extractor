@@ -121,19 +121,19 @@ load_destination:
         protocol:
           - bq 
     load_method:
-      type:
-        type: string 
-        allowed:
+      type: string 
+      allowed:
           - replace
           - merge 
     field_delimiter:
       type: string
       required: false
-      length: 3
-    dataframe:
-      type: dict
-      dependencies: table_id
-    schema_file:
+      allowed:
+        - tab
+        - \t
+        - ','
+        - '|'
+    schema:
       type: string 
       required: false
       dependencies:
