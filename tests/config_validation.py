@@ -49,7 +49,8 @@ def render_config(template_file):
   config_rendered = config_template.render(datetime_start=datetime_start, 
         datetime_end=datetime_end, 
         now=datetime.now(),
-        env=os.environ)
+        env=os.environ,
+        timedelta=timedelta)
   
   return yaml.load(config_rendered,Loader=Loader)
 
