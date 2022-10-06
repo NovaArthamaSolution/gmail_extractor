@@ -40,7 +40,7 @@ testing:unit:
   variables:
     env : TEST_CONFIG 
   script:
-    - DSTART=`date +"%Y-%m-%d"`
+    - DSTART=`date +"%Y-%m-%d" -d "-1 day" `
     - echo "GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" > app.env
     - echo "CONFIG_DIRPATH=${CONFIG_DIRPATH}" >> app.env
     - cp configs/${CONFIG_DIRPATH}/* $export_dir
