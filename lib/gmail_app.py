@@ -13,7 +13,7 @@ import time
 import sys 
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
-ATTACHMENT_PATH_PREFIX = os.environ.get('TMP_DIR','/tmp/gmail_extractor')
+ATTACHMENT_PATH_PREFIX = os.environ.get('TMP_DIR','/data/out')
 
 try:
     os.mkdir(ATTACHMENT_PATH_PREFIX)
@@ -67,7 +67,7 @@ class GmailApp():
 
         results = self.service.users().messages().list(userId='me',q=q ).execute()
         messages = results.get('messages',[])
-        print(" EMAIL Filter: %s \n Matched %d emails" % ( q, len(messages)  ) )
+        print(" EMAIL Filter: %s \n  Matched %d emails" % ( q, len(messages)  ) )
         
         emails = []
         for emailId in messages:

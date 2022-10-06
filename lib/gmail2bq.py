@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 from glob import glob
 
 from gmail_app import GmailApp
+from config import AppConfig
 from util import * 
 
 from local2gcs import put_files as send_gcs_files
@@ -43,39 +44,23 @@ def main():
   d_start = datetime_start.strftime('%Y%m%d')
   d_end = datetime_end.strftime("%Y%m%d")
 
-  configurations = None
   appconfig = AppConfig(config_fullpath,datetime_start,datetime_end)
   
+  print(f"Starting GMAIL Extractor with config file {config_fullpath} for {d_start} and {d_end}")
 
-  print(f"Starting GMAIL Extractor with config file {config_fullpath} for {d_start}")
-  print(f"Config:\n{config_rendered}")
-
-  return gmail_extract( configurations )
+  return gmail_extract( appconfig )
 
 
 
 def gmail_extract(config):
-  home = os.path.expanduser("~")
 
-  token_file = os.environ.get('GMAIL_TOKEN_FILE','')
-  if config.get('account') and config.get('account').get('token_file'):
-    token_file = config.get('account').get('token_file')
-
-  if not os.path.isfile(token_file):
-      tmp_token_file = f"{JOB_DIR}/token.json"
-      with open(tmp_token_file,'w') as tmpfile:
-          tmpfile.write(token_file)
-      token_file = tmp_token_file
-      
-  creds_file = os.environ.get('GMAIL_CREDENTIAL_FILE')
-  
   tmp_local_dir = str(os.environ.get('TMP_DIR', '/data/out')).rstrip('/') 
 
   try:
-    gMailApp = GmailApp(token_file)
+    gMailApp = GmailApp(config.token_file)
   except:
     print('TOKEN LOGIN FAILED: Please proceed this link with respectfully account')
-    gMailApp = GmailApp.login(token_file,credentials_file=creds_file)
+    gMailApp = GmailApp.login(config.token_file,credentials_file=config.credential_file)
 
   emails = gMailApp.get_emails( from_=config['mail_filter'].get('from'),
                                 subject=config['mail_filter'].get('subject'),

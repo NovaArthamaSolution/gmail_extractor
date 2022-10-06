@@ -12,6 +12,7 @@ import ndjson
 import datetime
 from google.cloud import storage
 from google.cloud import bigquery
+from xlsx2csv import DELIMITER
 
 from util import *
 
@@ -78,7 +79,7 @@ def load_to_bq(file_to_load, table_id, source_format,schema=None,*args,**kwargs)
         table_id = f"{kwargs.get('project')}.{table_id}"
 
     if kwargs.get('field_delimiter',None):
-        job_config.field_delimiter = r"\t" if kwargs.get('field_delimiter')== 'tab' else kwargs.get('field_delimiter')
+        job_config.field_delimiter = r"\t" if kwargs.get('field_delimiter')== 'tab' else kwargs.get('field_delimiter', DELIMITER)
 
     if kwargs.get('skip_leading_rows',None):
         job_config.skip_leading_rows = int(kwargs.get('skip_leading_rows')) or 0

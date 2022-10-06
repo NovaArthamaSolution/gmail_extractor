@@ -8,7 +8,7 @@ import re
 from datetime import datetime
 
 
-DELIMITER = os.environ.get('DELIMITER',r'\t')
+DELIMITER = os.environ.get('DELIMITER','\t')
 DATE_FORMAT  = os.environ.get("DATE_FORMAT","%Y-%m-%d")
 DATETIME_FORMAT  = os.environ.get("DATETIME_FORMAT","%Y-%m-%dT%H:%M:%S%z")
 
@@ -32,7 +32,7 @@ def xlsx2csv(filepath,config=None,multi=False):
     def sheet_to_csv(sh):
         
         target_file = config.get('filename_format',filepath)  if config else filepath
-
+        print(DELIMITER)
         csv_filepath = "%s_%s.%s"  %   (target_file.rsplit('.',1)[0] ,sh.name, 'csv')
         csv_fh = open(csv_filepath, 'w')
         wr = csv.writer(csv_fh, dialect='excel', quoting=csv.QUOTE_ALL,delimiter=DELIMITER, lineterminator="\n", strict=True)
