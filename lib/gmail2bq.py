@@ -26,9 +26,8 @@ def main():
     config_fullpath = parsed.config_fullpath
   else:
     config_fullpath = f'{JOB_DIR}/in/config.yaml'
-  os.environ['CONFIG_DIRPATH'] = os.path.dirname(config_fullpath)  
-
-
+  os.environ['CONFIG_DIRPATH'] = os.path.dirname(config_fullpath) 
+  
   if parsed.datetime_start is not None:
     datetime_start = datetime.fromisoformat(parsed.datetime_start)
   else:
@@ -43,7 +42,6 @@ def main():
   d_start = datetime_start.strftime('%Y%m%d')
   d_end = datetime_end.strftime("%Y%m%d")
 
-  print(parsed,config_fullpath)
   appconfig = AppConfig(config_fullpath,datetime_start,datetime_end)
   
   print(f"Starting GMAIL Extractor with config file {config_fullpath} for {d_start} and {d_end}")
