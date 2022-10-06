@@ -6,7 +6,7 @@ designed to be used at Financial Reconcialiation Project.
 * extract data file from attachment
 * extract url and download data file from body ( targetting using xpath )
 * do some file preprosessing ( like unzip or rename to safe filename)
-* do some file etl ( with ETL class provided previously)
+* do some file data transform ( with transform function provided previously)
 * do some file post
 * ~~load data file to bq table~~ (*on progress)
 * send data to gcs/sftp/
@@ -19,7 +19,7 @@ designed to be used at Financial Reconcialiation Project.
 * download file from attachment
 * download file from url in body
 * make email as processed to prevent double processing
-* do some etl to attachment file
+* do some transformation to attachment file
 * send attachment file to gcs
 * send attachment file to sftp
 * load csv file to bq
@@ -77,12 +77,12 @@ file_to_extract: # configuration to find
   file_pattern: <FIX PATTERN>*.zip #file pattern ( mind if there's date on the filename that may changed every day/ or any variable)
   mime_type: application/x-zip-compressed ( mime type of file ( please check on show original menu on gmail app))
 
-file_etl:
-  etl_model:
+transform:
+  transform_model:
   filename_format: "{source_file}_{{now.strftime('%y%m%d%H%M%S')}}" # strftime ussualy as file ID {source_filename} is the real source filename
 
 
-export_destination:
+load_destination:
   protocol: sftp|gcs|bq
 
 #FOR SFTP PROTOCOL  
@@ -99,7 +99,7 @@ export_destination:
 
 #for BQ protocol, make sure the table already created first.
   project: <project_id of table>
-  table_id: <dataset>.<tablename>
+  table_id: <project_id>.<dataset>.<tablename>
   schema: <schema file, usualy schema.erd in the same config folder>
   replace: <true>
   partition: <partition_id to use> ## {{date_start.strftime('%Y%m%d)}} or using regex to get date from filename 
@@ -123,10 +123,10 @@ ignore_after: 18
 |  * `source==attachment` | `mime_type` | string/mime_type | Mime Type of file that need to be acquire (`text/csv`, `application/json`) |
 |  * `source==url_in_body` | `url_xpath`| string/xpath  | xpath pattern to locate urls in the body content |
 |  * `source==url_in_body` | `password_xpath` | string/xpath | xpath pattern to locate files zip password in the body content |
-| `file_etl`          | `etl_model`     | string/class name | Class name of etl class that will do Transformation |
+| `transform`          | `transform_model`     | string/class name | Class name of etl class that will do Transformation |
 |                     | `filename_format`| string/python format | String as base of file rename pattern, add `{source_file}` to keep/add the original filename |
 |                     | * | dictionary  | any other key dictionary in this will be used for etl model initialization |
-| `export_destination`| `protocol`      | string/one of (sft/gcs/bq) | target protocol to data file to be sent | 
+| `load_destination`| `protocol`      | string/one of (sft/gcs/bq) | target protocol to data file to be sent | 
 | * `protocol==gcs`   | `bucket`        | string/bucket name | target bucket to data file to be sent | 
 | * `protocol==gcs`   | `dir`           | string/directory | target directory/path to data file to be sent | 
 | * `protocol==sftp`  | `hostname`      | string/(hostname/ip) | target sftp server | 
@@ -163,5 +163,5 @@ Used as validation.
 * To add ETL class
 1. create class that inherit ETLClass
 2. Make sure creating function `perform` with input source filename and returning the result filename ( we work on file based operation) 
-3. Add created `class_name` (snake_case) as the value of `etl_model` in config
+3. Add created `class_name` (snake_case) as the value of `transfrom_model` in config
 4. TEST,TEST,TEST 
