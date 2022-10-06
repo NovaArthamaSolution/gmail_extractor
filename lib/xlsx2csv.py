@@ -32,12 +32,11 @@ def xlsx2csv(filepath,config=None,multi=False):
     def sheet_to_csv(sh):
         
         target_file = config.get('filename_format',filepath)  if config else filepath
-        print(DELIMITER)
+        target_file = f"{os.getenv('TMP_DIR','.')}/{target_file}"
         csv_filepath = "%s_%s.%s"  %   (target_file.rsplit('.',1)[0] ,sh.name, 'csv')
         csv_fh = open(csv_filepath, 'w')
-        wr = csv.writer(csv_fh, dialect='excel', quoting=csv.QUOTE_ALL,delimiter=DELIMITER, lineterminator="\n", strict=True)
-        headers = map(snake_to_camel, sh.row_values(0))
-        headers = sh.row_values(0)
+        wr = csv.writer(csv_fh, dialect='excel', quoting=csv.QUOTE_NONNUMERIC,delimiter=DELIMITER, lineterminator="\n", strict=True)
+        headers = list(map(snake_to_camel, sh.row_values(0)))
         wr.writerow(headers)
         for rownum in range(1,sh.nrows):
             types = sh.row_types(rownum)
