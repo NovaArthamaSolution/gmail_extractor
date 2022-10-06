@@ -14,8 +14,7 @@ set -o allexport
 source app.env
 set +o allexport
 
-
-echo "-- activate google credentials --"
+env
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 gcloud config set project data-gojek-access
 
@@ -26,4 +25,6 @@ if [ ! -f $1 ]; then
     fi
 fi
 
-python3 $DIR_WORKING/lib/gmail2bq.py "$f" ${@:2}
+echo $f 
+echo $@
+python3 ${DIR_WORKING}/lib/gmail2bq.py "$f" ${@:2}
