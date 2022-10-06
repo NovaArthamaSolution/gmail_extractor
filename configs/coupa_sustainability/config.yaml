@@ -2,8 +2,8 @@ mail_filter:
   from: coupa.com
   subject: "*Sustainability ESG Report"
   attachment: true
-  after: {{ datetime_start.timestamp()  | int }}
-  before: {{ datetime_end.timestamp()  | int  }}
+  after: {{ (datetime_start - timedelta(hours=7)).timestamp()  | int }}
+  before: {{ (datetime_end - timedelta(hours=7)).timestamp()  | int  }}
 
 file_to_extract:
   source : attachment
