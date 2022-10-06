@@ -21,29 +21,29 @@ from local2bq import file_to_bq
 JOB_DIR=os.getenv('JOB_DIR','/data')
 
 def main():
-  parser = parse_arg()
-  if parser.config_fullpath:
-    config_fullpath = parser.config_fullpath
+  parsed = parse_arg()
+  if parsed.config_fullpath:
+    config_fullpath = parsed.config_fullpath
   else:
     config_fullpath = f'{JOB_DIR}/in/config.yaml'
   os.environ['CONFIG_DIRPATH'] = os.path.dirname(config_fullpath)  
 
 
-  if parser.datetime_start is not None:
-    datetime_start = datetime.fromisoformat(parser.datetime_start)
+  if parsed.datetime_start is not None:
+    datetime_start = datetime.fromisoformat(parsed.datetime_start)
   else:
     datetime_start = datetime.now() #- timedelta(days=1)
 
-  if parser.datetime_end is None:
-    parser.datetime_end = datetime_start + timedelta(days=1)
-    parser.datetime_end = parser.datetime_end.isoformat()
-    # parser.datetime_end = "%sT%s" % ( datetime_start.strftime('%Y-%m-%d') , datetime.now().strftime("%H:%M:%S") )
+  if parsed.datetime_end is None:
+    parsed.datetime_end = datetime_start + timedelta(days=1)
+    parsed.datetime_end = parsed.datetime_end.isoformat()
 
-  datetime_end = datetime.fromisoformat(parser.datetime_end)
+  datetime_end = datetime.fromisoformat(parsed.datetime_end)
 
   d_start = datetime_start.strftime('%Y%m%d')
   d_end = datetime_end.strftime("%Y%m%d")
 
+  print(parsed,config_fullpath)
   appconfig = AppConfig(config_fullpath,datetime_start,datetime_end)
   
   print(f"Starting GMAIL Extractor with config file {config_fullpath} for {d_start} and {d_end}")

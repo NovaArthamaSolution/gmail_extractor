@@ -36,7 +36,6 @@ class AppConfig(dict):
         self.xcom_path = get_env_config("XCOM_PATH", self.DEFAULT_XCOM_PATH)
 
         self._parse_datetime_vars()
-        self._parse_specs_dir()
         self._render()
 
     def _parse_datetime_vars(self):
@@ -67,16 +66,6 @@ class AppConfig(dict):
         except yaml.YAMLError as exc:
             print(exc)
             raise
-
-
-    def _parse_specs_dir(self):
-        dir = get_env_config("JOB_DIR", default=self.DEFAULT_JOB_DIR)
-        dir = "{}/{}".format(dir, self.JOB_INPUT_SUBDIR)
-        for dirpath, _, files in os.walk(dir):
-            for filename in files:
-                filepath = os.path.join(dirpath, filename)
-                if filename == self.CONFIG_FILE_NAME:
-                    self.config_file = filepath
 
     def _is_dry_run(self, input_config) -> bool:
         if input_config.lower() in ["true", "1", "yes", "y"]:
