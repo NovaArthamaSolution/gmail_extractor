@@ -55,7 +55,7 @@ def file_to_bq(file_path,table_id,*args,**kwargs):
         raise
 
 def csv_to_bq(file_path, table_id, schema=None,*args,**kwargs):
-    load_to_bq(file_path,table_id,bigquery.SourceFormat.CSV, schema,**kwargs)
+    return load_to_bq(file_path,table_id,bigquery.SourceFormat.CSV, schema,**kwargs)
 
 def json_to_bq(file_path, table_id, schema=None,*args,**kwargs):
     basename, ext = os.path.splitext(file_path)
@@ -67,7 +67,7 @@ def json_to_bq(file_path, table_id, schema=None,*args,**kwargs):
             data = json.load(source)
             ndjson.dump(data,dest)
 
-    load_to_bq(file_to_load,table_id,bigquery.SourceFormat.NEWLINE_DELIMITED_JSON, schema,**kwargs)
+    return load_to_bq(file_to_load,table_id,bigquery.SourceFormat.NEWLINE_DELIMITED_JSON, schema,**kwargs)
 
 def load_to_bq(file_to_load, table_id, source_format,schema=None,*args,**kwargs):
 
@@ -136,8 +136,8 @@ def load_to_bq(file_to_load, table_id, source_format,schema=None,*args,**kwargs)
                 )
         logging.info(f"Running on job Id {job}")
         job.result()
-        logging.info(f"successfully insert dataframe to table {table_id} finished")
-        return table_id
+        logging.info(f"successfully insert data to table {table_id} finished")
+        return partition
     except Exception as err:
         logging.error("Error happens when attempt to insert data to bq")
         logging.error("{err}".format(err=err))
