@@ -101,12 +101,10 @@ load_destination:
   project: <project_id of table>
   table_id: <project_id>.<dataset>.<tablename>
   schema: <schema file, usualy schema.erd in the same config folder>
-  replace: <true>
+  load_method: <replace/merge>
   partition: <partition_id to use> ## {{date_start.strftime('%Y%m%d)}} or using regex to get date from filename 
   clustering_fields: <list of cluster fields in the table>
-  dataframe: # data frame read file parameters
-    sheet_name: Sheet1 ## e.g. for loading excel file
-    sep: \t            ## e.g. for loading csv/tsv file
+  skip_leading_rows: <int | number of header lines in file that need to skipped>
 
 ignore_after: 18
 ```
@@ -139,7 +137,6 @@ ignore_after: 18
 | * `protocol==sftp`  | `private_key`   | string/path     | private key to be used to logging in to sftp server | 
 | * `protocol==sftp`  | `dir`           | string/path     | target directory/path to data file to be sent in to sftp server | 
 | * `protocol==bq`  | `table_id`        | string/table_id | target table id to load to (`<project_id.dataset.table_name>`) | 
-| * `protocol==bq`  | `dataframe`       | dictionary     | dictionary to be used as parameter on Pandas dataframe load from file ( eg. sheetname for excel) , refer to [read_excel](https://pandas.pydata.org/docs/reference/api/pandas.read_excel.html) and  [read_csv](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html) and read_json | 
 | * `protocol==bq`  | `partition`       | string/(dateid/regex)     | date format `YYYYMMDD`, can be loaded from filename with `regex:<pattern to get (\d{8}) >` | 
 | * `protocol==bq`  | `replace`         | boolean     | indicate to replace the table/partition or not (default:NOT) | 
 | * `protocol==bq`  | `clustering_fields`| string/comma separated name     | argument to pass to bq load parameters  | 
