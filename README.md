@@ -113,20 +113,22 @@ ignore_after: 18
 
 | context             | config          | type/validation |Description |
 | ------------------------- | --------------- | --------------- |----------- |
-| `mail_filter`       | `from`          | string/email    |Email Identifier filter from sender email address |
+| *`mail_filter`*       | `from`          | string/email    |Email Identifier filter from sender email address |
 |                     | `subject`       | string/         | Email Identifier filter from email subject      |
 |                     | `after`         | int/ unix timestamp |Email Identifier filter by earliest email unix timestamp      |
 |                     | `before`        | int/ unix timestamp |Email Identifier filter by last email unix timestamp      |
 |                     | `attachment`    | boolean/        |Filter email that have attachment only ( default: False )      |
-| `file_to_extract`   | `source`        | `attachment` / `url_in_body`  | source of files that need to acquire      |
+| *`file_to_extract`*   | `source`        | `attachment` / `url_in_body`  | source of files that need to acquire      |
 |  * `source==attachment` | `file_pattern` | string/file(wildcard) | pattern of files that need to be acquire from attachments |
 |  * `source==attachment` | `mime_type` | string/mime_type | Mime Type of file that need to be acquire (`text/csv`, `application/json`) |
 |  * `source==url_in_body` | `url_xpath`| string/xpath  | xpath pattern to locate urls in the body content |
 |  * `source==url_in_body` | `password_xpath` | string/xpath | xpath pattern to locate files zip password in the body content |
-| `transform`          | `transform_model`     | string/class name | Class name of etl class that will do Transformation |
+|  |  |  | 
+|`transform`          | `transform_model`     | string/class name | Class name of etl class that will do Transformation |
 |                     | `filename_format`| string/python format | String as base of file rename pattern, add `{source_file}` to keep/add the original filename |
 |                     | * | dictionary  | any other key dictionary in this will be used for etl model initialization |
-| `load_destination`| `protocol`      | string/one of (sft/gcs/bq) | target protocol to data file to be sent | 
+|   |   |   |
+| *`load_destination`*| `protocol`      | string/one of (sft/gcs/bq) | target protocol to data file to be sent | 
 | * `protocol==gcs`   | `bucket`        | string/bucket name | target bucket to data file to be sent | 
 | * `protocol==gcs`   | `dir`           | string/directory | target directory/path to data file to be sent | 
 | * `protocol==sftp`  | `hostname`      | string/(hostname/ip) | target sftp server | 
@@ -142,7 +144,7 @@ ignore_after: 18
 | * `protocol==bq`  | `clustering_fields`| string/comma separated name     | argument to pass to bq load parameters  | 
 | * `protocol==bq`  | `time_partitioning_type`| string/DAY     | argument to pass to bq load parameters  | 
 | * `protocol==bq`  | `time_partitioning_field`| string/field name     | argument to pass to bq load parameters  | 
-| `ignore_after`    | | integer/ hour(0-23) |  mark success if code already runnig at this hour and no data/email available, to  mark as last retry | 
+| *`ignore_after`*    | | integer/ hour(0-23) |  mark success if code already runnig at this hour and no data/email available, to  mark as last retry | 
 
 
 2. Schema File  
