@@ -42,16 +42,17 @@ def file_to_bq(file_path,table_id,*args,**kwargs):
         schema_file = kwargs.pop('schema') 
         if os.path.exists(schema_file):
             raise Exception('Cannot load without schema file')
-        fmt = kwargs.pop('format') 
+        fmt = kwargs.get('format','csv') 
         schema, dtypes = load_schema(schema_file)
 
-        if fmt.upper() == 'JSON' :
+        if fmt.lower() == 'json' :
             return json_to_bq(file_path,table_id,schema=schema,**kwargs)
         else:
             return csv_to_bq(file_path,table_id,schema=schema,**kwargs)
 
     except Exception as ex:
         print("error file_to_bq %s" % ex)
+        raise
 
 def csv_to_bq(file_path, table_id, schema=None,*args,**kwargs):
     load_to_bq(file_path,table_id,bigquery.SourceFormat.CSV, schema,**kwargs)
@@ -93,20 +94,20 @@ def load_to_bq(file_to_load, table_id, source_format,schema=None,*args,**kwargs)
         partition=kwargs.get('dtstart')
         kwargs['time_partitioning_type'] = 'DAY'
         try:
-            if kwargs['partition'].isnumeric() and len(kwargs['partition'])==8:
+            if str(kwargs['partition']).isnumeric() and len(str(kwargs['partition']))==8:
                 partition=kwargs['partition']
                 table_id = f'{table_id}${partition}'
             elif 'regex' in kwargs['partition']:
                 expr = kwargs['partition'][6:]
                 expr = re.compile(expr)
-                partition = expr.search(df.name).group(1)
+                partition = expr.search(file_to_load).group(1)
                 table_id = f'{table_id}${partition}'
             else: ##
                 kwargs.set('time_partitioning_field',kwargs.get('partition'))
 
         except Exception as ex:
             print(ex)
-            partition=kwargs.get('dtstart') or datetime.date.today().strftime("%Y%m%d")
+            partition=kwargs.get('dtstart') or datetime.now().strftime("%Y%m%d")
         
 
     job_config.autodetect=True
@@ -166,15 +167,15 @@ def load_schema(schema_file):
     
     for field in schema:
         if field['type'] == 'FLOAT':
-            dtypes[field['name']] = np.float64
+            dtypes[field['name']] = float
         elif field['type'] == 'INTEGER':
-            dtypes[field['name']] = np.int64
+            dtypes[field['name']] = int
         elif field['type'] == 'BOOLEAN':
-            dtypes[field['name']] = np.bool
+            dtypes[field['name']] = bool
         elif field['type'] == 'DATE':
             dtypes[field['name']] = datetime.date
         elif field['type'] == 'DATETIME':
-            dtypes[field['name']] = datetime.datetime
+            dtypes[field['name']] = datetime
         else: 
             dtypes[field['name']] = str 
 

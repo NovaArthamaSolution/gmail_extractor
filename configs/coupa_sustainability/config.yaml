@@ -14,6 +14,11 @@ transform:
   filename_format : coupa_sustainability_{{ datetime_start.strftime("%Y%m%d") }}_{source_file}
 
 load_destination:
-  protocol: gcs
-  bucket: integration_exchange
-  dir: workato/ocean/data-gojek-id-raw-internal/enterprise_platform/coupa_esg_purchase_of_goods_and_services
+  protocol: bq
+  table_id: data-gojek-id-raw-internal.enterprise_platform.coupa_esg_order
+  schema: schema.json
+  replace: true
+  field_delimiter: tab 
+  skip_leading_rows: 1
+  partition: {{ datetime_start.strftime("%Y%m%d")}}
+

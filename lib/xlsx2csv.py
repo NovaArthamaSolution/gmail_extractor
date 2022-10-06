@@ -48,6 +48,8 @@ def xlsx2csv(filepath,config=None,multi=False):
                     row[idx] = round(row[idx])
                 if tipe == 3 :
                     row[idx] = xlrd.xldate_as_datetime(row[idx],0).strftime(DATETIME_FORMAT)
+                    if row[idx][10:]=='T00:00:00':
+                        row[idx] = row[idx][:10]
 
             wr.writerow(row)
 
