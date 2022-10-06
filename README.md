@@ -73,7 +73,9 @@ file_to_extract: # configuration to find
   source : url_in_body ## or attachment
   url_xpath: //td/a[contains(text(),'txt')] #
 
-if source = attachement :
+  ** OR **
+
+  source = attachement :
   file_pattern: <FIX PATTERN>*.zip #file pattern ( mind if there's date on the filename that may changed every day/ or any variable)
   mime_type: application/x-zip-compressed ( mime type of file ( please check on show original menu on gmail app))
 
