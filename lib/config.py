@@ -1,7 +1,7 @@
 import iso8601
 import datetime
 import os
-
+import jinja2
 
 def parse_date(date) -> datetime:
     return iso8601.parse_date(date)
@@ -16,7 +16,7 @@ def get_env_config(name, default=None, raise_if_empty=False):
     return val
 
 
-class AppConfig:
+class AppConfig(dict):
     """generates config from environment variables for app"""
 
     DEFAULT_XCOM_PATH = "/airflow/xcom/return.json"
@@ -26,8 +26,7 @@ class AppConfig:
     QUERY_FILE_NAME = "query.sql"
     CONFIG_FILE_NAME = "config.yaml"
 
-    def __init__(self):
-        self.sql_file: Optional[str] = None
+    def __init__(self,config_file,dstart,dend):
         self.config_file: Optional[str] = None
         self.dstart: datetime = None
         self.dend: datetime = None
@@ -37,6 +36,7 @@ class AppConfig:
 
         self._parse_datetime_vars()
         self._parse_specs_dir()
+        self._render()
 
     def _parse_datetime_vars(self):
         dstart = get_env_config("DSTART", raise_if_empty=True)
@@ -51,14 +51,21 @@ class AppConfig:
                 "dstart/dend/execution-time should be YYYY-mm-dd or date time iso8601 format YYYY-mm-ddTHH:MM:SSZ")
             raise
 
+    def _render(self):
+        try:
+            with open(config_fullpath) as file_:
+                config_template = jinja2.Template(file_.read())
+            self.__dict__ = config_template.render(datetime_start=datetime_start, datetime_end=datetime_end, now=datetime.now(), env=os.environ,timedelta=datetime.timedelta )
+        except yaml.YAMLError as exc:
+            print(exc)
+
+
     def _parse_specs_dir(self):
         dir = get_env_config("JOB_DIR", default=self.DEFAULT_JOB_DIR)
         dir = "{}/{}".format(dir, self.JOB_INPUT_SUBDIR)
         for dirpath, _, files in os.walk(dir):
             for filename in files:
                 filepath = os.path.join(dirpath, filename)
-                if filename == self.QUERY_FILE_NAME:
-                    self.sql_file = filepath
                 if filename == self.CONFIG_FILE_NAME:
                     self.config_file = filepath
 
@@ -68,3 +75,15 @@ class AppConfig:
             return True
         else:
             return False
+            
+     def __setitem__(self, key, item):
+        self.__dict__[key] = item
+
+    def __getitem__(self, key):
+        return self.__dict__[key]
+
+    def __repr__(self):
+        return repr(self.__dict__)
+
+    def __len__(self):
+        return len(self.__dict__)

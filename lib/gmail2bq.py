@@ -6,7 +6,6 @@ import yaml
 import argparse
 import re
 from datetime import datetime, timedelta
-import jinja2
 
 from glob import glob
 
@@ -44,16 +43,9 @@ def main():
   d_start = datetime_start.strftime('%Y%m%d')
   d_end = datetime_end.strftime("%Y%m%d")
 
-  with open(config_fullpath) as file_:
-    config_template = jinja2.Template(file_.read())
-
-  config_rendered = config_template.render(datetime_start=datetime_start, datetime_end=datetime_end, now=datetime.now(), env=os.environ )
   configurations = None
-  try:
-    configurations = yaml.safe_load(config_rendered)
-  except yaml.YAMLError as exc:
-    print(exc)
-
+  appconfig = AppConfig(config_fullpath,datetime_start,datetime_end)
+  
 
   print(f"Starting GMAIL Extractor with config file {config_fullpath} for {d_start}")
   print(f"Config:\n{config_rendered}")
