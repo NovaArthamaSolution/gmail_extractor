@@ -112,30 +112,47 @@ load_destination:
     table_id: 
       type: string
       required: false
+      dependencies:
+        protocol:
+          - bq 
+    skip_leading_rows:
+      type: integer
+      dependencies:
+        protocol:
+          - bq 
+    load_method:
+      type:
+        type: string 
+        allowed:
+          - replace
+          - merge 
+    field_delimiter:
+      type: string
+      required: false
+      length: 3
     dataframe:
       type: dict
       dependencies: table_id
     schema_file:
       type: string 
       required: false
-      dependencies: table_id
+      dependencies:
+        protocol:
+          - bq 
     partition:
-      type: string
+      type: 
+        - string
+        - integer
       required: false
-      dependencies: table_id
-    replace:
-      type: boolean
-      required: false
-      dependencies: table_id
+      dependencies:
+        protocol:
+          - bq 
     clustering_fields:
       type: string
       required: false
       dependencies: table_id
     time_partitioning_field:
       type: string
-      dependencies: table_id
-    schema:
-      type: dict
       dependencies: table_id
 
 ignore_after:

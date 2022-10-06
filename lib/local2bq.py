@@ -119,7 +119,7 @@ def load_to_bq(file_to_load, table_id, source_format,schema=None,*args,**kwargs)
         job_config.clustering_fields = kwargs['clustering_fields'].split(',')
 
     job_config.write_disposition = 'WRITE_APPEND'
-    if str2bool(kwargs.get('replace')):
+    if kwargs.get('load_method').lower() == 'replace':
         job_config.write_disposition = 'WRITE_TRUNCATE'         
 
     if kwargs.get('time_partitioning_type',None) : 

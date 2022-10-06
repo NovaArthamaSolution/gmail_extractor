@@ -17,7 +17,7 @@ load_destination:
   protocol: bq
   table_id: data-gojek-id-raw-internal.enterprise_platform.coupa_esg_order
   schema: schema.json
-  replace: true
+  load_method: replace
   field_delimiter: tab 
   skip_leading_rows: 1
   partition: {{ datetime_start.strftime("%Y%m%d")}}
