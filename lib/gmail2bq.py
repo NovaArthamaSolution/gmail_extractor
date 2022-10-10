@@ -142,6 +142,12 @@ def process_file_transform(transform_config, filenames):
           transform_config['filename_format'] = transform_config.get('filename_format').format(**{'source_file': os.path.basename(fname)})
 
         etlfnames += getattr(transform,transformation)(fname, transform_config)
+
+        # keep enforce filename_format for outputfile
+        tmpnames = []
+        for fname in etlfnames:
+          tmpnames.append( safe_rename(fname,transform_config.get('filename_format'),{}) ) 
+        etlfnames = tmpnames
       
       except Exception as ex:
         print(f"Failed to process file transformation {fname} : {transformation} : {ex}")

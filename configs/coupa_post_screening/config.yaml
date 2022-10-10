@@ -1,24 +1,23 @@
 mail_filter:
   from: coupa.com
-  subject: "Sustainability Report"
+  subject: "*Vendor Post Screening"
   attachment: true
-  after: {{ (datetime_start  ).timestamp()  | int }}
-  before: {{ (datetime_end  ).timestamp()  | int  }}
+  after: {{ (datetime_start + timedelta(hours=7) ).timestamp()  | int }}
+  before: {{ (datetime_end  + timedelta(hours=7) ).timestamp()  | int  }}
 
 file_to_extract:
   source : attachment
-  file_pattern: "*Sustainability_Report_*.zip"
+  file_pattern: "Vendor_Post_Screening*.zip"
 
 transform:
   transform_model: unzip
-  filename_format : coupa_sustainability_{{ datetime_start.strftime("%Y%m%d") }}_{source_file}
+  filename_format : coupa_post_screening_{{ datetime_start.strftime("%Y%m%d") }}_{source_file}
 
 load_destination:
   protocol: gcs
   bucket: access_sap_bq
   dir: coupa/vendor_screening/{{ datetime_start.strftime("%Y%m%d") }}/
-
-  # protocol: bq
+  
   # table_id: data-gojek-id-raw-internal.enterprise_platform.coupa_esg_order
   # schema: schema.json
   # load_method: replace

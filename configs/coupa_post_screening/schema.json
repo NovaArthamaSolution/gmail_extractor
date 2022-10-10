@@ -1,0 +1,32 @@
+[
+  {
+    "mode": "NULLABLE",
+    "name": "daily_index",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "commodity_id",
+    "type": "INT64"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "purchase_order_number",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_invoice_amount",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_month_date",
+    "type": "DATE"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_line_amount",
+    "type": "FLOAT"
+  }
+]
