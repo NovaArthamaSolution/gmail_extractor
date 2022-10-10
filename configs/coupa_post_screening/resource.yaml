@@ -1,0 +1,28 @@
+name: data-gojek-id-raw-internal.enterprise_procurement.vendor_post_screening
+version: 1
+type: table
+labels:
+  usage: enteprise_procurement_vendor_screening
+  owner: enteprise_bi
+  data_custodian_team: enteprise_bi
+  data_steward_team: enteprise_bi
+  data_owner_team: enteprise_bi
+spec:
+  description: Table of vendor_post_screening for Vendor Screening Project
+  schema:
+  - name: forms_form_response_id
+    type: INT64
+    mode: REQUIRED
+  - name: suppliers_supplier_number
+    type: INT64
+    mode: NULLABLE
+  - name: suppliers_supplier_name
+    type: STRING
+    mode: NULLABLE
+  - name: suppliers_supplier_primary_contact_name
+    type: STRING
+    mode: NULLABLE
+  - name: suppliers_supplier_status
+    type: STRING
+    mode: NULLABLE
+  partition: {}
