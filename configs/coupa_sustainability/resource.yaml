@@ -13,55 +13,55 @@ spec:
   - name: supplier_information_supplier_information_name
     type: STRING
     mode: NULLABLE
-  - name: suppliers_supplier_status
+  - name: supplier_status
     type: STRING
     mode: NULLABLE
-  - name: supplier_information_supplier_information_custom_field_14
+  - name: supplier_information_custom_field_14
     type: STRING
     mode: NULLABLE
-  - name: invoices_invoice_header_id
+  - name: invoice_header_id
     type: INT64
     mode: REQUIRED
-  - name: invoices_invoice_number
+  - name: invoice_number
     type: STRING
     mode: NULLABLE
-  - name: orders_po_number
+  - name: po_number
     type: STRING
     mode: NULLABLE
-  - name: orders_order_month
+  - name: order_month
     type: STRING
     mode: NULLABLE
-  - name: orders_order_year
-    type: STRING
-    mode: NULLABLE
-  - name: invoices_invoice_line_number
+  - name: order_year
     type: INT64
     mode: NULLABLE
-  - name: invoices_invoice_currency_code
-    type: STRING
-    mode: NULLABLE
-  - name: invoices_invoice_line_total
-    type: STRING
-    mode: NULLABLE
-  - name: invoices_invoice_month
-    type: STRING
-    mode: NULLABLE
-  - name: invoices_invoice_year
+  - name: invoice_line_number
     type: INT64
     mode: NULLABLE
-  - name: invoices_invoice_status
+  - name: invoice_currency_code
     type: STRING
     mode: NULLABLE
-  - name: commodities_commodity_name
+  - name: invoice_line_total
+    type: FLOAT64
+    mode: NULLABLE
+  - name: invoice_month
     type: STRING
     mode: NULLABLE
-  - name: commodities_commodity_level_1
+  - name: invoice_year
+    type: INT64
+    mode: NULLABLE
+  - name: invoice_status
     type: STRING
     mode: NULLABLE
-  - name: accounts_account_segment_1
+  - name: commodity_name
     type: STRING
     mode: NULLABLE
-  - name: accounts_account_segment_1_name
+  - name: commodity_level_1
+    type: STRING
+    mode: NULLABLE
+  - name: account_segment_1
+    type: STRING
+    mode: NULLABLE
+  - name: account_segment_1_name
     type: STRING
     mode: NULLABLE
   partition: {}

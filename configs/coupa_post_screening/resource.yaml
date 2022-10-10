@@ -10,19 +10,19 @@ labels:
 spec:
   description: Table of vendor_post_screening for Vendor Screening Project
   schema:
-  - name: forms_form_response_id
+  - name: form_response_id
     type: INT64
     mode: REQUIRED
-  - name: suppliers_supplier_number
+  - name: supplier_number
     type: INT64
     mode: NULLABLE
-  - name: suppliers_supplier_name
+  - name: supplier_name
     type: STRING
     mode: NULLABLE
-  - name: suppliers_supplier_primary_contact_name
+  - name: supplier_primary_contact_name
     type: STRING
     mode: NULLABLE
-  - name: suppliers_supplier_status
+  - name: supplier_status
     type: STRING
     mode: NULLABLE
   partition: {}
