@@ -16,7 +16,7 @@ transform:
 load_destination:
   protocol: gcs
   bucket: access_sap_bq
-  dir: coupa/vendor_screening/{{ datetime_start.strftime("%Y%m%d") }}/
+  dir: coupa/sustainability/{{ datetime_start.strftime("%Y%m%d") }}/
 
   # protocol: bq
   # table_id: data-gojek-id-raw-internal.enterprise_platform.coupa_esg_order

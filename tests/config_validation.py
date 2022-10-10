@@ -108,7 +108,7 @@ def _process(schema_path, document_path, validate_file_extension):
     if Path(document_path).is_dir():
         if not document_path.endswith('/'):
             document_path = document_path + '/'
-        paths = Path('.').glob(document_path + '**/*')
+        paths = Path('.').glob(document_path + '**/config.yaml')
 
     _validate_path(root, schema_path, paths, validate_file_extension)
 
