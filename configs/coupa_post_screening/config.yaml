@@ -14,14 +14,15 @@ transform:
   filename_format : coupa_post_screening_{{ datetime_start.strftime("%Y%m%d") }}_{source_file}
 
 load_destination:
-  protocol: gcs
-  bucket: access_sap_bq
-  dir: coupa/vendor_screening/{{ datetime_start.strftime("%Y%m%d") }}/
-  
-  # table_id: data-gojek-id-raw-internal.enterprise_platform.coupa_esg_order
-  # schema: schema.json
-  # load_method: replace
-  # field_delimiter: tab 
-  # skip_leading_rows: 1
-  # partition: {{ datetime_start.strftime("%Y%m%d")}}
+  - protocol: gcs
+    bucket: integration_exchange
+    dir: workato/ocean/data-gojek-id-raw-internal/enterprise_procurement/coupa_post_screening
+
+  - protocol: bq
+    table_id: data-gojek-id-raw-internal.enterprise_procurement.coupa_post_screening
+    schema: schema.json
+    load_method: replace
+    field_delimiter: ',' 
+    skip_leading_rows: 1
+    partition: {{ datetime_start.strftime("%Y%m%d")}}
 

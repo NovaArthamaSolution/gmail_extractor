@@ -68,7 +68,9 @@ transform:
       nullable: true
 
 load_destination:
-  type: dict
+  type: 
+    - dict
+    - list
   required: true
   schema:
     protocol:

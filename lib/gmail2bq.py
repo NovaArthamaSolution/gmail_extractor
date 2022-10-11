@@ -143,7 +143,7 @@ def process_file_transform(filenames, transform_config):
 
         # keep enforce filename_format for outputfile
         for transformed in after_transform:
-          etlfnames.append( safe_rename(transformed,transform_config.get('filename_format'),{'source_file': f"{os.path.splitext(os.path.basename(fname))[0]}_{os.path.basename(transformed)}" } ) ) 
+          etlfnames.append( safe_rename(transformed,transform_config.get('filename_format'),{'source_file': f"{os.path.splitext(os.path.basename(fname))[0]}_{os.path.splitext(os.path.basename(transformed))[0]}" } ) ) 
       
       except Exception as ex:
         print(f"Failed to process file transformation {fname} : {transformation} : {ex}")

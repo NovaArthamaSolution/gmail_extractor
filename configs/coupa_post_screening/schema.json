@@ -1,32 +1,23 @@
 [
   {
-    "mode": "NULLABLE",
-    "name": "daily_index",
+    "name": "form_response_id",
+    "type": "INTEGER",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "supplier_number",
+    "type": "INTEGER"
+  },
+  {
+    "name": "supplier_name",
     "type": "STRING"
   },
   {
-    "mode": "NULLABLE",
-    "name": "commodity_id",
-    "type": "INT64"
-  },
-  {
-    "mode": "NULLABLE",
-    "name": "purchase_order_number",
+    "name": "supplier_primary_contact_name",
     "type": "STRING"
   },
   {
-    "mode": "NULLABLE",
-    "name": "order_invoice_amount",
-    "type": "FLOAT"
-  },
-  {
-    "mode": "NULLABLE",
-    "name": "order_month_date",
-    "type": "DATE"
-  },
-  {
-    "mode": "NULLABLE",
-    "name": "order_line_amount",
-    "type": "FLOAT"
+    "name": "supplier_status",
+    "type": "STRING"
   }
 ]
