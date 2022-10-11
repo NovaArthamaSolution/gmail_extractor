@@ -167,9 +167,11 @@ def safe_rename(filename,file_format='',params={}):
     path = os.path.dirname(filename)
 
     basename = os.path.basename(filename)
+    basename, ext = os.path.splitext(basename)
+    print(filename, params, file_format, basename, ext)
     params['source_file'] = params.get('source_file',None) or  basename
     basename = file_format.format(**params)
-    basename = secure_filename(basename)
+    basename = secure_filename(f"{basename}{ext}")
     safe_filename = os.path.join(path,basename)
 
     os.rename(filename,safe_filename)

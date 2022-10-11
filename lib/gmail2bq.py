@@ -102,11 +102,11 @@ def gmail_extract(config):
 
   if filenames:
     ## ETL
-    filenames = process_file_transform(config['transform'],filenames)
+    filenames = process_file_transform(filenames,config['transform'])
     # print(filenames)
 
     ## SEND THE FILES
-    filenames = send_files(filenames,config['load_destination'])
+    filenames = send_files(filenames,config)
 
     ## Mark proceesed email 
     processed_label_id = gMailApp.get_processed_label_id()
@@ -118,7 +118,7 @@ def gmail_extract(config):
   
   return True
 
-def process_file_transform(transform_config, filenames):
+def process_file_transform(filenames, transform_config):
   etlfnames = []
   if transform_config.get('transform_model'):
     import importlib.util
@@ -138,16 +138,12 @@ def process_file_transform(transform_config, filenames):
     print(f"\nProcessing file {transformation} transformation to {filenames} ")
     for fname in filenames:
       try:
-        if '{source_file}' in transform_config.get('filename_format',''):
-          transform_config['filename_format'] = transform_config.get('filename_format').format(**{'source_file': os.path.basename(fname)})
-
-        etlfnames += getattr(transform,transformation)(fname, transform_config)
+        after_transform = []
+        after_transform += getattr(transform,transformation)(fname, transform_config)
 
         # keep enforce filename_format for outputfile
-        tmpnames = []
-        for fname in etlfnames:
-          tmpnames.append( safe_rename(fname,transform_config.get('filename_format'),{}) ) 
-        etlfnames = tmpnames
+        for transformed in after_transform:
+          etlfnames.append( safe_rename(transformed,transform_config.get('filename_format'),{'source_file': os.path.splitext(os.path.basename(fname))[0] }) ) 
       
       except Exception as ex:
         print(f"Failed to process file transformation {fname} : {transformation} : {ex}")
@@ -162,8 +158,8 @@ def process_file_transform(transform_config, filenames):
   return etlfnames
 
 
-def send_files(extracted_file,channels):
-
+def send_files(extracted_files,config):
+  channels = config['load_destination']
   if isinstance(channels,dict) :
     channels = [channels]
 
@@ -180,32 +176,31 @@ def send_files(extracted_file,channels):
 
       destination_gcs_bucket = channel['bucket']
       send_gcs_files(
-        source_pattern=extracted_file,
+        source_pattern=extracted_files,
         bucket=destination_gcs_bucket,
         destination_path=dest_dir,
         )
     elif protocol == 'sftp':
       send_sftp_files(
-        source_pattern=extracted_file,
+        source_pattern=extracted_files,
         hostname=channel['hostname'],
         username=channel['username'],
         port=channel['port'],
-        identity_file=channel.get('private_key', None),
+        identity_file=f"{config.confid_dir}/{channel.get('private_key', None)}",
         password=channel.get('password', None),
         destination_path=dest_dir
         )
     else:
-      extracted_files = extracted_file
-      if '*' in extracted_file or not isinstance(extracted_file,list):
-        extracted_files = glob(extracted_file)
+      if '*' in extracted_files or not isinstance(extracted_files,list):
+        extracted_files = glob(extracted_files)
       
       table_id = channel.pop('table_id')
       for f in extracted_files:
-        dest_dir= file_to_bq(f,table_id,**channel)
+        dest_dir= file_to_bq(f,table_id,**{**channel,**{'schema':f"{config.config_dir}/{channel.pop('schema')}"}})
       target_name = table_id
 
     toc = time.time()
-    print("%.2f seconds elapsed to send %s via %s to %s at %s " % ( (toc-tic), extracted_file,protocol,target_name, dest_dir) )
+    print("%.2f seconds elapsed to send %s via %s to %s at %s " % ( (toc-tic), extracted_files,protocol,target_name, dest_dir) )
 
 
 if __name__ == '__main__':

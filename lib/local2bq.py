@@ -39,9 +39,11 @@ def main():
 def file_to_bq(file_path,table_id,*args,**kwargs):
         
     try:
+        # print(args,kwargs)
         schema_file = kwargs.pop('schema') 
-        if os.path.exists(schema_file):
-            raise Exception('Cannot load without schema file')
+        # if os.path.exists(schema_file ):
+        #     raise Exception(f'Cannot load table {table_id} without schema file')
+
         fmt = kwargs.get('format','csv') 
         schema, dtypes = load_schema(schema_file)
 
@@ -179,7 +181,7 @@ def load_schema(schema_file):
         else: 
             dtypes[field['name']] = str 
 
-        fields.append(bigquery.SchemaField(field['name'],field['type'],field['mode']))
+        fields.append(bigquery.SchemaField(field['name'],field['type'],field.get('mode','NULLABLE')))
 
     return fields, dtypes
 

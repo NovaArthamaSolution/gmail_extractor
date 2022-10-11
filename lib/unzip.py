@@ -14,8 +14,7 @@ def unzip(filename: str,config=None) -> list:
     
     files = glob(f"{dest_path}/*.*")
     print(f"unzip: {filename} to {dest_path} \nresult: {files}")
-    
-    return list(filter(lambda f: list(os.path.splitext('.')).pop() != 'zip' , files))
+    return list(filter(lambda f: f != filename , files))
 
 
 def main(filename):

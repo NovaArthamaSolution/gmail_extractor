@@ -1,32 +1,75 @@
 [
   {
-    "mode": "NULLABLE",
-    "name": "daily_index",
+    "name": "supplier_information_supplier_information_name",
     "type": "STRING"
   },
   {
-    "mode": "NULLABLE",
-    "name": "commodity_id",
-    "type": "INT64"
-  },
-  {
-    "mode": "NULLABLE",
-    "name": "purchase_order_number",
+    "name": "supplier_status",
     "type": "STRING"
   },
   {
-    "mode": "NULLABLE",
-    "name": "order_invoice_amount",
+    "name": "supplier_information_custom_field_14",
+    "type": "STRING"
+  },
+  {
+    "name": "invoice_header_id",
+    "type": "INTEGER",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "invoice_number",
+    "type": "STRING"
+  },
+  {
+    "name": "po_number",
+    "type": "STRING"
+  },
+  {
+    "name": "order_month",
+    "type": "STRING"
+  },
+  {
+    "name": "order_year",
+    "type": "INTEGER"
+  },
+  {
+    "name": "invoice_line_number",
+    "type": "INTEGER"
+  },
+  {
+    "name": "invoice_currency_code",
+    "type": "STRING"
+  },
+  {
+    "name": "invoice_line_total",
     "type": "FLOAT"
   },
   {
-    "mode": "NULLABLE",
-    "name": "order_month_date",
-    "type": "DATE"
+    "name": "invoice_month",
+    "type": "STRING"
   },
   {
-    "mode": "NULLABLE",
-    "name": "order_line_amount",
-    "type": "FLOAT"
+    "name": "invoice_year",
+    "type": "INTEGER"
+  },
+  {
+    "name": "invoice_status",
+    "type": "STRING"
+  },
+  {
+    "name": "commodity_name",
+    "type": "STRING"
+  },
+  {
+    "name": "commodity_level_1",
+    "type": "STRING"
+  },
+  {
+    "name": "account_segment_1",
+    "type": "STRING"
+  },
+  {
+    "name": "account_segment_1_name",
+    "type": "STRING"
   }
 ]

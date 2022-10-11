@@ -6,7 +6,7 @@ set -eo pipefail
 
 DIR_SANDBOX="$(cd $(dirname $0); pwd)"
 REPO_ROOT=`realpath ${DIR_SANDBOX}/..`
-DIR_WORKING="${REPO_ROOT}"
+export DIR_WORKING="${REPO_ROOT}"
 
 cd ${DIR_WORKING}
 

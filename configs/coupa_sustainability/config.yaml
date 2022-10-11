@@ -2,8 +2,8 @@ mail_filter:
   from: coupa.com
   subject: "Sustainability Report"
   attachment: true
-  after: {{ (datetime_start  ).timestamp()  | int }}
-  before: {{ (datetime_end  ).timestamp()  | int  }}
+  after: {{ (datetime_start + timedelta(hours=7) ).timestamp()  | int }}
+  before: {{ (datetime_end  + timedelta(hours=7) ).timestamp()  | int  }}
 
 file_to_extract:
   source : attachment
@@ -14,15 +14,15 @@ transform:
   filename_format : coupa_sustainability_{{ datetime_start.strftime("%Y%m%d") }}_{source_file}
 
 load_destination:
-  protocol: gcs
-  bucket: access_sap_bq
-  dir: coupa/sustainability/{{ datetime_start.strftime("%Y%m%d") }}/
+  - protocol: gcs
+    bucket: integration_exchange
+    dir: workato/ocean/data-gojek-id-raw-internal/enterprise_platform/coupa_sustainibility_report
 
-  # protocol: bq
-  # table_id: data-gojek-id-raw-internal.enterprise_platform.coupa_esg_order
-  # schema: schema.json
-  # load_method: replace
-  # field_delimiter: tab 
-  # skip_leading_rows: 1
-  # partition: {{ datetime_start.strftime("%Y%m%d")}}
+  - protocol: bq
+    table_id: data-gojek-id-raw-internal.enterprise_platform.coupa_sustainibility_report
+    schema: schema.json
+    load_method: replace
+    field_delimiter: ',' 
+    skip_leading_rows: 1
+    partition: {{ datetime_start.strftime("%Y%m%d")}}
 

@@ -7,6 +7,11 @@ import jinja2
 def parse_date(date) -> datetime:
     return iso8601.parse_date(date)
 
+def str2bool(input_config) -> bool:
+    if input_config.lower() in ["true", "1", "yes", "y"]:
+        return True
+    else:
+        return False
 
 def get_env_config(name, default=None, raise_if_empty=False):
     val = os.environ.get(name, default=default)
@@ -32,7 +37,7 @@ class AppConfig(dict):
         self.dstart = dstart
         self.dend   = dend
         self.execution_time = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
-        self.dry_run = self._is_dry_run(get_env_config("DRY_RUN", "false"))
+        self.dry_run = str2bool(get_env_config("DRY_RUN", "false"))
         self.xcom_path = get_env_config("XCOM_PATH", self.DEFAULT_XCOM_PATH)
 
         self._parse_datetime_vars()
@@ -54,6 +59,7 @@ class AppConfig(dict):
 
     def _render(self):
         try:
+            self.config_dir = os.path.dirname((os.path.abspath(self.config_file)))
             with open(self.config_file) as file_:
                 config_template = jinja2.Template(file_.read())
             rendered_config = config_template.render(datetime_start=self.dstart, 
@@ -62,16 +68,10 @@ class AppConfig(dict):
                                         execution_time=self.execution_time, 
                                         env=os.environ,
                                         timedelta=datetime.timedelta )
-            self.__dict__  = yaml.safe_load(rendered_config)
+            self.__dict__  = {** self.__dict__,** yaml.safe_load(rendered_config)}
         except yaml.YAMLError as exc:
             print(exc)
             raise
-
-    def _is_dry_run(self, input_config) -> bool:
-        if input_config.lower() in ["true", "1", "yes", "y"]:
-            return True
-        else:
-            return False
 
     @property
     def token_file(self):
@@ -97,6 +97,8 @@ class AppConfig(dict):
         self.__dict__[key] = item
 
     def __getitem__(self, key):
+        if key in ['config_file','dstart','dend']:
+            return getattr(self,key)
         return self.__dict__[key]
 
     def __repr__(self):
