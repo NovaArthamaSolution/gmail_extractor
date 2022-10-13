@@ -17,10 +17,10 @@ transform:
 load_destination:
   - protocol: gcs
     bucket: integration_exchange
-    dir: workato/ocean/data-gojek-id-raw-internal/enterprise_platform/coupa_esg_purchase_of_goods_and_services
+    dir: workato/ocean/data-gojek-id-raw-internal/enterprise_platform/coupa_sustainibility_report
 
   - protocol: bq
-    table_id: data-gojek-id-raw-internal.enterprise_platform.coupa_esg_purchase_of_goods_and_services
+    table_id: data-gojek-id-raw-internal.enterprise_platform.coupa_sustainibility_report
     schema: schema.json
     load_method: replace
     field_delimiter: , 

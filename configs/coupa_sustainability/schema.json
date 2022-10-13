@@ -1,6 +1,10 @@
 [
   {
-    "name": "supplier_information_supplier_information_name",
+    "name": "index_in_file",
+    "type": "INTEGER"
+  },
+  {
+    "name": "supplier_information_name",
     "type": "STRING"
   },
   {
@@ -8,7 +12,7 @@
     "type": "STRING"
   },
   {
-    "name": "supplier_information_custom_field_14",
+    "name": "supplier_3rd_party_category",
     "type": "STRING"
   },
   {
