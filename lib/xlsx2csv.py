@@ -52,6 +52,10 @@ def xlsx2csv(filepath,**config):
                     row[idx] = xlrd.xldate_as_datetime(row[idx],0).strftime(DATETIME_FORMAT)
                     if row[idx][10:]=='T00:00:00':
                         row[idx] = row[idx][:10]
+                    if headers[idx].endswith('_month'):
+                        row[idx] = row[idx][:7]
+                    if headers[idx].endswith('_year'):
+                        row[idx] = row[idx][:4]
 
             wr.writerow(row)
 
