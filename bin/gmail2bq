@@ -25,3 +25,7 @@ if [ ! -f $1 ]; then
 fi
 
 python3 ${DIR_WORKING}/lib/gmail2bq.py "$f" ${@:2}
+
+## cleanup
+rm -rf tmp/
+rm -rf /tmp/gmail_extractor*
