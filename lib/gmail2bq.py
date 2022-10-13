@@ -125,12 +125,15 @@ def process_file_transform(filenames, transform_config):
 
     transformation = transform_config.get('transform_model')
   
+    ## RTTL ( load transformation python function file )
     try:
+      ## load from current libdir (xlsx2csv and unzip available)
       libdir = os.path.dirname(__file__)
       spec = importlib.util.spec_from_file_location(transformation, f"{libdir}/{transformation}.py")
       transform = importlib.util.module_from_spec(spec)
       spec.loader.exec_module(transform)
     except FileNotFoundError as ex:
+      ## load from user transformation file  
       spec = importlib.util.spec_from_file_location(transformation, f"{os.getenv('CONFIG_DIRPATH')}/{transformation}.py")
       transform = importlib.util.module_from_spec(spec)
       spec.loader.exec_module(transform)
@@ -143,7 +146,8 @@ def process_file_transform(filenames, transform_config):
 
         # keep enforce filename_format for outputfile
         for transformed in after_transform:
-          etlfnames.append( safe_rename(transformed,transform_config.get('filename_format'),{'source_file': f"{os.path.splitext(os.path.basename(fname))[0]}_{os.path.splitext(os.path.basename(transformed))[0]}" } ) ) 
+          rename_params = {'source_file': f"{os.path.splitext(os.path.basename(fname))[0]}_{os.path.splitext(os.path.basename(transformed))[0]}" }
+          etlfnames.append( safe_rename(transformed,transform_config.get('filename_format'), rename_params ) ) 
       
       except Exception as ex:
         print(f"Failed to process file transformation {fname} : {transformation} : {ex}")
@@ -195,9 +199,7 @@ def send_files(extracted_files,config):
         extracted_files = glob(extracted_files)
       
       table_id = channel.pop('table_id')
-      print(channel)
       bqconfig = {**channel,**{'schema':f"{config.config_dir}/{channel.pop('schema')}"}}
-      print(bqconfig)
       for f in extracted_files:
         dest_dir= file_to_bq(f,table_id,**bqconfig)
       target_name = table_id

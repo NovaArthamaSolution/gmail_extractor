@@ -17,8 +17,16 @@ from datetime import datetime, timedelta
 from pprint import pprint
 
 class CustomValidator(Validator):
+    _type_defaults = {
+        'integer': 0,
+        'list': [],
+        'dict': {},
+        'string': '',
+    }
+
     def __init__(self, *args, **kwargs):
         self.path_to_document = kwargs.get('path_to_document')
+        self.is_array = kwargs.get('is_array', False)
         super(CustomValidator, self).__init__(*args, **kwargs)
 
     def _validate_value_must_match_filename(self, value_must_match_filename, field, value):
@@ -30,8 +38,29 @@ class CustomValidator(Validator):
         matches = filename == value
         if value_must_match_filename and not matches:
             self._error(field, f"\"{value}\" does not match the filename \"{filename}\" at \"{self.path_to_document}\"")
+        
+     def validate(self, document, schema=None, update=False, context=None):
 
+        # This gets confusing because this method seems to be called internally for validation as well
+        # and we don't want to add "rows" to sub-schemas as well, only the
+        # top-level.
 
+        if self.is_array and not context:  # checking for "context" seems to help with not adding 'rows' to every dict
+            schema = schema or self.schema
+
+            if 'rows' not in schema:
+                if 'type' in schema:  # is a list
+                    schema = {'rows': {'type': 'list',
+                                       'required': True, 'schema': schema}}
+                else:  # is a dict
+                    schema = {'rows': {'type': 'list', 'required': True,
+                                       'schema': {'type': 'dict', 'schema': schema}}}
+
+            if 'rows' not in document:
+                document = {'rows': document}
+        return super(UpgradedValidator, self).validate(document, schema, update, context)   
+
+    
 def _load_yaml_document(path):
     with open(path, 'r') as stream:
         try:
