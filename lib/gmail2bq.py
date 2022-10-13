@@ -195,8 +195,11 @@ def send_files(extracted_files,config):
         extracted_files = glob(extracted_files)
       
       table_id = channel.pop('table_id')
+      print(channel)
+      bqconfig = {**channel,**{'schema':f"{config.config_dir}/{channel.pop('schema')}"}}
+      print(bqconfig)
       for f in extracted_files:
-        dest_dir= file_to_bq(f,table_id,**{**channel,**{'schema':f"{config.config_dir}/{channel.pop('schema')}"}})
+        dest_dir= file_to_bq(f,table_id,**bqconfig)
       target_name = table_id
 
     toc = time.time()
