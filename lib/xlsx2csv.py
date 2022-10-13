@@ -29,6 +29,7 @@ def snake_to_camel(string):
 
 
 def xlsx2csv(filepath,**config):
+    global DELIMITER
     if config.get('delimiter'):
         DELIMITER = config.pop('delimiter')
     def sheet_to_csv(sh):
