@@ -11,7 +11,6 @@ file_to_extract:
 
 transform:
   transform_model: xlsx2csv
-  delimiter: ','
   filename_format : coupa_sustainability_{{ datetime_start.strftime("%Y%m%d") }}_{source_file}
 
 load_destination:
@@ -23,7 +22,7 @@ load_destination:
     table_id: data-gojek-id-raw-internal.enterprise_platform.coupa_sustainibility_report
     schema: schema.json
     load_method: replace
-    field_delimiter: ',' 
+    field_delimiter: tab
     skip_leading_rows: 1
     partition: {{ datetime_start.strftime("%Y%m%d")}}
 
