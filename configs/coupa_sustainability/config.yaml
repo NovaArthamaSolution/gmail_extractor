@@ -7,10 +7,10 @@ mail_filter:
 
 file_to_extract:
   source : attachment
-  file_pattern: "*Sustainability_Report_*.zip"
+  file_pattern: "Sustainability_Report_*.zip"
 
 transform:
-  transform_model: unzip
+  transform_model: xlsx2csv
   filename_format : coupa_sustainability_{{ datetime_start.strftime("%Y%m%d") }}_{source_file}
 
 load_destination:
