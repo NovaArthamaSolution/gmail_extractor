@@ -7,7 +7,7 @@ mail_filter:
 
 file_to_extract:
   source : attachment
-  file_pattern: "Sustainability_Report_*.zip"
+  file_pattern: "Sustainability_Report_*.xlsx"
 
 transform:
   transform_model: xlsx2csv
