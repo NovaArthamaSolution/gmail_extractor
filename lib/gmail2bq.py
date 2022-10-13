@@ -123,7 +123,7 @@ def process_file_transform(filenames, transform_config):
   if transform_config.get('transform_model'):
     import importlib.util
 
-    transformation = transform_config.get('transform_model')
+    transformation = transform_config.pop('transform_model')
   
     ## RTTL ( load transformation python function file )
     try:
@@ -142,7 +142,7 @@ def process_file_transform(filenames, transform_config):
     for fname in filenames:
       try:
         after_transform = []
-        after_transform += getattr(transform,transformation)(fname, transform_config)
+        after_transform += getattr(transform,transformation)(fname, **transform_config)
 
         # keep enforce filename_format for outputfile
         for transformed in after_transform:

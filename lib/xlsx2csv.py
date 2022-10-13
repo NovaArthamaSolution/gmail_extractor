@@ -28,7 +28,9 @@ def snake_to_camel(string):
     return re.sub('([a-z0-9])([A-Z])', r'\1_\2', string).lower().replace(' ','').replace('/_','/')
 
 
-def xlsx2csv(filepath,config=None,multi=False):
+def xlsx2csv(filepath,**config):
+    if config.get('delimiter'):
+        DELIMITER = config.pop('delimiter')
     def sheet_to_csv(sh):
         
         target_file = config.get('filename_format',filepath)  if config else filepath
@@ -58,7 +60,7 @@ def xlsx2csv(filepath,config=None,multi=False):
     
     wb = xlrd.open_workbook(filepath)
     ret = []
-    if multi:
+    if config.get('multi','').lower() in ['yes','true','1']:
         for sh in wb.sheets():
             ret.append(sheet_to_csv(sh))
     else:

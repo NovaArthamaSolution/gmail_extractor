@@ -11,18 +11,19 @@ file_to_extract:
 
 transform:
   transform_model: xlsx2csv
+  delimiter: ','
   filename_format : coupa_sustainability_{{ datetime_start.strftime("%Y%m%d") }}_{source_file}
 
 load_destination:
   - protocol: gcs
     bucket: integration_exchange
-    dir: workato/ocean/data-gojek-id-raw-internal/enterprise_platform/coupa_sustainibility_report
+    dir: workato/ocean/data-gojek-id-raw-internal/enterprise_platform/coupa_esg_purchase_of_goods_and_services
 
   - protocol: bq
-    table_id: data-gojek-id-raw-internal.enterprise_platform.coupa_sustainibility_report
+    table_id: data-gojek-id-raw-internal.enterprise_platform.coupa_esg_purchase_of_goods_and_services
     schema: schema.json
     load_method: replace
-    field_delimiter: tab 
+    field_delimiter: , 
     skip_leading_rows: 1
     partition: {{ datetime_start.strftime("%Y%m%d")}}
 
