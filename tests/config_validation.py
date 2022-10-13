@@ -39,7 +39,7 @@ class CustomValidator(Validator):
         if value_must_match_filename and not matches:
             self._error(field, f"\"{value}\" does not match the filename \"{filename}\" at \"{self.path_to_document}\"")
         
-     def validate(self, document, schema=None, update=False, context=None):
+    def validate(self, document, schema=None, update=False, context=None):
 
         # This gets confusing because this method seems to be called internally for validation as well
         # and we don't want to add "rows" to sub-schemas as well, only the
