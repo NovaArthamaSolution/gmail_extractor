@@ -169,8 +169,9 @@ def send_files(extracted_files,config):
 
   protocol = ''
   for channel in channels:
+    print(channel)
     target_name = channel.get('bucket',None) or channel.get('hostname',None)
-    dest_dir = channel.get('dir',False) 
+    dest_dir = channel.get('dir',channel.get('partition')) 
     # if not target_name : continue 
     tic = time.time()
 
