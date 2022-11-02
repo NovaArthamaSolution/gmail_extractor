@@ -1,5 +1,4 @@
 
-
 import os
 import argparse
 import configparser
@@ -27,7 +26,7 @@ _filename_ascii_strip_re = re.compile(r'[^A-Za-z0-9_.-]')
 
 def parse_arg():
   parser = argparse.ArgumentParser(description="Extract Big Query to SFTP")
-  parser.add_argument("config_fullpath", help="Path to config YAML",default='/data/in/config.yaml')
+  parser.add_argument("config_fullpath", help="Path to config YAML",nargs="?", default='/data/in/config.yaml')
   parser.add_argument(
       "-s",
       action='store',
