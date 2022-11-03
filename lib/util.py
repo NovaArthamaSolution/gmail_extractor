@@ -1,4 +1,3 @@
-
 import os
 import argparse
 import configparser
@@ -32,14 +31,14 @@ def parse_arg():
       action='store',
       dest="datetime_start",
       help="datetime start parameter",
-      default=os.getenv('DSTART'))
+      default=os.getenv('DSTART').replace('Z',''))
 
   parser.add_argument(
       "-e",
       action='store',
       dest="datetime_end",
       help="datetime end parameter",
-      default=os.getenv('DEND'))
+      default=os.getenv('DEND').replace('Z',''))
   result = parser.parse_args()
 
   return result
