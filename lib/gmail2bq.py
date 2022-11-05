@@ -28,12 +28,12 @@ def main():
     config_fullpath = f'{JOB_DIR}/in/config.yaml'
   os.environ['CONFIG_DIRPATH'] = os.path.dirname(config_fullpath) 
 
-  if parsed.datetime_start is not None:
+  if parsed.datetime_start:
     datetime_start = datetime.fromisoformat(parsed.datetime_start)
   else:
     datetime_start = datetime.now() #- timedelta(days=1)
 
-  if parsed.datetime_end is None:
+  if not parsed.datetime_end:
     parsed.datetime_end = datetime_start + timedelta(days=1)
     parsed.datetime_end = parsed.datetime_end.isoformat()
 
