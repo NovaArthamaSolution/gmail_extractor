@@ -41,12 +41,13 @@ testing:unit:
     env : TEST_CONFIG 
   script:
     - DSTART=`date +"%Y-%m-%d" -d "-1 day" `
+    - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
     - echo "GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" > app.env
     - echo "CONFIG_DIRPATH=${CONFIG_DIRPATH}" >> app.env
     - cp configs/${CONFIG_DIRPATH}/* $export_dir
 #    - docker rmi artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
-    - docker run  -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART
+    - docker run  -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART -e DEND
 
 # testing: library:
 #   stage: testing
@@ -86,11 +87,12 @@ run_schedules:
     - docker
     - docker_artifactory
   image:
-    name: artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest
+    name: artifactory-gojek.golabs.io:6555/entbi-${IMAGE_NAME}:latest
   only:
     - schedules
   stage: scheduled
   script:
     - cp ${CONFIG_DIRPATH}/* $export_dir/
     - DSTART=`date +"%Y-%m-%d" -d "$delta_day day" ` 
-    - docker run -v `pwd`/$export_dir:/$export_dir  -e env:TEST_CONFIG -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/$tmp_dir/GOOGLE_APPLICATION_CREDENTIALS -e DSTART=$DSTART $IMAGE_URL /$export_dir/config.yaml -s $DSTART
+    - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
+    - docker run -v `pwd`/$export_dir:/$export_dir  -e env:TEST_CONFIG -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/$tmp_dir/GOOGLE_APPLICATION_CREDENTIALS -e DSTART=$DSTART -e DEND=DEND $IMAGE_URL /$export_dir/config.yaml -s $DSTART
