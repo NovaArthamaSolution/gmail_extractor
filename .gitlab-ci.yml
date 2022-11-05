@@ -95,4 +95,4 @@ run_schedules:
     - cp ${CONFIG_DIRPATH}/* $export_dir/
     - DSTART=`date +"%Y-%m-%d" -d "$delta_day day" ` 
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
-    - docker run -v `pwd`/$export_dir:/$export_dir  -e env:TEST_CONFIG -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/$tmp_dir/GOOGLE_APPLICATION_CREDENTIALS -e DSTART=$DSTART -e DEND=DEND $IMAGE_URL /$export_dir/config.yaml -s $DSTART
+    - docker run -v `pwd`/$export_dir:/$export_dir  -e env:TEST_CONFIG -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e GOOGLE_APPLICATION_CREDENTIALS=/$tmp_dir/GOOGLE_APPLICATION_CREDENTIALS -e DSTART=$DSTART -e DEND=$DEND $IMAGE_URL /$export_dir/config.yaml -s $DSTART
