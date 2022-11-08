@@ -1,0 +1,79 @@
+[
+  {
+    "name": "file_index_number",
+    "type": "INTEGER"
+  },
+  {
+    "name": "supplier_information_name",
+    "type": "STRING"
+  },
+  {
+    "name": "supplier_status",
+    "type": "STRING"
+  },
+  {
+    "name": "supplier_3rd_party_category",
+    "type": "STRING"
+  },
+  {
+    "name": "invoice_header_id",
+    "type": "INTEGER",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "invoice_number",
+    "type": "STRING"
+  },
+  {
+    "name": "po_number",
+    "type": "STRING"
+  },
+  {
+    "name": "order_month",
+    "type": "STRING"
+  },
+  {
+    "name": "order_year",
+    "type": "INTEGER"
+  },
+  {
+    "name": "invoice_line_number",
+    "type": "INTEGER"
+  },
+  {
+    "name": "invoice_currency_code",
+    "type": "STRING"
+  },
+  {
+    "name": "invoice_line_total",
+    "type": "FLOAT"
+  },
+  {
+    "name": "invoice_month",
+    "type": "STRING"
+  },
+  {
+    "name": "invoice_year",
+    "type": "INTEGER"
+  },
+  {
+    "name": "invoice_status",
+    "type": "STRING"
+  },
+  {
+    "name": "commodity_name",
+    "type": "STRING"
+  },
+  {
+    "name": "commodity_level_1",
+    "type": "STRING"
+  },
+  {
+    "name": "account_segment_1",
+    "type": "STRING"
+  },
+  {
+    "name": "account_segment_1_name",
+    "type": "STRING"
+  }
+]

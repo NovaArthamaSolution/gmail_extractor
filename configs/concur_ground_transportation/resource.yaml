@@ -1,0 +1,67 @@
+name: data-gojek-id-raw-internal.enterprise_procurement.sustainability_report
+version: 1
+type: table
+labels:
+  usage: enteprise_procurement_vendor_screening
+  owner: enteprise_bi
+  data_custodian_team: enteprise_bi
+  data_steward_team: enteprise_bi
+  data_owner_team: enteprise_bi
+spec:
+  description: Table of sustainability_report for Vendor Screening Project
+  schema:
+  - name: supplier_information_supplier_information_name
+    type: STRING
+    mode: NULLABLE
+  - name: supplier_status
+    type: STRING
+    mode: NULLABLE
+  - name: supplier_information_custom_field_14
+    type: STRING
+    mode: NULLABLE
+  - name: invoice_header_id
+    type: INT64
+    mode: REQUIRED
+  - name: invoice_number
+    type: STRING
+    mode: NULLABLE
+  - name: po_number
+    type: STRING
+    mode: NULLABLE
+  - name: order_month
+    type: STRING
+    mode: NULLABLE
+  - name: order_year
+    type: INT64
+    mode: NULLABLE
+  - name: invoice_line_number
+    type: INT64
+    mode: NULLABLE
+  - name: invoice_currency_code
+    type: STRING
+    mode: NULLABLE
+  - name: invoice_line_total
+    type: FLOAT64
+    mode: NULLABLE
+  - name: invoice_month
+    type: STRING
+    mode: NULLABLE
+  - name: invoice_year
+    type: INT64
+    mode: NULLABLE
+  - name: invoice_status
+    type: STRING
+    mode: NULLABLE
+  - name: commodity_name
+    type: STRING
+    mode: NULLABLE
+  - name: commodity_level_1
+    type: STRING
+    mode: NULLABLE
+  - name: account_segment_1
+    type: STRING
+    mode: NULLABLE
+  - name: account_segment_1_name
+    type: STRING
+    mode: NULLABLE
+  partition: {}
