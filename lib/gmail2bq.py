@@ -46,7 +46,12 @@ def main():
   
   print(f"Starting GMAIL Extractor with config file {config_fullpath} for {d_start} and {d_end}")
 
-  return gmail_extract( appconfig )
+  ret = gmail_extract( appconfig )
+  
+  #clean up
+  os.system('rm -rf /data/out/*')
+  return ret 
+
 
 
 
@@ -75,21 +80,21 @@ def gmail_extract(config):
       working_dir = os.path.join(tmp_local_dir,email['id'])
       mail_body_file = os.path.join(working_dir,'body.eml')
 
-      # try:
-      url_xpath = config['file_to_extract']['url_xpath']
-      urls = extract_urls_xmlfile(mail_body_file, url_xpath)
-      for idx,file_url in enumerate(urls): 
-        downloaded_file = download_file(file_url, working_dir)
-        filenames.append(downloaded_file)
+      try:
+        url_xpath = config['file_to_extract']['url_xpath']
+        urls = extract_urls_xmlfile(mail_body_file, url_xpath)
+        for idx,file_url in enumerate(urls): 
+          downloaded_file = download_file(file_url, working_dir)
+          filenames.append(downloaded_file)
 
-      if config['file_to_extract'].get('password_xpath'):
-        password_xpath = config['file_to_extract']['password_xpath']
-        password = extract_string_xmlfile(mail_body_file,password_xpath,'text()')
-        if password:
-          config['transform']['zip_password'] = password
+        if config['file_to_extract'].get('password_xpath'):
+          password_xpath = config['file_to_extract']['password_xpath']
+          password = extract_string_xmlfile(mail_body_file,password_xpath,'text()')
+          if password:
+            config['transform']['zip_password'] = password
 
-      # except Exception as ex:
-      #   print(ex)
+      except Exception as ex:
+        print(ex)
 
   else:
     for email in emails:
