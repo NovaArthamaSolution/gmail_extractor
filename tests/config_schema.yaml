@@ -68,95 +68,133 @@ transform:
       nullable: true
 
 load_destination:
-  type: 
-    - dict
-    - list
-  required: true
-  schema:
-    protocol:
-      type: string
-      allowed:
-        - sftp
-        - gcs
-        - bq 
-    bucket:
-      type: string
-      dependencies:
-        protocol: gcs
-    dir:
-      type: string
-      required: false
-    hostname:
-      type: string
-      required: false
-      dependencies:
-        protocol: sftp
-    username:
-      type: string
-      required: false
-      dependencies:
-        protocol: sftp
-    port:
-      type: integer
-      required: false
-      dependencies:
-        protocol: sftp
-    password: 
-      type: string
-      required: false
-      dependencies:
-        protocol: sftp
-    private_key:
-      type: string
-      required: false
-      dependencies:
-        protocol: sftp
-    table_id: 
-      type: string
-      required: false
-      dependencies:
-        protocol:
-          - bq 
-    skip_leading_rows:
-      type: integer
-      dependencies:
-        protocol:
-          - bq 
-    load_method:
-      type: string 
-      allowed:
-          - replace
-          - merge 
-    field_delimiter:
-      type: string
-      required: false
-      allowed:
-        - tab
-        - \t
-        - ','
-        - '|'
+  oneof:
+  - type: dict
     schema:
-      type: string 
-      required: false
-      dependencies:
+      protocol:
+        required: true
+        allowed:
+          - gcs
+          - bq
+      bucket:
+        type: string
+        dependencies:
+          protocol: 
+            - gcs
+      dir:
+        type: string
+        required: false
+      table_id: 
+        type: string
+        required: false
+        dependencies:
+          protocol:
+            - bq 
+      skip_leading_rows:
+        type: integer
+        dependencies:
+          protocol:
+            - bq 
+      load_method:
+        type: string 
+        allowed:
+            - replace
+            - merge 
+      field_delimiter:
+        type: string
+        required: false
+        allowed:
+          - tab
+          - \t
+          - ','
+          - '|'
+      schema:
+        type: string 
+        required: false
+        dependencies:
+          protocol:
+            - bq 
+      partition:
+        type: 
+          - string
+          - integer
+        required: false
+        dependencies:
+          protocol:
+            - bq 
+      clustering_fields:
+        type: string
+        required: false
+        dependencies: table_id
+      time_partitioning_field:
+        type: string
+        dependencies: table_id
+  - type: list
+    schema:
+      type: dict
+      schema:
         protocol:
-          - bq 
-    partition:
-      type: 
-        - string
-        - integer
-      required: false
-      dependencies:
-        protocol:
-          - bq 
-    clustering_fields:
-      type: string
-      required: false
-      dependencies: table_id
-    time_partitioning_field:
-      type: string
-      dependencies: table_id
-
+          required: true
+          allowed:
+            - gcs
+            - bq
+        bucket:
+          type: string
+          dependencies:
+            protocol: 
+              - gcs
+        dir:
+          type: string
+          required: false
+        table_id: 
+          type: string
+          required: false
+          dependencies:
+            protocol:
+              - bq 
+        skip_leading_rows:
+          type: integer
+          dependencies:
+            protocol:
+              - bq 
+        load_method:
+          type: string 
+          allowed:
+              - replace
+              - merge
+          dependencies:
+          protocol:
+            - bq  
+        field_delimiter:
+          type: string
+          required: false
+          allowed:
+            - tab
+            - \t
+            - ','
+            - '|'
+        schema:
+          type: string 
+          required: false
+          dependencies:
+            protocol:
+              - bq 
+        partition:
+          type: 
+            - string
+            - integer
+          required: false
+          dependencies:
+            protocol:
+              - bq 
+        clustering_fields:
+          type: string
+          required: false
+          dependencies: table_id
+        time_partitioning_field:
+          type: string
+          dependencies: table_id
+         
 ignore_after:
   type: integer
   required: false
