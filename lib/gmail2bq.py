@@ -19,6 +19,7 @@ from local2bq import file_to_bq
 
 
 JOB_DIR=os.getenv('JOB_DIR','/data')
+TMP_DIR=os.environ.get('TMP_DIR','/data/out')
 
 def main():
   parsed = parse_arg()
@@ -49,7 +50,7 @@ def main():
   ret = gmail_extract( appconfig )
   
   #clean up
-  os.system('rm -rf /data/out/*')
+  os.system(f'rm -rf {TMP_DIR}*')
   return ret 
 
 
