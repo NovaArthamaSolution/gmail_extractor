@@ -7,9 +7,9 @@ designed to be used at Financial Reconcialiation Project.
 * extract url and download data file from body ( targetting using xpath )
 * do some file preprosessing ( like unzip or rename to safe filename)
 * do some file data transform ( with transform function provided previously)
-* do some file post
-* ~~load data file to bq table~~ (*on progress)
-* send data to gcs/sftp/
+* do some file post processing
+* load data file to bq table (*on progress)
+* send data to gcs/BQ/
 
 
 
@@ -21,16 +21,10 @@ designed to be used at Financial Reconcialiation Project.
 * make email as processed to prevent double processing
 * do some transformation to attachment file
 * send attachment file to gcs
-* send attachment file to sftp
+* ~~send attachment file to sftp~~
 * load csv file to bq
+* will call function `<transform>` from `<transform>.py` file ( python lib auto load, `<transform>.py` can be from assets folder)
 
-
-## TODO
-
-* add bq load data library ~~( using pandas data frame (failed to load to dataframe ==> failed to load to BQ) )~~  
-  using bq command line tools, please check your data file and schema using `bq load` command
-* create test to the programs 
-* fix RTTL for ETL classes ( one ETL Class in one file )
 
 
 ### How To Use ( Config Only )

@@ -76,11 +76,32 @@ load_destination:
         allowed:
         - gcs
         - bq
+        - sftp
       bucket:
         type: string
         dependencies:
           protocol: 
           - gcs
+      hostname:
+        type: string
+        dependencies:
+          protocol:
+            - sftp
+      port:
+        type: string
+        dependencies:
+          protocol:
+            - sftp
+      username:
+        type: string
+        dependencies:
+          protocol:
+            - sftp
+      private_key:
+        type: string
+        dependencies:
+          protocol:
+            - sftp
       dir:
         type: string
         required: false
@@ -133,6 +154,26 @@ load_destination:
           dependencies:
             protocol: 
               - gcs
+        hostname:
+          type: string
+          dependencies:
+            protocol:
+              - sftp
+        port:
+          type: string
+          dependencies:
+            protocol:
+              - sftp
+        username:
+          type: string
+          dependencies:
+            protocol:
+              - sftp
+        private_key:
+          type: string
+          dependencies:
+            protocol:
+              - sftp
         dir:
           type: string
           required: false
