@@ -74,33 +74,31 @@ load_destination:
       protocol:
         required: true
         allowed:
-          - gcs
-          - bq
-      bucket:
-        type: string
-        dependencies:
-          protocol: 
-            - gcs
-      dir:
-        type: string
-        required: false
-      table_id: 
-        type: string
-        required: false
-        dependencies:
-          protocol:
-            - bq 
-      skip_leading_rows:
-        type: integer
-        dependencies:
-          protocol:
-            - bq 
-      load_method:
+        - gcs
+        - bq
+    bucket:
+      type: string
+      dependencies:
+        protocol: 
+        - gcs
+    dir:
+      type: string
+      required: false
+    table_id: 
+      type: string
+      required: false
+      dependencies:
+        protocol:
+        - bq 
+    skip_leading_rows:
+      type: integer
+      dependencies: table_id
+    load_method:
         type: string 
         allowed:
             - replace
             - merge 
-      field_delimiter:
+    field_delimiter:
         type: string
         required: false
         allowed:
@@ -108,25 +106,17 @@ load_destination:
           - \t
           - ','
           - '|'
-      schema:
-        type: string 
-        required: false
-        dependencies:
-          protocol:
-            - bq 
-      partition:
-        type: 
-          - string
-          - integer
-        required: false
-        dependencies:
-          protocol:
-            - bq 
-      clustering_fields:
-        type: string
-        required: false
-        dependencies: table_id
-      time_partitioning_field:
+    partition:
+      type: 
+        - string
+        - integer
+      required: false
+      dependencies: table_id
+    clustering_fields:
+      type: string
+      required: false
+      dependencies: table_id
+    time_partitioning_field:
         type: string
         dependencies: table_id
   - type: list
@@ -154,17 +144,13 @@ load_destination:
               - bq 
         skip_leading_rows:
           type: integer
-          dependencies:
-            protocol:
-              - bq 
+          dependencies: table_id
         load_method:
           type: string 
           allowed:
               - replace
               - merge
-          dependencies:
-          protocol:
-            - bq  
+          dependencies: table_id
         field_delimiter:
           type: string
           required: false
@@ -173,20 +159,17 @@ load_destination:
             - \t
             - ','
             - '|'
+          dependencies: table_id
         schema:
           type: string 
           required: false
-          dependencies:
-            protocol:
-              - bq 
+          dependencies: table_id
         partition:
           type: 
             - string
             - integer
           required: false
-          dependencies:
-            protocol:
-              - bq 
+          dependencies: table_id
         clustering_fields:
           type: string
           required: false
