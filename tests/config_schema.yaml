@@ -76,49 +76,49 @@ load_destination:
         allowed:
         - gcs
         - bq
-    bucket:
-      type: string
-      dependencies:
-        protocol: 
-        - gcs
-    dir:
-      type: string
-      required: false
-    table_id: 
-      type: string
-      required: false
-      dependencies:
-        protocol:
-        - bq 
-    skip_leading_rows:
-      type: integer
-      dependencies: table_id
-    load_method:
-        type: string 
-        allowed:
-            - replace
-            - merge 
-    field_delimiter:
+      bucket:
+        type: string
+        dependencies:
+          protocol: 
+          - gcs
+      dir:
         type: string
         required: false
-        allowed:
-          - tab
-          - \t
-          - ','
-          - '|'
-    partition:
-      type: 
-        - string
-        - integer
-      required: false
-      dependencies: table_id
-    clustering_fields:
-      type: string
-      required: false
-      dependencies: table_id
-    time_partitioning_field:
+      table_id: 
         type: string
+        required: false
+        dependencies:
+          protocol:
+          - bq 
+      skip_leading_rows:
+        type: integer
         dependencies: table_id
+      load_method:
+          type: string 
+          allowed:
+              - replace
+              - merge 
+      field_delimiter:
+          type: string
+          required: false
+          allowed:
+            - tab
+            - \t
+            - ','
+            - '|'
+      partition:
+        type: 
+          - string
+          - integer
+        required: false
+        dependencies: table_id
+      clustering_fields:
+        type: string
+        required: false
+        dependencies: table_id
+      time_partitioning_field:
+          type: string
+          dependencies: table_id
   - type: list
     schema:
       type: dict
