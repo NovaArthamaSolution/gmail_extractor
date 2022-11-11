@@ -88,7 +88,9 @@ load_destination:
           protocol:
             - sftp
       port:
-        type: string
+        type: 
+          - string
+          - integer
         dependencies:
           protocol:
             - sftp

@@ -21,7 +21,7 @@ designed to be used at Financial Reconcialiation Project.
 * make email as processed to prevent double processing
 * do some transformation to attachment file
 * send attachment file to gcs
-* ~~send attachment file to sftp~~
+* send attachment file to sftp
 * load csv file to bq
 * will call function `<transform>` from `<transform>.py` file ( python lib auto load, `<transform>.py` can be from assets folder)
 
