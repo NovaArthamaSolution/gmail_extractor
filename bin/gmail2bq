@@ -10,7 +10,6 @@ export DIR_WORKING="${REPO_ROOT}"
 
 cd ${DIR_WORKING}
 
-ls -al 
 set -o allexport
 source .app.conf
 set +o allexport
