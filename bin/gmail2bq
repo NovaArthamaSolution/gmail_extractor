@@ -10,9 +10,9 @@ export DIR_WORKING="${REPO_ROOT}"
 
 cd ${DIR_WORKING}
 
-set -o allexport
-source app.env
-set +o allexport
+#set -o allexport
+#source app.env
+#set +o allexport
 
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 gcloud config set project data-gojek-access
