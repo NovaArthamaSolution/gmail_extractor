@@ -12,7 +12,7 @@ cd ${DIR_WORKING}
 
 ls -al 
 set -o allexport
-source app.env
+source .app.conf
 set +o allexport
 
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
