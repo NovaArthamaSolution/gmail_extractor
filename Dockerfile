@@ -4,10 +4,10 @@ FROM gmail2bq-base as modules
 
 WORKDIR /tmp
 ADD ./requirements.txt /tmp/requirements.txt
-RUN pip3 install -r requirements.txt
+RUN pip3 install -qr requirements.txt
 RUN pip install --upgrade google-api-python-client --ignore-installed six
 
-COPY ./tmp/. /tmp/
+# COPY ./tmp/. /tmp/
 
 WORKDIR /data/in 
 ADD ./data/in/ /data/in/
