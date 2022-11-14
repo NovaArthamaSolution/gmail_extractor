@@ -42,8 +42,8 @@ testing:unit:
   script:
     - DSTART=`date +"%Y-%m-%d" -d "-1 day" `
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
-    - echo "GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" > app.env
-    - echo "CONFIG_DIRPATH=${CONFIG_DIRPATH}" >> app.env
+    - echo "export GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" >> .app.conf
+    - echo "export CONFIG_DIRPATH=${CONFIG_DIRPATH}" >> .app.conf
     - cp configs/${CONFIG_DIRPATH}/* $export_dir
     - ls -al 
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
@@ -65,7 +65,7 @@ build:docker:
     tmp_dir: tmp
     export_dir: data/in
   script:
-    - echo "GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" > app.env
+    - echo "export GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" >> .app.conf
     - docker build  --no-cache -t ${IMAGE_URL} -f $( pwd )/Dockerfile . 
     - docker push ${IMAGE_URL}
   except:
