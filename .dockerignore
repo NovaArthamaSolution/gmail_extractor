@@ -14,5 +14,6 @@ Dockerfile
 .docker*
 .git
 .git*
-tests
+tests/
+tmp/
 

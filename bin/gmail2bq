@@ -19,7 +19,7 @@ gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 gcloud config set project data-gojek-access
 
 echo $1
-echo ${2:}
+echo ${@:2}
 
 f=$1
 if [ ! -f $1 ]; then
