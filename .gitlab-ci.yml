@@ -30,7 +30,6 @@ testing:config:
     - python tests/config_validation.py tests/config_schema.yaml configs/
 
 
-
 testing:unit:
   stage: testing
   except:
@@ -46,7 +45,6 @@ testing:unit:
     - echo "GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" > app.env
     - echo "CONFIG_DIRPATH=${CONFIG_DIRPATH}" >> app.env
     - cp configs/${CONFIG_DIRPATH}/* $export_dir
-#    - docker rmi artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:latest
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
     - docker run  -v `pwd`/$export_dir:/$export_dir  -v `pwd`/$tmp_dir:/$tmp_dir -e export_dir=/$export_dir -e env=TEST_CONFIG -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART -e $DEND
 
@@ -70,9 +68,9 @@ build:docker:
     - docker build  --no-cache -t ${IMAGE_URL} -t ${IMAGE_URL_WITH_TAG} -f $( pwd )/Dockerfile . 
     - docker push ${IMAGE_URL}
     - docker push ${IMAGE_URL_WITH_TAG}
-  only:
-    variables:
-      - $CI_COMMIT_TAG =~ /^v.*$/
+  # only:
+  #   variables:
+  #     - $CI_COMMIT_TAG =~ /^v.*$/
   except:
     - schedules
 
