@@ -19,6 +19,4 @@ FROM gmail2bq-base
 WORKDIR /opt/gmail2bq
 ADD . /opt/gmail2bq
 
-WORKDIR /opt/gmail2bq
-
 ENTRYPOINT ["/opt/gmail2bq/bin/gmail2bq" ]

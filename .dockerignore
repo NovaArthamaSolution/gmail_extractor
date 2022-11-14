@@ -14,6 +14,5 @@ Dockerfile
 .docker*
 .git
 .git*
-requirements.txt 
 tests
 tmp
