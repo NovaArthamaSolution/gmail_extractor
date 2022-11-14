@@ -6,7 +6,7 @@ WORKDIR /tmp
 ADD ./requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt
 
-COPY ./tmp/* /tmp/
+# COPY ./tmp/* /tmp/
 
 WORKDIR /data/in
 # COPY ./data/in /data/in/
