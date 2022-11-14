@@ -11,7 +11,7 @@ DIR_WORKING="${REPO_ROOT}"
 cd ${DIR_WORKING}
 
 set -o allexport
-source app.env
+source .app.conf
 set +o allexport
 
 echo "-- activate google credentials --"
