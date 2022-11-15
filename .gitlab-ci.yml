@@ -15,10 +15,10 @@ variables:
   tmp_dir: tmp
   export_dir: data/in
 
-before_script:
-  #  - mkdir -p $export_dir $tmp_dir
-#    - cp $GOOGLE_APPLICATION_CREDENTIALS $tmp_dir/
- #   - cp $GMAIL_CREDENTIAL_FILE $tmp_dir/credentials.json
+# before_script:
+#   - mkdir -p $export_dir $tmp_dir
+#   - cp $GOOGLE_APPLICATION_CREDENTIALS $tmp_dir/
+#   - cp $GMAIL_CREDENTIAL_FILE $tmp_dir/credentials.json
 
 testing:config:
   image: "python:3.8"
@@ -43,9 +43,8 @@ testing:unit:
     - DSTART=`date +"%Y-%m-%d" -d "-1 day" `
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
     - echo "export env='TEST_CONFIG'" >> .app.conf
-    - echo "export CONFIG_DIRPATH=${CONFIG_DIRPATH}" >> .app.conf
     - docker build  --no-cache  -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
-    - docker run -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS  -e export_dir=/$export_dir -e env=TEST_CONFIG -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART -e $DEND
+    - docker run -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS  -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART -e $DEND
 
 build:docker:  
   image: docker:latest
@@ -86,7 +85,6 @@ build:tagged:
     export_dir: data/in
   script:
     - echo "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS" >> .app.conf
-    - echo "export GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" >> .app.conf
     - docker build  --no-cache -t ${IMAGE_URL} -t ${IMAGE_URL_WITH_TAG} -f $( pwd )/Dockerfile . 
     - docker push ${IMAGE_URL}
     - docker push ${IMAGE_URL_WITH_TAG}
@@ -105,12 +103,5 @@ run_schedules:
   only:
     - schedules
   stage: scheduled
-  # variables:
-  #   - DSTART:`date +"%Y-%m-%d" -d "$delta_day day" ` 
-  #   - DEND: `date +"%Y-%m-%d" +d "$DSTAR 1 day" ` 
   script:
-    # - cp ${CONFIG_DIRPATH}/* $export_dir/
-    - DSTART=`date +"%Y-%m-%d" -d "$delta_day day" ` 
-    - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" `
-    # - bin/gmail2bq -s $DSTART $CONFIG_DIRPATH 
-    - docker run -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS -e env:TEST_CONFIG -e TMP_DIR=/data/out $IMAGE_URL /$export_dir/config.yaml -s $DSTART
+    - docker run -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS -e env:TEST_CONFIG -e TMP_DIR=/data/out $IMAGE_URL /$export_dir/config.yaml -s `date +"%Y-%m-%d" -d "$delta_day day" ` 
