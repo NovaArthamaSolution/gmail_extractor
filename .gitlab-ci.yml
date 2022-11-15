@@ -84,6 +84,7 @@ build:tagged:
     tmp_dir: tmp
     export_dir: data/in
   script:
+    - echo $IMAGE_URL_WITH_TAG
     - echo "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS" >> .app.conf
     - docker build  --no-cache -t ${IMAGE_URL} -t ${IMAGE_URL_WITH_TAG} -f $( pwd )/Dockerfile . 
     - docker push ${IMAGE_URL}
