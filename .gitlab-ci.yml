@@ -42,6 +42,7 @@ testing:unit:
   script:
     - DSTART=`date +"%Y-%m-%d" -d "-1 day" `
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
+    - echo "export env='TEST_CONFIG'" >> .app.conf
     - echo "export GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" >> .app.conf
     - echo "export CONFIG_DIRPATH=${CONFIG_DIRPATH}" >> .app.conf
     - docker build  --no-cache  -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
