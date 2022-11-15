@@ -86,7 +86,8 @@ build:tagged:
     IMAGE_URL_WITH_TAG: artifactory-gojek.golabs.io:6555/entbi-${IMAGE_NAME}:${CI_COMMIT_TAG:1}
   script:
     - echo $IMAGE_URL_WITH_TAG
-    - IMAGE_URL_WITH_TAG=artifactory-gojek.golabs.io:6555/entbi-${IMAGE_NAME}:${CI_COMMIT_TAG:1}
+    - IMAGE_URL_WITH_TAG=artifactory-gojek.golabs.io:6555/entbi-${IMAGE_NAME}:${CI_COMMIT_TAG:1:}
+    - echo $IMAGE_URL_WITH_TAG
     - echo "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS" >> .app.conf
     - docker build  --no-cache -t ${IMAGE_URL} -t ${IMAGE_URL_WITH_TAG} -f $( pwd )/Dockerfile . 
     - docker push ${IMAGE_URL}
