@@ -45,7 +45,7 @@ testing:unit:
     - echo "export GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" >> .app.conf
     - echo "export CONFIG_DIRPATH=${CONFIG_DIRPATH}" >> .app.conf
     - cp configs/${CONFIG_DIRPATH}/* $export_dir
-    - docker build  --no-cache --build-arg GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS  -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
+    - docker build  --no-cache --build-arg GMAIL_CREDENTIAL_FILE=$GMAIL_CREDENTIAL_FILE --build-arg GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS  -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
     - docker run  -v `pwd`/$export_dir:/$export_dir  -e export_dir=/$export_dir -e env=TEST_CONFIG -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART -e $DEND
 
 build:docker:  
