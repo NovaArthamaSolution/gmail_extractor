@@ -7,9 +7,10 @@ ADD ./requirements.txt /tmp/requirements.txt
 RUN pip3 install -qr requirements.txt
 # RUN pip3 install -q --upgrade google-api-python-client --ignore-installed six
 
-COPY ./tmp/. /tmp/
-RUN rm -rf ./tmp/
-RUN rm -rf ./tests/
+COPY $GOOGLE_APPLICATION_CREDENTIALS /tmp/GOOGLE_APPLICATION_CREDENTIALS
+
+#RUN rm -rf ./tmp/
+#RUN rm -rf ./tests/
 
 WORKDIR /data/in 
 # ADD ./data/in/ /data/in/
