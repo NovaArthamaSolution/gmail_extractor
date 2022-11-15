@@ -66,7 +66,7 @@ build:docker:
   script:
     - echo "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS" >> .app.conf
     - echo "export GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" >> .app.conf
-    - docker build  --no-cache -t ${IMAGE_URL} -f $( pwd )/Dockerfile . 
+    - docker build  --build-arg GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS  --no-cache -t ${IMAGE_URL} -f $( pwd )/Dockerfile . 
     - docker push ${IMAGE_URL}
   except:
     - schedules
@@ -89,7 +89,7 @@ build:tagged:
   script:
     - echo "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS" >> .app.conf
     - echo "export GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" >> .app.conf
-    - docker build  --no-cache -t ${IMAGE_URL} -t ${IMAGE_URL_WITH_TAG} -f $( pwd )/Dockerfile . 
+    - docker build  --no-cache --build-arg GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS -t ${IMAGE_URL} -t ${IMAGE_URL_WITH_TAG} -f $( pwd )/Dockerfile . 
     - docker push ${IMAGE_URL}
     - docker push ${IMAGE_URL_WITH_TAG}
   only:
