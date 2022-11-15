@@ -18,7 +18,7 @@ variables:
 before_script:
     - mkdir -p $export_dir $tmp_dir
     - cp $GOOGLE_APPLICATION_CREDENTIALS $tmp_dir/
-    - cp $GMAIL_CREDENTIAL_FILE $export_dir/credentials.json
+    - cp $GMAIL_CREDENTIAL_FILE $tmp_dir/credentials.json
 
 testing:config:
   image: "python:3.8"
@@ -64,6 +64,7 @@ build:docker:
     tmp_dir: tmp
     export_dir: data/in
   script:
+    - echo "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS" >> .app.conf
     - echo "export GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" >> .app.conf
     - docker build  --no-cache -t ${IMAGE_URL} -f $( pwd )/Dockerfile . 
     - docker push ${IMAGE_URL}
@@ -86,6 +87,7 @@ build:tagged:
     tmp_dir: tmp
     export_dir: data/in
   script:
+    - echo "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS" >> .app.conf
     - echo "export GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" >> .app.conf
     - docker build  --no-cache -t ${IMAGE_URL} -t ${IMAGE_URL_WITH_TAG} -f $( pwd )/Dockerfile . 
     - docker push ${IMAGE_URL}
@@ -113,4 +115,4 @@ run_schedules:
     - DSTART=`date +"%Y-%m-%d" -d "$delta_day day" ` 
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" `
     # - bin/gmail2bq -s $DSTART $CONFIG_DIRPATH 
-    - docker run -v `pwd`/${CONFIG_DIRPATH}:/$export_dir  -e env:TEST_CONFIG -e TMP_DIR=/data/out -e GOOGLE_APPLICATION_CREDENTIALS=/$tmp_dir/GOOGLE_APPLICATION_CREDENTIALS -e DSTART=$DSTART -e DEND=$DEND $IMAGE_URL /$export_dir/config.yaml -s $DSTART
+    - docker run -v `pwd`/${CONFIG_DIRPATH}:/$export_dir  -e env:TEST_CONFIG -e TMP_DIR=/data/out $IMAGE_URL /$export_dir/config.yaml -s $DSTART
