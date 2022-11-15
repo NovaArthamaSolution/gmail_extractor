@@ -115,4 +115,4 @@ run_schedules:
     - DSTART=`date +"%Y-%m-%d" -d "$delta_day day" ` 
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" `
     # - bin/gmail2bq -s $DSTART $CONFIG_DIRPATH 
-    - docker run --mount $GMAIL_TOKEN_FILE:/data/in/token.json --mount $GOOGLE_APPLICATION_CREDENTIALS:/tmp/GOOGLE_APPLICATION_CREDENTIALS -v `pwd`/${CONFIG_DIRPATH}:/$export_dir  -e env:TEST_CONFIG -e TMP_DIR=/data/out $IMAGE_URL /$export_dir/config.yaml -s $DSTART
+    - docker run -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount $GMAIL_TOKEN_FILE:/data/in/token.json --mount $GOOGLE_APPLICATION_CREDENTIALS:/tmp/GOOGLE_APPLICATION_CREDENTIALS -e env:TEST_CONFIG -e TMP_DIR=/data/out $IMAGE_URL /$export_dir/config.yaml -s $DSTART
