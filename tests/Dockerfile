@@ -6,8 +6,6 @@ WORKDIR /tmp
 COPY ./requirements.txt /tmp/requirements.txt
 RUN pip3 install -qr /tmp/requirements.txt
 
-COPY $GOOGLE_APPLICATION_CREDENTIALS /tmp/GOOGLE_APPLICATION_CREDENTIALS
-COPY $GMAIL_CREDENTIAL_FILE /tmp/GMAIL_CREDENTIAL_FILE
 #RUN rm -rf ./tmp/
 
 

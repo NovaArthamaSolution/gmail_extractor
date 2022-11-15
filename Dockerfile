@@ -7,8 +7,6 @@ COPY ./requirements.txt /tmp/requirements.txt
 RUN pip3 install -qr requirements.txt
 # RUN pip3 install -q --upgrade google-api-python-client --ignore-installed six
 
-COPY $GOOGLE_APPLICATION_CREDENTIALS /tmp/GOOGLE_APPLICATION_CREDENTIALS
-# COPY $GMAIL_CREDENTIAL_FILE /tmp/GMAIL_CREDENTIAL_FILE
 
 #RUN rm -rf ./tmp/
 #RUN rm -rf ./tests/

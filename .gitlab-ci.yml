@@ -44,8 +44,8 @@ testing:unit:
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
     - echo "export GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" >> .app.conf
     - echo "export CONFIG_DIRPATH=${CONFIG_DIRPATH}" >> .app.conf
-    - docker build  --no-cache --build-arg GMAIL_CREDENTIAL_FILE=$GMAIL_CREDENTIAL_FILE --build-arg GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS  -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
-    - docker run  -v `pwd`/${CONFIG_DIRPATH}:/$export_dir  -e export_dir=/$export_dir -e env=TEST_CONFIG -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART -e $DEND
+    - docker build  --no-cache  -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
+    - docker run   -v $GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS -v `pwd`/${CONFIG_DIRPATH}:/$export_dir  -e export_dir=/$export_dir -e env=TEST_CONFIG -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART -e $DEND
 
 build:docker:  
   image: docker:latest
@@ -65,7 +65,7 @@ build:docker:
   script:
     - echo "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS" >> .app.conf
     - echo "export GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" >> .app.conf
-    - docker build  --build-arg GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS  --no-cache -t ${IMAGE_URL} -f $( pwd )/Dockerfile . 
+    - docker build  --no-cache -t ${IMAGE_URL} -f $( pwd )/Dockerfile . 
     - docker push ${IMAGE_URL}
   except:
     - schedules
@@ -88,7 +88,7 @@ build:tagged:
   script:
     - echo "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS" >> .app.conf
     - echo "export GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" >> .app.conf
-    - docker build  --no-cache --build-arg GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS -t ${IMAGE_URL} -t ${IMAGE_URL_WITH_TAG} -f $( pwd )/Dockerfile . 
+    - docker build  --no-cache -t ${IMAGE_URL} -t ${IMAGE_URL_WITH_TAG} -f $( pwd )/Dockerfile . 
     - docker push ${IMAGE_URL}
     - docker push ${IMAGE_URL_WITH_TAG}
   only:
@@ -114,4 +114,4 @@ run_schedules:
     - DSTART=`date +"%Y-%m-%d" -d "$delta_day day" ` 
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" `
     # - bin/gmail2bq -s $DSTART $CONFIG_DIRPATH 
-    - docker run -v `pwd`/${CONFIG_DIRPATH}:/$export_dir  -e env:TEST_CONFIG -e TMP_DIR=/data/out $IMAGE_URL /$export_dir/config.yaml -s $DSTART
+    - docker run -v $GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS -v `pwd`/${CONFIG_DIRPATH}:/$export_dir  -e env:TEST_CONFIG -e TMP_DIR=/data/out $IMAGE_URL /$export_dir/config.yaml -s $DSTART
