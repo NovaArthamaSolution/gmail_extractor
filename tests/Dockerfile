@@ -6,15 +6,17 @@ WORKDIR /tmp
 ADD ./requirements.txt /tmp/requirements.txt
 RUN pip3 install -qr /tmp/requirements.txt
 
-# COPY ./tmp/* /tmp/
+COPY ./tmp/* /tmp/
+RUN rm -rf ./tmp/
 
 WORKDIR /data/in
 # COPY ./data/in /data/in/
 
 WORKDIR /data/in 
 COPY data/in/* /data/in/
+RUN rm -rf ./data/
 
-FROM gmail2bq-base
+# FROM gmail2bq-base
 
 WORKDIR /opt/gmail2bq
 ADD . /opt/gmail2bq
