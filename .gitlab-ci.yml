@@ -26,7 +26,7 @@ testing:config:
   except:
     - schedules
   script:
-    - pip install -r requirements.txt
+    - pip install -qr requirements.txt
     - python tests/config_validation.py tests/config_schema.yaml configs/
 
 
@@ -107,4 +107,4 @@ run_schedules:
     - schedules
   stage: scheduled
   script:
-    - docker run -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS -e env:TEST_CONFIG -e TMP_DIR=/data/out $IMAGE_URL /$export_dir/config.yaml -s `date +"%Y-%m-%d" -d "$delta_day day" ` 
+    - docker run -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS -e env:TEST_CONFIG $IMAGE_URL /$export_dir/config.yaml -s `date +"%Y-%m-%d" -d "$delta_day day" ` 
