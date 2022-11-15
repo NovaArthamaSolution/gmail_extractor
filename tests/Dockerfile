@@ -10,8 +10,8 @@ RUN pip3 install -qr /tmp/requirements.txt
 
 
 WORKDIR /data/in 
-COPY data/in/* /data/in/
-RUN rm -rf ./data/
+#COPY data/in/* /data/in/
+#RUN rm -rf ./data/
 
 # FROM gmail2bq-base
 
