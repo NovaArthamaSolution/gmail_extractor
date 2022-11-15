@@ -15,4 +15,3 @@ Dockerfile
 .git
 .git*
 tests/
-tmp/
