@@ -16,9 +16,9 @@ variables:
   export_dir: data/in
 
 before_script:
-    - mkdir -p $export_dir $tmp_dir
-    - cp $GOOGLE_APPLICATION_CREDENTIALS $tmp_dir/
-    - cp $GMAIL_CREDENTIAL_FILE $tmp_dir/credentials.json
+  #  - mkdir -p $export_dir $tmp_dir
+#    - cp $GOOGLE_APPLICATION_CREDENTIALS $tmp_dir/
+ #   - cp $GMAIL_CREDENTIAL_FILE $tmp_dir/credentials.json
 
 testing:config:
   image: "python:3.8"
@@ -45,7 +45,7 @@ testing:unit:
     - echo "export GMAIL_TOKEN_FILE='${GMAIL_TOKEN_FILE}'" >> .app.conf
     - echo "export CONFIG_DIRPATH=${CONFIG_DIRPATH}" >> .app.conf
     - cp configs/${CONFIG_DIRPATH}/* $export_dir
-    - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
+    - docker build  --no-cache --build-arg GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS  -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
     - docker run  -v `pwd`/$export_dir:/$export_dir  -e export_dir=/$export_dir -e env=TEST_CONFIG -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART -e $DEND
 
 build:docker:  

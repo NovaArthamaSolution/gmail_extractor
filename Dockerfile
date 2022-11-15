@@ -3,7 +3,7 @@ FROM google/cloud-sdk:latest AS gmail2bq-base
 # FROM gmail2bq-base as modules
 
 WORKDIR /tmp
-ADD ./requirements.txt /tmp/requirements.txt
+COPY ./requirements.txt /tmp/requirements.txt
 RUN pip3 install -qr requirements.txt
 # RUN pip3 install -q --upgrade google-api-python-client --ignore-installed six
 
