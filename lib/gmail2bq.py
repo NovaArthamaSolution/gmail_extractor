@@ -51,7 +51,7 @@ def main():
   
   #clean up
   os.system(f'rm -rf {TMP_DIR}*')
-  return ret 
+  return ret == True 
 
 
 
@@ -216,6 +216,6 @@ def send_files(extracted_files,config):
 
 if __name__ == '__main__':
     try:
-      main()
+      return main()
     except KeyboardInterrupt: 
       pass
