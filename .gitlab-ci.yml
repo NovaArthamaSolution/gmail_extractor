@@ -62,7 +62,6 @@ build:docker:
     tmp_dir: tmp
     export_dir: data/in
   script:
-    - echo "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS" >> .app.conf
     - docker build  --no-cache -t ${IMAGE_URL} -f $( pwd )/Dockerfile . 
     - docker push ${IMAGE_URL}
   only:
@@ -86,7 +85,6 @@ build:tagged:
     tmp_dir: tmp
     export_dir: data/in
   script:
-    - echo "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/GOOGLE_APPLICATION_CREDENTIALS" >> .app.conf
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/entbi-${IMAGE_NAME}:${CI_COMMIT_TAG:1} -f $( pwd )/Dockerfile . 
     - docker push artifactory-gojek.golabs.io:6555/entbi-${IMAGE_NAME}:${CI_COMMIT_TAG:1}
   only:
