@@ -7,54 +7,14 @@ set +e
 # wait for few seconds to prepare scheduler for the run
 sleep 5
 
-#get optimus version
-echo "-- optimus client version"
-/opt/optimus version
-
-# get resources
-echo "-- initializing optimus assets"
-/opt/optimus job run-input "$JOB_NAME" --project-name \
-	"$PROJECT" --output-dir "$JOB_DIR" \
-	--type "$INSTANCE_TYPE" --name "$INSTANCE_NAME" \
-	--scheduled-at "$SCHEDULED_AT" --host "$OPTIMUS_HOST"
-
-cat /data/in/.env
-
-# TODO: this doesnt support using back quote sign in env vars, fix it
-echo "-- exporting env"
-set -o allexport
-source "$JOB_DIR/in/.env"
-set +o allexport
-
-echo "-- current envs"
-printenv
-
-echo "-- exporting env with secret"
-set -o allexport
-source "$JOB_DIR/in/.secret"
-set +o allexport
-
-echo "-- exporting secrets"
-set -o allexport
-source /tmp/.secrets
-set +o allexport
-
-
-
 DIR_SANDBOX="$(cd $(dirname $0); pwd)"
 REPO_ROOT=`realpath ${DIR_SANDBOX}/..`
 export DIR_WORKING="${REPO_ROOT}"
 
 cd ${DIR_WORKING}
 
-
-if [[ -z ${BQ_SERVICE_ACCOUNT} ]];
-then
-    echo "$GCLOUD_SERVICE_ACCOUNT" >$GOOGLE_APPLICATION_CREDENTIALS
-else
-    echo "$BQ_SERVICE_ACCOUNT" >$GOOGLE_APPLICATION_CREDENTIALS
-fi
-
+GOOGLE_APPLICATION_CREDENTIALS=
+echo "$BQ_SERVICE_ACCOUNT" >$GOOGLE_APPLICATION_CREDENTIALS
 
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 echo "project_id = $(gcloud config list --format 'value(core.project)')" > ~/.bigqueryrc
