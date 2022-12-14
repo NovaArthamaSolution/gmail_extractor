@@ -42,7 +42,7 @@ testing:unit:
   script:
     - DSTART=`date +"%Y-%m-%d" -d "-1 day" `
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
-    - echo "BQ_SERVICE_ACCOUNT=$BQ_SERVICE_ACCOUNT" >> .app.conf	
+    - echo "BQ_SERVICE_ACCOUNT=\'$BQ_SERVICE_ACCOUNT\'" >> .app.conf	
     - docker build  --no-cache  -t artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests -f $( pwd )/tests/Dockerfile . 
     - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json -e env='TEST_CONFIG' artifactory-gojek.golabs.io:6555/${IMAGE_NAME}:tests /$export_dir/config.yaml -s $DSTART -e $DEND
 
