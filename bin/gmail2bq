@@ -10,8 +10,9 @@ sleep 5
 DIR_SANDBOX="$(cd $(dirname $0); pwd)"
 REPO_ROOT=`realpath ${DIR_SANDBOX}/..`
 export DIR_WORKING="${REPO_ROOT}"
-
 cd ${DIR_WORKING}
+
+source .app.conf 
 
 if [[ -z $GOOGLE_APPLICATION_CREDENTIALS ]]; then 
     GOOGLE_APPLICATION_CREDENTIALS=/tmp/auth.json
