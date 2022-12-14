@@ -216,6 +216,6 @@ def send_files(extracted_files,config):
 
 if __name__ == '__main__':
     try:
-      return main()
+      main()
     except KeyboardInterrupt: 
       pass
