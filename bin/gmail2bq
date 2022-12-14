@@ -13,8 +13,10 @@ export DIR_WORKING="${REPO_ROOT}"
 
 cd ${DIR_WORKING}
 
-GOOGLE_APPLICATION_CREDENTIALS=/tmp/auth.json
-echo "$BQ_SERVICE_ACCOUNT" >$GOOGLE_APPLICATION_CREDENTIALS
+if [[ -z $GOOGLE_APPLICATION_CREDENTIALS ]]; then 
+    GOOGLE_APPLICATION_CREDENTIALS=/tmp/auth.json
+    echo "$BQ_SERVICE_ACCOUNT" >$GOOGLE_APPLICATION_CREDENTIALS
+fi
 
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 echo "project_id = $(gcloud config list --format 'value(core.project)')" > ~/.bigqueryrc
