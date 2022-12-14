@@ -16,6 +16,14 @@ source /tmp/.secrets
 source /tmp/.env
 set +o allexport
 
+if [[ -z ${BQ_SERVICE_ACCOUNT} ]];
+then
+    echo "$GCLOUD_SERVICE_ACCOUNT" >$GOOGLE_APPLICATION_CREDENTIALS
+else
+    echo "$BQ_SERVICE_ACCOUNT" >$GOOGLE_APPLICATION_CREDENTIALS
+fi
+
+
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 echo "project_id = $(gcloud config list --format 'value(core.project)')" > ~/.bigqueryrc
 
