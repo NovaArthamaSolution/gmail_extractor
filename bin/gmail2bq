@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # set -x
-set -eo pipefail
-
+#set -eo pipefail
+set +e 
 
 DIR_SANDBOX="$(cd $(dirname $0); pwd)"
 REPO_ROOT=`realpath ${DIR_SANDBOX}/..`
@@ -12,6 +12,8 @@ cd ${DIR_WORKING}
 
 set -o allexport
 source .app.conf
+source /tmp/.secrets
+source /tmp/.env
 set +o allexport
 
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
