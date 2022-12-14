@@ -17,7 +17,8 @@ source /tmp/.env
 set +o allexport
 
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
-gcloud config set project data-gojek-access
+echo "project_id = $(gcloud config list --format 'value(core.project)')" > ~/.bigqueryrc
+
 
 f=$1
 if [ ! -f $1 ]; then
