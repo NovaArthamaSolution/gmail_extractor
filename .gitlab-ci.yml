@@ -87,6 +87,8 @@ build:tagged:
   script:
     - docker build  --no-cache -t artifactory-gojek.golabs.io:6555/entbi-${IMAGE_NAME}:${CI_COMMIT_TAG:1} -f $( pwd )/Dockerfile . 
     - docker push artifactory-gojek.golabs.io:6555/entbi-${IMAGE_NAME}:${CI_COMMIT_TAG:1}
+    - docker tag artifactory-gojek.golabs.io:6555/entbi-${IMAGE_NAME}:${CI_COMMIT_TAG:1} artifactory-gojek.golabs.io:6555/entbi-${IMAGE_NAME}:latest
+    - docker push artifactory-gojek.golabs.io:6555/entbi-${IMAGE_NAME}:latest
   only:
     variables:
       - $CI_COMMIT_TAG =~ /^v.*$/
