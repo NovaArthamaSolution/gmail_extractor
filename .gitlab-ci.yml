@@ -105,8 +105,7 @@ run_schedules:
     GOOGLE_APPLICATION_CREDENTIALS: /root/gcloud-credential.json
   before_script:
     - ls /opt/gmail2bq || true
-    - touch .app.conf
-    - echo "BQ_SERVICE_ACCOUNT=$BQ_SERVICE_ACCOUNT" > $GOOGLE_APPLICATION_CREDENTIALS
+    - echo "$BQ_SERVICE_ACCOUNT" > $GOOGLE_APPLICATION_CREDENTIALS
   script:
     - /opt/gmail2bq/bin/gmail2bq  /$export_dir/config.yaml -s `date +"%Y-%m-%d" -d "$delta_day day" `
   #   - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS -e env:TEST_CONFIG   $IMAGE_URL /$export_dir/config.yaml -s `date +"%Y-%m-%d" -d "$delta_day day" ` 
