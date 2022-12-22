@@ -105,6 +105,7 @@ run_schedules:
     - schedules
   stage: scheduled
   script:
+    - ls /opt && ls -al /opt/gmail2bq 
     - touch /opt/gmail2bq/.app.conf
     - echo "BQ_SERVICE_ACCOUNT=$BQ_SERVICE_ACCOUNT" > /opt/gmail2bq/.app.conf
     - docker run --env-file /opt/gmail2bq/.app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS -e env:TEST_CONFIG   $IMAGE_URL /$export_dir/config.yaml -s `date +"%Y-%m-%d" -d "$delta_day day" ` 
