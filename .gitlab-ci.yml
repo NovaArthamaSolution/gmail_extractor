@@ -96,16 +96,18 @@ build:tagged:
     - schedules
 
 run_schedules:
-  image:
-    name: $IMAGE_URL
   only:
     - schedules
+  tags:
+    - docker
+    - docker_artifactory
   stage: scheduled
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /root/gcloud-credential.json
   before_script:
-    - ls /opt/gmail2bq || true
-    - echo "$BQ_SERVICE_ACCOUNT" > $GOOGLE_APPLICATION_CREDENTIALS
+    - DSTART=`date +"%Y-%m-%d" -d "$delta_day day" ` 
+    - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
+    - echo "BQ_SERVICE_ACCOUNT=$BQ_SERVICE_ACCOUNT" >> .app.conf	
+    - echo "env=TEST_CONFIG" >> .app.conf
   script:
-    - /opt/gmail2bq/bin/gmail2bq  /$export_dir/config.yaml -s `date +"%Y-%m-%d" -d "$delta_day day" `
-  #   - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS -e env:TEST_CONFIG   $IMAGE_URL /$export_dir/config.yaml -s `date +"%Y-%m-%d" -d "$delta_day day" ` 
+   - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS  $IMAGE_URL /$export_dir/config.yaml -s $DSTART
