@@ -16,3 +16,4 @@ Dockerfile
 .git*
 tests/
 tmp/
+.app.conf

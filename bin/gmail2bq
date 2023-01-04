@@ -4,20 +4,23 @@
 #set -eo pipefail
 set +e 
 
+# wait for few seconds to prepare scheduler for the run
+sleep 5
+
 DIR_SANDBOX="$(cd $(dirname $0); pwd)"
 REPO_ROOT=`realpath ${DIR_SANDBOX}/..`
 export DIR_WORKING="${REPO_ROOT}"
-
 cd ${DIR_WORKING}
 
-set -o allexport
-source .app.conf
-source /tmp/.secrets
-source /tmp/.env
-set +o allexport
+
+if [[ -z $GOOGLE_APPLICATION_CREDENTIALS ]]; then 
+    export GOOGLE_APPLICATION_CREDENTIALS=/tmp/auth.json
+    echo "$BQ_SERVICE_ACCOUNT" >$GOOGLE_APPLICATION_CREDENTIALS
+fi
 
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
-gcloud config set project data-gojek-access
+echo "project_id = $(gcloud config list --format 'value(core.project)')" > ~/.bigqueryrc
+
 
 f=$1
 if [ ! -f $1 ]; then
