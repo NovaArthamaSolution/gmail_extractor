@@ -62,8 +62,8 @@ def gmail_extract(config):
 
   try:
     gMailApp = GmailApp(config.token_file)
-  except:
-    print('TOKEN LOGIN FAILED: Please proceed this link with respectfully account')
+  except Exception as ex:
+    print(f'TOKEN LOGIN FAILED: {ex} \nPlease proceed this link with respectfully account.' )
     gMailApp = GmailApp.login(config.token_file,credentials_file=config.credential_file)
 
   emails = gMailApp.get_emails( from_=config['mail_filter'].get('from'),
@@ -84,6 +84,7 @@ def gmail_extract(config):
       try:
         url_xpath = config['file_to_extract']['url_xpath']
         urls = extract_urls_xmlfile(mail_body_file, url_xpath)
+
         for idx,file_url in enumerate(urls): 
           downloaded_file = download_file(file_url, working_dir)
           filenames.append(downloaded_file)
@@ -102,7 +103,7 @@ def gmail_extract(config):
       attachments = find_attachment(email,config['file_to_extract']['file_pattern'], config['file_to_extract'].get('mime_type',None) ) 
       # fnames = []
       for attachment in attachments:
-        fname =  gMailApp.download_attachement(email['id'],attachment) 
+        fname =  gMailApp.download_attachment(email['id'],attachment) 
         filenames.append(fname)
 
 

@@ -1,0 +1,14 @@
+mail_filter:
+  subject: GoSend - Tokopedia -
+
+file_to_extract:
+  source : url_in_body
+  url_xpath: //li/a
+
+transform:
+  filename_format: {{ now.strftime("%y%m%d%H%M%S") }}_{source_file}
+
+load_destination:
+  protocol: gcs
+  bucket: access_sap_bq
+  dir: bq2email/gmail2bq

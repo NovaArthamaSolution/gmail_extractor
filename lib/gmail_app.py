@@ -120,7 +120,7 @@ class GmailApp():
             print("Error at %s:%s : %s " % (self.__class__.__name__, sys._getframe().f_code.co_name, ex) )
         
 
-    def download_attachement(self,emailId,attachment):
+    def download_attachment(self,emailId,attachment):
         if 'data' in attachment['body']:
             data = attachment['body']['data']
         else:
