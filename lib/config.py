@@ -75,11 +75,12 @@ class AppConfig(dict):
 
     @property
     def token_file(self):
-        token_file = None
+        token_file = f"{self.DEFAULT_JOB_DIR}/{self.JOB_INPUT_SUBDIR}/token.json"
+        if  os.path.exists(token_file): return token_file
         if self.__dict__.get('account') and self.__dict__.get('account').get('token_file'):
             token_file = self.__dict__.get('account').get('token_file')
         else:
-            token_file = get_env_config('GMAIL_TOKEN_FILE',raise_if_empty=True)
+            token_file = get_env_config('GMAIL_TOKEN_FILE',raise_if_empty=False)
         
         if not os.path.isfile(token_file):
             tmp_token_file = f"{self.DEFAULT_JOB_DIR}/{self.JOB_INPUT_SUBDIR}/token.json"
