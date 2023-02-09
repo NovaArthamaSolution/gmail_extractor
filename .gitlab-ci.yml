@@ -41,6 +41,7 @@ testing:unit:
   variables:
     env : TEST_CONFIG 
   script:
+    - echo $IMAGE_URL_TAGLESS $IMAGE_URL
     - DSTART=`date +"%Y-%m-%d" -d "-1 day" `
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
     - echo "BQ_SERVICE_ACCOUNT=$BQ_SERVICE_ACCOUNT" >> .app.conf	
