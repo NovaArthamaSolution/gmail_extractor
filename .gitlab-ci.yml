@@ -10,9 +10,8 @@ variables:
   PATH_CREDENTIAL: "/tmp/gmail2bq.id_rsa"
   ANSIBLE_HOST_KEY_CHECKING: "false"
   IMAGE_NAME: gmail2bq
-  IMAGE_URL_TAGLESS: artifactory-gojek.golabs.io:6555/entbi-${IMAGE_NAME}
-  IMAGE_URL: $IMAGE_URL_TAGLESS:latest
-  IMAGE_URL_WITH_TAG: $IMAGE_URL_TAGLESS:${CI_COMMIT_TAG:1}
+  IMAGE_URL: artifactory-gojek.golabs.io:6555/entbi-gmail2bq
+  IMAGE_URL_WITH_TAG: ${IMAGE_URL}:latest
   tmp_dir: tmp
   export_dir: data/in
 
@@ -41,12 +40,11 @@ testing:unit:
   variables:
     env : TEST_CONFIG 
   script:
-    - echo $IMAGE_URL_TAGLESS $IMAGE_URL
     - DSTART=`date +"%Y-%m-%d" -d "-1 day" `
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
     - echo "BQ_SERVICE_ACCOUNT=$BQ_SERVICE_ACCOUNT" >> .app.conf	
-    - docker build  --no-cache  -t $IMAGE_URL_TAGLESS:tests -f $( pwd )/tests/Dockerfile . 
-    - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json -e env='TEST_CONFIG' $IMAGE_URL_TAGLESS:tests /$export_dir/config.yaml -s $DSTART -e $DEND
+    - docker build  --no-cache  -t $IMAGE_URL:tests -f $( pwd )/tests/Dockerfile . 
+    - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json -e env='TEST_CONFIG' $IMAGE_URL:tests /$export_dir/config.yaml -s $DSTART -e $DEND
 
 build:docker:  
   image: docker:latest
@@ -64,8 +62,8 @@ build:docker:
     tmp_dir: tmp
     export_dir: data/in
   script:
-    - docker build  --no-cache -t ${IMAGE_URL} -f $( pwd )/Dockerfile . 
-    - docker push ${IMAGE_URL}
+    - docker build  --no-cache -t ${IMAGE_URL_WITH_TAG} -f $( pwd )/Dockerfile . 
+    - docker push ${IMAGE_URL_WITH_TAG}
   only:
     - master
   except:
@@ -87,10 +85,8 @@ build:tagged:
     tmp_dir: tmp
     export_dir: data/in
   script:
-    - docker build  --no-cache -t $IMAGE_URL_WITH_TAG -f $( pwd )/Dockerfile . 
-    - docker push $IMAGE_URL_WITH_TAG
-    - docker tag  $IMAGE_URL_WITH_TAG $IMAGE_URL_TAGLESS:latest
-    - docker push $IMAGE_URL_TAGLESS:latest
+    - docker build  --no-cache -t ${IMAGE_URL}:${CI_COMMIT_TAG:1} -f $( pwd )/Dockerfile . 
+    - docker push ${IMAGE_URL}:${CI_COMMIT_TAG:1}
   only:
     variables:
       - $CI_COMMIT_TAG =~ /^v.*$/
@@ -112,4 +108,4 @@ run_schedules:
     - echo "BQ_SERVICE_ACCOUNT=$BQ_SERVICE_ACCOUNT" >> .app.conf	
     - echo "env=TEST_CONFIG" >> .app.conf
   script:
-   - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS  $IMAGE_URL_TAGLESS:latest /$export_dir/config.yaml -s $DSTART
+   - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS  $IMAGE_URL_WITH_TAG /$export_dir/config.yaml -s $DSTART
