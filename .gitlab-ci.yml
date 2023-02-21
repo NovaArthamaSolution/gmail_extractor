@@ -9,9 +9,9 @@ stages:
 variables:
   PATH_CREDENTIAL: "/tmp/gmail2bq.id_rsa"
   ANSIBLE_HOST_KEY_CHECKING: "false"
-  IMAGE_NAME: gmail2bq
-  IMAGE_URL: artifactory-gojek.golabs.io:6555/entbi-gmail2bq
-  IMAGE_URL_WITH_TAG: ${IMAGE_URL}:latest
+  PLUGIN_NAME: entbi-gmail2bq
+  ARTIFACTORY_IMAGE: artifactory-gojek.golabs.io:6555/${PLUGIN_NAME}
+  GCR_IMAGE: asia.gcr.io/systems-0001/optimus/${PLUGIN_NAME}
   tmp_dir: tmp
   export_dir: data/in
 
@@ -43,8 +43,8 @@ testing:unit:
     - DSTART=`date +"%Y-%m-%d" -d "-1 day" `
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
     - echo "BQ_SERVICE_ACCOUNT=$BQ_SERVICE_ACCOUNT" >> .app.conf	
-    - docker build  --no-cache  -t $IMAGE_URL:tests -f $( pwd )/tests/Dockerfile . 
-    - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json -e env='TEST_CONFIG' $IMAGE_URL:tests /$export_dir/config.yaml -s $DSTART -e $DEND
+    - docker build  --no-cache  -t ${ARTIFACTORY_IMAGE}:tests -f $( pwd )/tests/Dockerfile . 
+    - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json -e env='TEST_CONFIG' ${ARTIFACTORY_IMAGE}:tests /$export_dir/config.yaml -s $DSTART -e $DEND
 
 build:docker:  
   image: docker:latest
@@ -57,13 +57,16 @@ build:docker:
   tags:
     - docker
     - docker_artifactory
+    - docker_gcr
     # - dind
   variables:
     tmp_dir: tmp
     export_dir: data/in
   script:
-    - docker build  --no-cache -t ${IMAGE_URL_WITH_TAG} -f $( pwd )/Dockerfile . 
-    - docker push ${IMAGE_URL_WITH_TAG}
+    - tag="latest"
+    - docker build --no-cache -t ${ARTIFACTORY_IMAGE}:${tag} -t ${GCR_IMAGE}:${tag} -f $( pwd )/Dockerfile .
+    - docker push ${ARTIFACTORY_IMAGE}:${tag}
+    - gcloud docker -- push ${GCR_IMAGE}:${tag}
   only:
     - master
   except:
@@ -80,13 +83,16 @@ build:tagged:
   tags:
     - docker
     - docker_artifactory
+    - docker_gcr
     # - dind
   variables:
     tmp_dir: tmp
     export_dir: data/in
   script:
-    - docker build  --no-cache -t ${IMAGE_URL}:${CI_COMMIT_TAG:1} -f $( pwd )/Dockerfile . 
-    - docker push ${IMAGE_URL}:${CI_COMMIT_TAG:1}
+    - tag="${CI_COMMIT_TAG:1}"
+    - docker build --no-cache -t ${ARTIFACTORY_IMAGE}:${tag} -t ${GCR_IMAGE}:${tag} -f $( pwd )/Dockerfile .
+    - docker push ${ARTIFACTORY_IMAGE}:${tag}
+    - gcloud docker -- push ${GCR_IMAGE}:${tag}
   only:
     variables:
       - $CI_COMMIT_TAG =~ /^v.*$/
@@ -108,4 +114,4 @@ run_schedules:
     - echo "BQ_SERVICE_ACCOUNT=$BQ_SERVICE_ACCOUNT" >> .app.conf	
     - echo "env=TEST_CONFIG" >> .app.conf
   script:
-   - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS  $IMAGE_URL_WITH_TAG /$export_dir/config.yaml -s $DSTART
+   - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS ${ARTIFACTORY_IMAGE}:latest /$export_dir/config.yaml -s $DSTART
