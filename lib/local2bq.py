@@ -86,11 +86,35 @@ def load_to_bq(file_to_load, table_id, source_format,schema=None,*args,**kwargs)
 
     if kwargs.get('skip_leading_rows',None):
         job_config.skip_leading_rows = int(kwargs.get('skip_leading_rows')) or 0
-    else:
-        job_config.skip_leading_rows = 1
+    # else:
+    #     job_config.skip_leading_rows = 1
+
+    if kwargs.get('allow_quoted_newlines',None):
+        job_config.allow_quoted_newlines = bool(kwargs.get('allow_quoted_newlines')) or true
+    # else:
+    #     job_config.allow_quoted_newlines = true
+
+    if kwargs.get('ignore_unknown_values',None):
+        job_config.ignore_unknown_values = bool(kwargs.get('ignore_unknown_values')) or true
+    # else:
+    #     job_config.ignore_unknown_values = true
 
 
-    
+    if kwargs.get('ignore_unknown_values',None):
+        job_config.ignore_unknown_values = bool(kwargs.get('ignore_unknown_values')) or true
+    # else:
+    #     job_config.ignore_unknown_values = true
+
+    if kwargs.get('null_marker',None):
+        job_config.null_marker = kwargs.get('null_marker') or ''
+
+    if kwargs.get('quote_character',None):
+        job_config.quote_character = kwargs.get('quote_character') or '"'
+
+    if kwargs.get('allow_jagged_rows',None):
+        job_config.allow_jagged_rows = bool(kwargs.get('allow_jagged_rows')) or true
+
+
     partition_test = re.compile(r"\$(\d{8})$")
     if kwargs.get('partition',None) and not bool(partition_test.search(table_id)):
         partition=kwargs.get('dtstart')
