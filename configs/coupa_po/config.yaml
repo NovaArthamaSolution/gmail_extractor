@@ -1,0 +1,29 @@
+mail_filter:
+  from: coupa.com
+  subject: "Indoregion Report PO"
+  attachment: true
+  after: {{ datetime_start.timestamp()   }}
+  before:  {{ datetime_end.timestamp() }}
+
+file_to_extract:
+  source : attachment
+  file_pattern: "Indoregion_Report_PO*.zip"
+
+transform:
+  transform_model: unzip
+  filename_format : {source_file}
+
+load_destination:
+  - protocol: gcs
+    bucket: integration_exchange
+    dir: ocean/data-gojek-id-raw-internal/regional_strategy/indoregion_purchase_order
+
+  - protocol: bq
+    table_id: data-gojek-id-raw-internal.regional_strategy.indoregion_purchase_order
+    schema: schema.json
+    load_method: replace
+    allow_quoted_newlines: true
+    field_delimiter: ','
+    skip_leading_rows: 1
+    partition: {{ datetime_end.strftime("%Y%m%d") }}
+
