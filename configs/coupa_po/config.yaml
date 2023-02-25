@@ -2,8 +2,8 @@ mail_filter:
   from: coupa.com
   subject: "Indoregion Report PO"
   attachment: true
-  after: {{ datetime_start.timestamp()   }}
-  before:  {{ datetime_end.timestamp() }}
+  after: {{ datetime_start.timestamp() I int   }}
+  before:  {{ datetime_end.timestamp() I int  }}
 
 file_to_extract:
   source : attachment
