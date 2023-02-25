@@ -47,7 +47,7 @@ def main():
   
   print(f"Starting GMAIL Extractor with config file {config_fullpath} for {d_start} and {d_end}")
 
-  ret = gmail_extract( appconfig )
+  ret = gmail2bq( appconfig )
   
   #clean up
   os.system(f'rm -rf {TMP_DIR}*')
@@ -56,7 +56,7 @@ def main():
 
 
 
-def gmail_extract(config):
+def gmail2bq(config):
 
   tmp_local_dir = str(os.environ.get('TMP_DIR', '/data/out')).rstrip('/') 
 
