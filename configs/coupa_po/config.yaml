@@ -11,7 +11,7 @@ file_to_extract:
 
 transform:
   transform_model: unzip
-  filename_format : {source_file}
+  filename_format : "{source_file}"
 
 load_destination:
   - protocol: gcs
