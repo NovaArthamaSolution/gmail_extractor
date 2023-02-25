@@ -1,5 +1,5 @@
 mail_filter:
-  from: coupa.com
+#  from: coupa.com
   subject: "Indoregion Report PO"
   attachment: true
   after: {{ datetime_start.timestamp() | int   }}
