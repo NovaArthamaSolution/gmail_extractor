@@ -1,3 +1,4 @@
+import sys 
 import os
 import argparse
 import configparser
@@ -150,7 +151,7 @@ def unzip(zipfile, dest_path=None, password=None):
     if not dest_path:
         dest_path = tempfile.mkdtemp(prefix='gmail_extractor_')
     
-    pyminizip.uncompress(zipfile, password,dest_path,int(True))
+    pyminizip.uncompress(zipfile, password, dest_path, int(True))
     files = glob("%s/*.*" % dest_path )
 
     return list(filter(lambda f: list(os.path.splitext('.')).pop() != 'zip' , files))
@@ -214,3 +215,35 @@ def camel_to_snake(name):
 
 def str2bool(v):
   return str(v).lower() in ("yes", "true", "t", "1")
+
+def import_udf_if_exists(udf='udf',config_dir=os.getenv('JOB_DIR','/data/in')):
+    path = f"{config_dir}/{udf}.py"
+    if not os.path.exists(path):
+        return sys.modules[__name__]
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(udf, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+def get_udf(*args):
+  JOB_DIR = os.getenv('JOB_DIR','/data/in')
+  if not args: return None 
+  functions =  []
+  for func in args:
+    fungsi = None
+    if os.path.isfile(f"{JOB_DIR}/{func}.py"):
+      mod = import_udf_if_exists(func, JOB_DIR)
+      if func in dir(mod):
+        fungsi = getattr(mod,func)
+    
+    if not fungsi and  os.path.isfile(f"{os.path.dirname(__file__)}/{func}.py"):
+      mod = import_udf_if_exists(func, os.path.dirname(__file__))
+      if func in dir(mod):
+        fungsi = getattr(mod,func)
+    
+    if not fungsi and  func in dir(sys.modules[__name__] ):
+      fungsi = getattr(sys.modules[__name__],func)
+    functions.append(fungsi)
+  
+  return tuple(functions)

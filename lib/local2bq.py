@@ -14,7 +14,7 @@ from google.cloud import storage
 from google.cloud import bigquery
 from xlsx2csv import DELIMITER
 
-from util import *
+from utils import *
 
 def main():
   logging.getLogger("local2bq").setLevel(logging.WARNING)

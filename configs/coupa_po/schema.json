@@ -1,0 +1,137 @@
+[
+  {
+    "mode": "NULLABLE",
+    "name": "purchase_order_number",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requested_by_full_name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "suppliers_supplier_number",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "supplier_information_name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "account_code",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_line_description",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "commodity_name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "item_name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "item_number",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_line_quantity",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_line_price",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "needed_by_date",
+    "type": "DATE"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "budget_period_name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisitions_prepayment_start_date",
+    "type": "DATE"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisitions_prepayment_end_date",
+    "type": "DATE"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_header_status",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_header_total",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_date",
+    "type": "DATE"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_line_number",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_line_currency_code",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_line_reporting_total",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "receipt_reporting_total",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_header_type",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "invoice_currency_code",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "po_reporting_total",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "gr_reporting_total",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "ir_reporting_total",
+    "type": "FLOAT"
+  }
+]

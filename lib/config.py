@@ -40,6 +40,7 @@ class AppConfig(dict):
         self.dry_run = str2bool(get_env_config("DRY_RUN", "false"))
         self.xcom_path = get_env_config("XCOM_PATH", self.DEFAULT_XCOM_PATH)
 
+        os.environ['JOB_DIR'] = os.path.dirname(self.config_file)
         self._parse_datetime_vars()
         self._render()
 

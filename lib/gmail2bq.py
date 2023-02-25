@@ -11,7 +11,7 @@ from glob import glob
 
 from gmail_app import GmailApp
 from config import AppConfig
-from util import * 
+from utils import * 
 
 from local2gcs import put_files as send_gcs_files
 from local2sftp import put_files as send_sftp_files
@@ -127,29 +127,14 @@ def gmail_extract(config):
 
 def process_file_transform(filenames, transform_config):
   etlfnames = []
-  if transform_config.get('transform_model'):
-    import importlib.util
-
-    transformation = transform_config.pop('transform_model')
-  
-    ## RTTL ( load transformation python function file )
-    try:
-      ## load from current libdir (xlsx2csv and unzip available)
-      libdir = os.path.dirname(__file__)
-      spec = importlib.util.spec_from_file_location(transformation, f"{libdir}/{transformation}.py")
-      transform = importlib.util.module_from_spec(spec)
-      spec.loader.exec_module(transform)
-    except FileNotFoundError as ex:
-      ## load from user transformation file  
-      spec = importlib.util.spec_from_file_location(transformation, f"{os.getenv('CONFIG_DIRPATH')}/{transformation}.py")
-      transform = importlib.util.module_from_spec(spec)
-      spec.loader.exec_module(transform)
-
-    print(f"\nProcessing file {transformation} transformation to {filenames} ")
+  transform, = get_udf(transform_config.get('transform_model','').lower())
+  if transform:
+      
+    print(f"\nProcessing file {transform} transformation to {filenames} ")
     for fname in filenames:
       try:
         after_transform = []
-        after_transform += getattr(transform,transformation)(fname, **transform_config)
+        after_transform += transform(fname, **transform_config)
 
         # keep enforce filename_format for outputfile
         for transformed in after_transform:
@@ -157,7 +142,7 @@ def process_file_transform(filenames, transform_config):
           etlfnames.append( safe_rename(transformed,transform_config.get('filename_format'), rename_params ) ) 
       
       except Exception as ex:
-        print(f"Failed to process file transformation {fname} : {transformation} : {ex}")
+        print(f"Failed to process file transformation {fname} : {transform} : {ex}")
         etlfnames += [fname]
 
   elif transform_config.get('filename_format'):

@@ -3,18 +3,16 @@ import tempfile
 import pyminizip
 from glob import glob
 
-def unzip(filename: str,config=None) -> list: 
+def unzip(filename: str,**kwargs) -> list: 
     dest_path = tempfile.mkdtemp(prefix='gmail_extractor_')
 
-    password = config
-    if isinstance(config,dict):
-        password = config.get('zip_password')
+    password = None
+    if kwargs.get('zip_password'):
+        password = kwargs.get('zip_password')
 
-    pyminizip.uncompress(filename, password, dest_path, int(True) )
-    
+    pyminizip.uncompress(filename, password, dest_path, int(True) )    
     files = glob(f"{dest_path}/*.*")
-    print(f"unzip: {filename} to {dest_path} \nresult: {files}")
-    return list(filter(lambda f: f != filename , files))
+    return list(filter(lambda f: list(os.path.splitext('.')).pop() != 'zip' , files))
 
 
 def main(filename):
