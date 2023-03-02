@@ -162,10 +162,10 @@ def load_to_bq(file_to_load, table_id, source_format,schema=None,*args,**kwargs)
                 )
         logging.info(f"Running on job Id {job}")
         job.result()
-        logging.info(f"successfully insert data to table {table_id} finished")
+        logging.info(f"successfully insert data to table {table_id} finished at partition {partition}")
         return partition
     except Exception as err:
-        logging.error("Error happens when attempt to insert data to bq")
+        logging.error("Error happens when attempt to insert data to bq {table_id} {kwargs}")
         logging.error("{err}".format(err=err))
         return None
 

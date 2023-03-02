@@ -51,7 +51,7 @@
   },
   {
     "mode": "NULLABLE",
-    "name": "order_line_price",
+    "name": "order_line_unit_price",
     "type": "FLOAT"
   },
   {

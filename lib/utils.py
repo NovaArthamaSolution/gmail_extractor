@@ -111,10 +111,10 @@ def extract_urls_xmlfile(html_file, xpath):
         return []
     
 
-def extract_string_xmlfile(mail_file,xpath,attribute='href'):
-    f = open(html_file,'r')
-    html = f.read()
-    f.close()
+def extract_string_xmlfile(html_file,xpath,attribute='href'):
+    # f = open(html_file,'r')
+    # html = f.read()
+    # f.close()
 
     doc = etree.parse(html_file,parser=parser)
     try:

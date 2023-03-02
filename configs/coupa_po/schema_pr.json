@@ -1,0 +1,122 @@
+[
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_create_by_name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_created_date",
+    "type": "DATE"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_needed_by_date",
+    "type": "DATE"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_budget_period_name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_header_id",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_line_number",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "supplier_information_name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_line_reporting_total",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_item_type",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_item_name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "coa_account_name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "commodity_name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "account_code",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_line_currency_code",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_line_quantity",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "order_line_unit_price",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_line_total",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_header_status",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_line_status",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_submitted_date",
+    "type": "DATE"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_type",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "payment_term_code",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_justification",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "milestones_tc",
+    "type": "STRING"
+  }
+]
