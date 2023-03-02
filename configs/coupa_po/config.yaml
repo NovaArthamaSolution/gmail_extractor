@@ -20,7 +20,7 @@ load_destination:
 
   - protocol: bq
     table_id: data-gojek-id-raw-internal.regional_strategy.indoregion_purchase_order
-    schema: schema_pr.json
+    schema: schema.json
     load_method: replace
     allow_quoted_newlines: true
     field_delimiter: ','
