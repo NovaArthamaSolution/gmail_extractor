@@ -40,7 +40,7 @@ testing:unit:
   variables:
     env : TEST_CONFIG 
   script:
-    - DSTART=`date +"%Y-%m-%d"  `
+    - DSTART=`date +"%Y-%m-%d" -d "-1 day" `
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
     - echo "BQ_SERVICE_ACCOUNT=$BQ_SERVICE_ACCOUNT" >> .app.conf	
     - docker build  --no-cache  -t ${ARTIFACTORY_IMAGE}:tests -f $( pwd )/tests/Dockerfile . 
