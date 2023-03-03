@@ -40,11 +40,12 @@ testing:unit:
   variables:
     env : TEST_CONFIG 
   script:
-    - DSTART=`date +"%Y-%m-%d" -d "-1 day" `
+    - if [ $CI_COMMIT_BRANCH  != "master" ] &&  [ $CI_COMMIT_BRANCH != "" ]; then CONFIG_DIRPATH=$CI_COMMIT_BRANCH; fi
+    - DSTART=`date +"%Y-%m-%d" -d "$delta_day day" `
     - DEND=`date +"%Y-%m-%d" -d "$DSTART + 1 day" ` 
     - echo "BQ_SERVICE_ACCOUNT=$BQ_SERVICE_ACCOUNT" >> .app.conf	
     - docker build  --no-cache  -t ${ARTIFACTORY_IMAGE}:tests -f $( pwd )/tests/Dockerfile . 
-    - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json -e env='TEST_CONFIG' ${ARTIFACTORY_IMAGE}:tests /$export_dir/config.yaml -s $DSTART -e $DEND
+    - docker run --env-file .app.conf -v `pwd`/configs/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json -e env='TEST_CONFIG' ${ARTIFACTORY_IMAGE}:tests /$export_dir/config.yaml -s $DSTART -e $DEND
 
 build:docker:  
   image: docker:latest
@@ -114,4 +115,4 @@ run_schedules:
     - echo "BQ_SERVICE_ACCOUNT=$BQ_SERVICE_ACCOUNT" >> .app.conf	
     - echo "env=TEST_CONFIG" >> .app.conf
   script:
-   - docker run --env-file .app.conf -v `pwd`/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS ${ARTIFACTORY_IMAGE}:latest /$export_dir/config.yaml -s $DSTART
+   - docker run --env-file .app.conf -v `pwd`/configs/${CONFIG_DIRPATH}:/$export_dir --mount type=bind,source=$GMAIL_TOKEN_FILE,target=/data/in/token.json --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/tmp/GOOGLE_APPLICATION_CREDENTIALS ${ARTIFACTORY_IMAGE}:latest /$export_dir/config.yaml -s $DSTART
