@@ -54,7 +54,7 @@ def file_to_bq(file_path,table_id,*args,**kwargs):
 
     except Exception as ex:
         print("error file_to_bq %s" % ex)
-        raise
+        raise(ex)
 
 def csv_to_bq(file_path, table_id, schema=None,*args,**kwargs):
     return load_to_bq(file_path,table_id,bigquery.SourceFormat.CSV, schema,**kwargs)

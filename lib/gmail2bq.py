@@ -113,17 +113,17 @@ def gmail2bq(config):
     # print(filenames)
 
     ## SEND THE FILES
-    filenames = send_files(filenames,config)
+    failed = send_files(filenames,config)
 
     ## Mark proceesed email 
     processed_label_id = gMailApp.get_processed_label_id()
-    if os.getenv('env') != 'TEST_CONFIG' :
+    if os.getenv('env') != 'TEST_CONFIG' and failed = 0 :
       [ gMailApp.mark_label(email['id'],processed_label_id) for email in emails ]
   else:
     if  datetime.now().hour >= config.get('ignore_after',23) : return True
     raise Exception("No expected files  match found from email")      
   
-  return True
+  return failed
 
 def process_file_transform(filenames, transform_config):
   etlfnames = []
@@ -163,45 +163,50 @@ def send_files(extracted_files,config):
     channels = [channels]
 
   protocol = ''
+  cnt = 0
   for channel in channels:
-    target_name = channel.get('bucket',None) or channel.get('hostname',None)
-    dest_dir = channel.get('dir',channel.get('partition')) 
-    # if not target_name : continue 
-    tic = time.time()
+    try:
+      target_name = channel.get('bucket',None) or channel.get('hostname',None)
+      dest_dir = channel.get('dir',channel.get('partition')) 
+      # if not target_name : continue 
+      tic = time.time()
 
-    protocol = channel.pop('protocol')
-    if protocol == 'gcs':
-      # if export_gcs == channel['bucket']: continue
+      protocol = channel.pop('protocol')
+      if protocol == 'gcs':
+        # if export_gcs == channel['bucket']: continue
 
-      destination_gcs_bucket = channel['bucket']
-      send_gcs_files(
-        source_pattern=extracted_files,
-        bucket=destination_gcs_bucket,
-        destination_path=dest_dir,
-        )
-    elif protocol == 'sftp':
-      send_sftp_files(
-        source_pattern=extracted_files,
-        hostname=channel['hostname'],
-        username=channel['username'],
-        port=channel['port'],
-        identity_file=f"{config.confid_dir}/{channel.get('private_key', None)}",
-        password=channel.get('password', None),
-        destination_path=dest_dir
-        )
-    else:
-      if '*' in extracted_files or not isinstance(extracted_files,list):
-        extracted_files = glob(extracted_files)
-      
-      table_id = channel.pop('table_id')
-      bqconfig = {**channel,**{'schema':f"{config.config_dir}/{channel.pop('schema')}"}}
-      for f in extracted_files:
-        dest_dir= file_to_bq(f,table_id,**bqconfig)
-      target_name = table_id
+        destination_gcs_bucket = channel['bucket']
+        send_gcs_files(
+          source_pattern=extracted_files,
+          bucket=destination_gcs_bucket,
+          destination_path=dest_dir,
+          )
+      elif protocol == 'sftp':
+        send_sftp_files(
+          source_pattern=extracted_files,
+          hostname=channel['hostname'],
+          username=channel['username'],
+          port=channel['port'],
+          identity_file=f"{config.confid_dir}/{channel.get('private_key', None)}",
+          password=channel.get('password', None),
+          destination_path=dest_dir
+          )
+      else:
+        if '*' in extracted_files or not isinstance(extracted_files,list):
+          extracted_files = glob(extracted_files)
+        
+        table_id = channel.pop('table_id')
+        bqconfig = {**channel,**{'schema':f"{config.config_dir}/{channel.pop('schema')}"}}
+        for f in extracted_files:
+          dest_dir= file_to_bq(f,table_id,**bqconfig)
+        target_name = table_id
+      toc = time.time()
+      print("%.2f seconds elapsed to send %s via %s to %s at %s " % ( (toc-tic), extracted_files,protocol,target_name, dest_dir) )
+      cnt += 1
+    except Exception as ex:
+      print(f"error on {protocol} {ex}")
 
-    toc = time.time()
-    print("%.2f seconds elapsed to send %s via %s to %s at %s " % ( (toc-tic), extracted_files,protocol,target_name, dest_dir) )
-
+  return len(channels) - cnt 
 
 if __name__ == '__main__':
     try:
