@@ -1,24 +1,25 @@
 mail_filter:
 #  from: coupa.com
-  subject: "Indoregion Report PO"
+  subject: "Indoregion Report PR"
   attachment: true
   after: {{ datetime_start.timestamp() | int   }}
   before:  {{ datetime_end.timestamp() | int  }}
 
 file_to_extract:
   source : attachment
-  file_pattern: "Indoregion_Report_PO*.zip"
+  file_pattern: "Indoregion_Report_PR*.zip"
 
 transform:
   transform_model: unzip
   filename_format : "{source_file}"
+
 load_destination:
   - protocol: gcs
     bucket: integration_exchange
-    dir: ocean/data-gojek-id-raw-internal/regional_strategy/indoregion_purchase_order
+    dir: ocean/data-gojek-id-raw-internal/regional_strategy/indoregion_purchase_requisition
 
   - protocol: bq
-    table_id: data-gojek-id-raw-internal.regional_strategy.indoregion_purchase_order
+    table_id: data-gojek-id-raw-internal.regional_strategy.indoregion_purchase_requisition
     schema: schema.json
     load_method: replace
     allow_quoted_newlines: true

@@ -1,6 +1,21 @@
 [
   {
     "mode": "NULLABLE",
+    "name": "requisition_created_date",
+    "type": "DATE"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_header_id",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "requisition_line_number",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
     "name": "purchase_order_number",
     "type": "STRING"
   },
@@ -22,6 +37,11 @@
   {
     "mode": "NULLABLE",
     "name": "account_code",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "invoice_currency_code",
     "type": "STRING"
   },
   {
@@ -112,11 +132,6 @@
   {
     "mode": "NULLABLE",
     "name": "order_header_type",
-    "type": "STRING"
-  },
-  {
-    "mode": "NULLABLE",
-    "name": "invoice_currency_code",
     "type": "STRING"
   },
   {

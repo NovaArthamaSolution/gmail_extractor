@@ -162,13 +162,13 @@ def cleanup(tmp_local_dir):
     os.system(cleanup_cmd)
     os.system("mkdir -p {}".format(tmp_local_dir))
 
-def safe_rename(filename,file_format='',params={}):
+def safe_rename(filename,filename_format='',params={}):
     path = os.path.dirname(filename)
 
     basename = os.path.basename(filename)
     basename, ext = os.path.splitext(basename)
     params['source_file'] = params.get('source_file',None) or  basename
-    basename = file_format.format(**params)
+    basename = filename_format.format(**params)
     basename = secure_filename(f"{basename}{ext}")
     safe_filename = os.path.join(path,basename)
 
