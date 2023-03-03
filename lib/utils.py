@@ -144,16 +144,19 @@ def find_attachment(email, filename_pattern='*.zip', mime_type=''):
             found.append(part)
     return found
 
-def zip(filenames,dest_fname,password=None):
+def zip(filenames,dest_fname,**kwargs):
     pyminizip.compress_multiple(filenames, [], dest_fname,password,COMPRESSION_LEVEL)
 
-def unzip(zipfile, dest_path=None, password=None):
-    if not dest_path:
-        dest_path = tempfile.mkdtemp(prefix='gmail_extractor_')
-    
-    pyminizip.uncompress(zipfile, password, dest_path, int(True))
-    files = glob("%s/*.*" % dest_path )
+def unzip(zipfile, **kwargs):
+    dest_path = tempfile.mkdtemp(prefix='gmail_extractor_')
 
+    password = None
+    if kwargs.get('zip_password'):
+        password = kwargs.get('zip_password')
+
+    pyminizip.uncompress(zipfile, password, dest_path, int(True))
+
+    files = glob("%s/*.*" % dest_path )
     return list(filter(lambda f: list(os.path.splitext('.')).pop() != 'zip' , files))
 
 
