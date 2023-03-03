@@ -117,7 +117,7 @@ def gmail2bq(config):
 
     ## Mark proceesed email 
     processed_label_id = gMailApp.get_processed_label_id()
-    if os.getenv('env') != 'TEST_CONFIG' and failed = 0 :
+    if os.getenv('env') != 'TEST_CONFIG' and failed == 0 :
       [ gMailApp.mark_label(email['id'],processed_label_id) for email in emails ]
   else:
     if  datetime.now().hour >= config.get('ignore_after',23) : return True
