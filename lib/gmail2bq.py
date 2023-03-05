@@ -137,7 +137,7 @@ def process_file_transform(filenames, transform_config):
         after_transform += transform(fname, **transform_config)
 
         # keep enforce filename_format for outputfile
-        print(transform_config,after_transform)
+        # print(transform_config,after_transform)
         for transformed in after_transform:
           # rename_params = {'source_file': f"{os.path.splitext(os.path.basename(fname))[0]}_{os.path.splitext(os.path.basename(transformed))[0]}" }
           etlfnames.append( safe_rename(transformed) )#,
