@@ -120,7 +120,7 @@ def gmail2bq(config):
     failed = send_files(filenames,config)
 
     ## Mark proceesed email 
-    processed_label_id = gMailApp.get_processed_label_id()
+    processed_label_id = config.processed_label_id
     if os.getenv('env') != 'TEST_CONFIG' and failed == 0 :
       [ gMailApp.mark_label(email['id'],processed_label_id) for email in emails ]
   else:

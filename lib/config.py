@@ -80,6 +80,9 @@ class AppConfig(dict):
             raise
 
     @property
+    def processed_label_id(self):
+        return self.__dict__.get('processed_label_id',os.getenv('PROCESSED_LABEL_ID','Label_4'))
+    @property
     def token_file(self):
         token_file = f"{self.DEFAULT_JOB_DIR}/{self.JOB_INPUT_SUBDIR}/token.json"
         if  os.path.exists(token_file): return token_file
