@@ -213,7 +213,8 @@ def send_files(extracted_files,config):
   return len(channels) - cnt 
 
 if __name__ == '__main__':
-    try:
-      main()
-    except KeyboardInterrupt: 
-      pass
+  import sys
+  try:
+    sys.exit(main())
+  except KeyboardInterrupt: 
+    pass
