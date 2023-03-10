@@ -29,10 +29,4 @@ if [ ! -f $1 ]; then
     fi
 fi
 
-python3 ${DIR_WORKING}/lib/gmail2bq.py "$f" ${@:2}
-exit_code=$?
-## cleanup
-rm -rf tmp/
-rm -rf /tmp/gmail_extractor*
-
-exit $exit_code
+exec python3 ${DIR_WORKING}/lib/gmail2bq.py "$f" ${@:2}
