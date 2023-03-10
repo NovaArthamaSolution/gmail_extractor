@@ -43,6 +43,11 @@ class AppConfig(dict):
         os.environ['JOB_DIR'] = os.path.dirname(self.config_file)
         self._parse_datetime_vars()
         self._render()
+        self._normalize()
+    
+    def _normalize(self):
+        os.environ['DSTART'] = self.dstart.strftime("%Y-%m-%d")
+        os.environ['PARTITION'] = self.dstart.strftime("%Y%m%d")
 
     def _parse_datetime_vars(self):
         default_execution_time = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()

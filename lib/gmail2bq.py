@@ -64,7 +64,11 @@ def gmail2bq(config):
     gMailApp = GmailApp(config.token_file)
   except Exception as ex:
     print(f'TOKEN LOGIN FAILED: {ex} \nPlease proceed this link with respectfully account.' )
-    gMailApp = GmailApp.login(config.token_file,credentials_file=config.credential_file)
+    try:
+      gMailApp = GmailApp.login(config.token_file,credentials_file=config.credential_file)
+    except:
+      print("CREDENTIAL FILE NOT AVAILABLE: GMAIL_CREDENTIAL_FILE env var are not set/empty")
+      return -1
 
   emails = gMailApp.get_emails( from_=config['mail_filter'].get('from'),
                                 subject=config['mail_filter'].get('subject'),

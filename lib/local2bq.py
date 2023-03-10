@@ -53,7 +53,7 @@ def file_to_bq(file_path,table_id,*args,**kwargs):
             return csv_to_bq(file_path,table_id,schema=schema,**kwargs)
 
     except Exception as ex:
-        print("error file_to_bq %s" % ex)
+        # print("error file_to_bq %s" % ex)
         raise(ex)
 
 def csv_to_bq(file_path, table_id, schema=None,*args,**kwargs):
@@ -165,9 +165,7 @@ def load_to_bq(file_to_load, table_id, source_format,schema=None,*args,**kwargs)
         logging.info(f"successfully insert data to table {table_id} finished at partition {partition}")
         return partition
     except Exception as err:
-        logging.error(f"Error happens when attempt to insert data to bq {table_id} {kwargs}")
-        logging.error(f"{err}".format(err=err))
-        return None
+        raise err
 
 
 

@@ -19,6 +19,7 @@ from lxml import etree
 from lxml.etree import HTMLParser  
 parser = HTMLParser()
 
+today= datetime.today()
 
 COMPRESSION_LEVEL = int(os.environ.get('COMPRESSION_LEVEL','5'))
 _filename_ascii_strip_re = re.compile(r'[^A-Za-z0-9_.-]')
@@ -145,7 +146,7 @@ def find_attachment(email, filename_pattern='*.zip', mime_type=''):
     return found
 
 def zip(filenames,dest_fname,**kwargs):
-    pyminizip.compress_multiple(filenames, [], dest_fname,password,COMPRESSION_LEVEL)
+    pyminizip.compress_multiple(filenames, [], dest_fname,kwargs.get('password'),kwargs.get('COMPRESSION_LEVEL',COMPRESSION_LEVEL))
 
 def unzip(zipfile, **kwargs):
     dest_path = tempfile.mkdtemp(prefix='gmail_extractor_')
@@ -172,7 +173,11 @@ def safe_rename(filename,filename_format='{source_file}',params={}):
     basename, ext = os.path.splitext(basename)
     params['source_file'] = params.get('source_file',basename)
     basename = filename_format.format(**params)
-    basename = secure_filename(f"{basename}{ext}")
+    partition= ""
+    if not bool(re.search(r'\d{4}', basename)):
+        partition = f"_{os.getenv('PARTITION',today.strftime('%Y%m%d'))}"
+    
+    basename = secure_filename(f"{basename}{partition}{ext}")
     safe_filename = os.path.join(path,basename)
 
     os.rename(filename,safe_filename)
