@@ -200,9 +200,11 @@ def send_files(extracted_files,config):
           extracted_files = glob(extracted_files)
         
         table_id = channel.pop('table_id')
-        bqconfig = {**channel,**{'schema':f"{config.config_dir}/{channel.pop('schema')}"}}
+        schema = channel.get('schema')
+        if schema:
+          channel = {**channel,**{'schema':f"{config.config_dir}/{channel.pop('schema')}"}}
         for f in extracted_files:
-          dest_dir= file_to_bq(f,table_id,**bqconfig)
+          dest_dir= file_to_bq(f,table_id,**channel)
         target_name = table_id
       toc = time.time()
       print("%.2f seconds elapsed to send %s via %s to %s at %s " % ( (toc-tic), extracted_files,protocol,target_name, dest_dir) )

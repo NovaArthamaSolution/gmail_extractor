@@ -206,6 +206,7 @@ load_destination:
         schema:
           type: string 
           required: false
+          nullable: true
           dependencies: table_id
         partition:
           type: 
