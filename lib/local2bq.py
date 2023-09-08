@@ -39,13 +39,14 @@ def main():
 def file_to_bq(file_path,table_id,*args,**kwargs):
         
     try:
-        # print(args,kwargs)
-        schema_file = kwargs.pop('schema') 
+        fmt = kwargs.get('format','csv')
+        schema_file = kwargs.pop('schema',None) 
         # if os.path.exists(schema_file ):
         #     raise Exception(f'Cannot load table {table_id} without schema file')
 
-        fmt = kwargs.get('format','csv') 
-        schema, dtypes = load_schema(schema_file)
+        schema=None
+        if schema_file:
+            schema, dtypes = load_schema(schema_file)
 
         if fmt.lower() == 'json' :
             return json_to_bq(file_path,table_id,schema=schema,**kwargs)

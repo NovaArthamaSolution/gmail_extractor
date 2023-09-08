@@ -1,0 +1,252 @@
+[
+  {
+    "name": "interface_id",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "ifsession",
+    "mode": "NULLABLE",
+    "type": "INTEGER"
+  },
+  {
+    "name": "process_date",
+    "mode": "NULLABLE",
+    "type": "INTEGER"
+  },
+  {
+    "name": "process_time",
+    "mode": "NULLABLE",
+    "type": "INTEGER"
+  },
+  {
+    "name": "sales_invoice_number",
+    "mode": "NULLABLE",
+    "type": "INTEGER"
+  },
+  {
+    "name": "transaction_line",
+    "mode": "NULLABLE",
+    "type": "INTEGER"
+  },
+  {
+    "name": "outlet_id",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "validation_type",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "message",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "sales_type",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "subscription_type",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "transaction_date",
+    "mode": "NULLABLE",
+    "type": "INTEGER"
+  },
+  {
+    "name": "invoice_status",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "deleted_at",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "deposit_to_number",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "currency",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "tax_amount_per_invoice",
+    "mode": "NULLABLE",
+    "type": "FLOAT"
+  },
+  {
+    "name": "witholding_tax_value",
+    "mode": "NULLABLE",
+    "type": "FLOAT"
+  },
+  {
+    "name": "total_payment_amount",
+    "mode": "NULLABLE",
+    "type": "FLOAT"
+  },
+  {
+    "name": "sales_order_number",
+    "mode": "NULLABLE",
+    "type": "INTEGER"
+  },
+  {
+    "name": "tag",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "memo",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "receive_payment_number",
+    "mode": "NULLABLE",
+    "type": "INTEGER"
+  },
+  {
+    "name": "payment_date",
+    "mode": "NULLABLE",
+    "type": "INTEGER"
+  },
+  {
+    "name": "transaction_status",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "remaining_amount",
+    "mode": "NULLABLE",
+    "type": "FLOAT"
+  },
+  {
+    "name": "product_code",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "product_name",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "quantity",
+    "mode": "NULLABLE",
+    "type": "INTEGER"
+  },
+  {
+    "name": "unit",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "nett_price",
+    "mode": "NULLABLE",
+    "type": "FLOAT"
+  },
+  {
+    "name": "nett_value",
+    "mode": "NULLABLE",
+    "type": "FLOAT"
+  },
+  {
+    "name": "discount",
+    "mode": "NULLABLE",
+    "type": "FLOAT"
+  },
+  {
+    "name": "rate",
+    "mode": "NULLABLE",
+    "type": "FLOAT"
+  },
+  {
+    "name": "tax_amount_per_product",
+    "mode": "NULLABLE",
+    "type": "FLOAT"
+  },
+  {
+    "name": "business_id",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "business_name",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "business_address",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "master_email",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "province",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "city",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "outlet_name",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "owner_name",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "activation_date",
+    "mode": "NULLABLE",
+    "type": "INTEGER"
+  },
+  {
+    "name": "subscription_end_date",
+    "mode": "NULLABLE",
+    "type": "INTEGER"
+  },
+  {
+    "name": "subscription_period",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "credit_memo_balance",
+    "mode": "NULLABLE",
+    "type": "FLOAT"
+  },
+  {
+    "name": "prev_status",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "product_type",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  },
+  {
+    "name": "filename",
+    "mode": "NULLABLE",
+    "type": "STRING"
+  }
+]

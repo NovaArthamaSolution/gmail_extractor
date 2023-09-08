@@ -1,0 +1,27 @@
+mail_filter:
+  from: sap.interface@gojek.com
+  subject: "MOKA LOG REPORT"
+  attachment: true
+  after: {{ (datetime_start ).timestamp()  | int }}
+  before: {{ (datetime_end  ).timestamp()  | int  }}
+
+file_to_extract:
+  source : attachment
+  file_pattern: "*.csv"
+
+transform:
+  filename_format : moke_log_report_{{ datetime_start.strftime("%Y%m%d") }}_{source_file}
+
+load_destination:
+  - protocol: gcs
+    bucket: enterprise_bi_exchange
+    dir: moka/data-gojek-id-raw-internal/enterprise_platform/moka_log_report
+
+  - protocol: bq
+    table_id: g-data-gojek-id-raw-internal.enterprise_platform.moka_log_report
+    schema: schema.json 
+    load_method: replace
+    field_delimiter: '\t'
+    skip_leading_rows: 1
+    partition: {{ datetime_start.strftime("%Y%m%d")}}
+
