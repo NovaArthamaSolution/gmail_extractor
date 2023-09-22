@@ -1,0 +1,29 @@
+mail_filter:
+  from: coupa.com
+  subject: "NPO Spending"
+  attachment: true
+  after: {{ datetime_start.timestamp() | int  - 25200 }}
+  before:  {{ datetime_end.timestamp() | int  - 25200 }}
+  
+file_to_extract:
+  source : attachment
+  file_pattern: "NPO_Spending_*"
+
+transform:
+  transform_model: xlsx2csv
+  filename_format : "{source_file}"
+
+load_destination:
+  - protocol: gcs
+    bucket: integration_exchange
+    dir: quartz/ocean/data-gojek-id-raw-internal/enterprise_platform/coupa_nonpurchase_order_details
+
+  - protocol: bq
+    table_id: g-data-gojek-id-raw-internal.enterprise_platform.coupa_nonpurchase_order_details
+    schema: schema.json
+    load_method: replace
+    field_delimiter: '\t'
+    skip_leading_rows: 2
+    partition: {{ datetime_start.strftime("%Y%m%d") }}
+
+

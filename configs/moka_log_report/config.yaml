@@ -10,7 +10,7 @@ file_to_extract:
   file_pattern: "*.csv"
 
 transform:
-  filename_format : moke_log_report_{{ datetime_start.strftime("%Y%m%d") }}_{source_file}
+  filename_format : moka_log_report_{{ datetime_start.strftime("%Y%m%d") }}_{source_file}
 
 load_destination:
   - protocol: gcs
