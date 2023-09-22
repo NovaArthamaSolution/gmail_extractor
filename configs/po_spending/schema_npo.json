@@ -1,0 +1,188 @@
+[
+  {
+    "name": "sequence",
+    "type": "INTEGER"
+  },
+  {
+    "name": "gl_account_lookup",
+    "type": "STRING"
+  },
+  {
+    "name": "invoice_number",
+    "type": "STRING"
+  },
+  {
+    "name": "invoice_line_number",
+    "type": "INTEGER"
+  },
+  {
+    "name": "invoice_date",
+    "type": "DATE"
+  },
+  {
+    "name": "invoice_status",
+    "type": "STRING"
+  },
+  {
+    "name": "invoice_line_status",
+    "type": "STRING"
+  },
+  {
+    "name": "invoice_currency_code",
+    "type": "STRING"
+  },
+  {
+    "name": "chart_of_accounts_name",
+    "policyTags": {
+      "names": [
+        "projects/id-bi-staging/locations/us/taxonomies/5387461290810438614/policyTags/5961012959996325351"
+      ]
+    },
+    "type": "STRING"
+  },
+  {
+    "name": "invoice_line_quantity",
+    "type": "INTEGER"
+  },
+  {
+    "name": "invoice_line_price",
+    "type": "FLOAT"
+  },
+  {
+    "name": "item_type",
+    "type": "STRING"
+  },
+  {
+    "name": "invoice_line_description",
+    "type": "STRING"
+  },
+  {
+    "name": "account_code",
+    "type": "STRING"
+  },
+  {
+    "name": "commodity_name",
+    "type": "STRING"
+  },
+  {
+    "name": "commodity_level_3",
+    "type": "STRING"
+  },
+  {
+    "name": "commodity_level_2",
+    "type": "STRING"
+  },
+  {
+    "name": "commodity_level_1",
+    "type": "STRING"
+  },
+  {
+    "name": "category_sourcing_lead_id",
+    "type": "STRING"
+  },
+  {
+    "name": "supplier_information_name",
+    "type": "STRING"
+  },
+  {
+    "name": "supplier_number",
+    "type": "STRING"
+  },
+  {
+    "name": "supplier_information_status",
+    "type": "STRING"
+  },
+  {
+    "name": "payment_term_code",
+    "type": "STRING"
+  },
+  {
+    "name": "user_full_name",
+    "policyTags": {
+      "names": [
+        "projects/id-bi-staging/locations/us/taxonomies/5387461290810438614/policyTags/5961012959996325351"
+      ]
+    },
+    "type": "STRING"
+  },
+  {
+    "name": "user_email",
+    "policyTags": {
+      "names": [
+        "projects/id-bi-staging/locations/us/taxonomies/5387461290810438614/policyTags/5961012959996325351"
+      ]
+    },
+    "type": "STRING"
+  },
+  {
+    "name": "account_segment_1",
+    "type": "STRING"
+  },
+  {
+    "name": "account_segment_1_name",
+    "policyTags": {
+      "names": [
+        "projects/id-bi-staging/locations/us/taxonomies/5387461290810438614/policyTags/5961012959996325351"
+      ]
+    },
+    "type": "STRING"
+  },
+  {
+    "name": "account_segment_2_name",
+    "policyTags": {
+      "names": [
+        "projects/id-bi-staging/locations/us/taxonomies/5387461290810438614/policyTags/5961012959996325351"
+      ]
+    },
+    "type": "STRING"
+  },
+  {
+    "name": "account_segment_3_name",
+    "policyTags": {
+      "names": [
+        "projects/id-bi-staging/locations/us/taxonomies/5387461290810438614/policyTags/5961012959996325351"
+      ]
+    },
+    "type": "STRING"
+  },
+  {
+    "name": "deviation_pr",
+    "type": "STRING"
+  },
+  {
+    "name": "deviation_type",
+    "type": "STRING"
+  },
+  {
+    "name": "reason_for_pr_deviation",
+    "type": "STRING"
+  },
+  {
+    "name": "type_of_invoice",
+    "type": "STRING"
+  },
+  {
+    "name": "order_line_number",
+    "type": "STRING"
+  },
+  {
+    "name": "po_number",
+    "type": "STRING"
+  },
+  {
+    "name": "requisition_header_id",
+    "type": "STRING"
+  },
+  {
+    "name": "ir_reporting",
+    "type": "FLOAT"
+  },
+  {
+    "name": "ir_original",
+    "type": "FLOAT"
+  },
+  {
+    "name": "requisition_line_number",
+    "type": "INTEGER"
+  }
+]
