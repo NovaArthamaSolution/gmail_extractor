@@ -1,0 +1,18 @@
+mail_filter:
+  from: mokapos.com
+  subject: "SAP Integration - MokaPOS v10 Daily"
+  attachment: true
+  after: {{ datetime_start.timestamp()  | int }}
+  before:  {{ datetime_end.timestamp()  | int }}
+
+file_to_extract:
+  source : attachment
+  file_pattern: "*.csv"
+
+transform:
+  filename_format : '{source_file}_{{ datetime_start.strftime("%Y%m%d") }}'
+
+load_destination:
+  - protocol: gcs
+    bucket: enterprise_bi_exchange
+    dir: moka/data-gojek-id-raw-internal/enterprise_platform/mokapos_invoices
