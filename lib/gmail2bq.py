@@ -80,7 +80,7 @@ def gmail2bq(config):
   # print(" Matched emails: %d " % len(emails) )
   ## GET THE FILES
   filenames = []
-  if config['file_to_extract'].get('source') == 'url_in_body':
+  if 'body' in config['file_to_extract'].get('source'):
     for email in emails:
       working_dir = os.path.join(tmp_local_dir,email['id'])
       mail_body_file = os.path.join(working_dir,'body.eml')
@@ -100,7 +100,8 @@ def gmail2bq(config):
             config['transform']['zip_password'] = password
 
       except Exception as ex:
-        print(ex)
+        filenames.append(mail_body_file)
+        print(f"Error on parsing body {ex}, returning mail body as output")
 
   else:
     for email in emails:
