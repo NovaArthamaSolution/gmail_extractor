@@ -1,6 +1,9 @@
 FROM google/cloud-sdk:latest AS gmail2bq-base
 
-
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONWARNINGS="ignore"
+ENV PYTHONDONTWRITEBYTECODE="dont"
+ENV PYTHONPYCACHEPREFIX=/tmp/
 
 WORKDIR /tmp
 COPY ./requirements.txt /tmp/requirements.txt
