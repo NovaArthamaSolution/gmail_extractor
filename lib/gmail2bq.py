@@ -100,6 +100,8 @@ def gmail2bq(config):
             config['transform']['zip_password'] = password
 
       except Exception as ex:
+        if config['file_to_extract'].get('mime_type') != 'text/html':
+          mail_body_file = gMailApp.save_email_body(email, mime_type=config['file_to_extract'].get('mime_type','text/html'))
         filenames.append(mail_body_file)
         print(f"Error on parsing body {ex}, returning mail body as output")
 
@@ -138,12 +140,15 @@ def process_file_transform(filenames, transform_config):
     print(f"\nProcessing file {transform} transformation to {filenames} ")
     for fname in filenames:
       try:
-        after_transform = []
-        after_transform += transform(fname, **transform_config)
+        transformeds = []
+        after_transform = transform(fname, **transform_config)
 
-        # keep enforce filename_format for outputfile
-        # print(transform_config,after_transform)
-        for transformed in after_transform:
+        if isinstance(after_transform,list):
+          transformeds += after_transform
+        else:
+          transformeds =[after_transform]
+ 
+        for transformed in transformeds:
           # rename_params = {'source_file': f"{os.path.splitext(os.path.basename(fname))[0]}_{os.path.splitext(os.path.basename(transformed))[0]}" }
           etlfnames.append( safe_rename(transformed) )#,
           #                               transform_config.get('filename_format',"{source_file}"), 

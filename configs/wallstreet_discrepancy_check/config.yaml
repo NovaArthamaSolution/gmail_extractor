@@ -6,12 +6,13 @@ mail_filter:
 
 file_to_extract:
   source : body
+  mime_type: 'text/html'
   # url_xpath: //a[text()='here']
   # password_xpath: "//strong"
 
 transform:
   transform_model: parse_email_body
-  filename_format: WALLSTREET_UNMATCH{{ datetime_start.strftime("%y%m%d%H%M%S") }}
+  filename_format: WALLSTREET_UNMATCH_{{ datetime_start.strftime("%Y%m%d") }}
 
 load_destination: []
 #   protocol: sftp

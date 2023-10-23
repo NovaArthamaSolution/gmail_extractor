@@ -2,26 +2,57 @@
 from lxml import etree
 from lxml.etree import HTMLParser  
 parser = HTMLParser()
+import re
+import os
+import csv
 
-
+def save_to_file(discrepancies,output_file):
+  header= list(discrepancies[0].keys())
+  with open(f"{os.getenv('TMP_DIR','/data/out')}/{output_file}",'w',encoding='UTF-8') as out:
+    writer = csv.DictWriter(out,fieldnames=header, delimiter='\t')
+    writer.writeheader()
+    writer.writerows(discrepancies)
+  return f"{os.getenv('TMP_DIR','/data/out')}/{output_file}"
 
 def parse_email_body(eml_file,**kwargs):
   xpath = '//div/p'
   htmlparser = HTMLParser()
   doc = etree.parse(eml_file,parser=htmlparser)
-  unmatchlines = []
+  discrepancies = []
   try:
-      els = doc.xpath(xpath)
-      # el =  els.pop()
-      for el in els:
-        if 'NOT FOUND' not in el.text: continue 
-        # print(el.text)
-        unmatchlines.append(el.text.strip())
-      # if '()' not in attribute:
-      #     return el.get(attribute).strip()
-      # else:
-      # return els.text.strip()
-      return unmatchlines 
+
+    unmatch_date_el = doc.xpath('//div/p[contains(text(),"with result")]')
+    checking_time, unmatch_date = unmatch_date_el[0].text.split('result:')
+    checking_time = re.search(r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}', checking_time.strip())
+
+    if checking_time:
+      checking_time = checking_time[0]
+    else:
+      checking_time = os.getenv('DSTART')
+
+    unmatch_date = re.search(r'\d{4}-\d{2}-\d{2}', unmatch_date.strip())
+    if unmatch_date:
+      unmatch_date = unmatch_date[0]
+    else:
+      unmatch_date = os.getenv('DSTART')
+
+    els = doc.xpath(xpath)
+    unmatchlines = []
+    for el in els:
+      if 'NOT FOUND' not in el.text: continue       
+      unmatchlines.append(el.text.strip())
+
+    for ul in unmatchlines:
+      source, ids = ul.split(':')
+      source = source.strip()[15:]
+
+      ids = ids.strip().split(',')
+      for id in ids:
+        discrepancy = {'checking_time': checking_time, 'match_date': unmatch_date, 'discrepancy_at': source}
+        discrepancy['transaction_id'] = id.strip()
+        discrepancies.append(discrepancy)
+    return save_to_file(discrepancies,f"{kwargs.get('filename_format')}.csv")
+  
   except Exception as ex:
       print(f"Ex:{ex}")
       return None
