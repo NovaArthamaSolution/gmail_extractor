@@ -6,13 +6,15 @@ import re
 import os
 import csv
 
+TIMESTAMP_RE = re.compile(r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')
+
 def save_to_file(discrepancies,output_file):
   header= list(discrepancies[0].keys())
-  with open(f"{os.getenv('TMP_DIR','/data/out')}/{output_file}",'w',encoding='UTF-8') as out:
+  with open(output_file,'w',encoding='UTF-8') as out:
     writer = csv.DictWriter(out,fieldnames=header, delimiter='\t')
     writer.writeheader()
     writer.writerows(discrepancies)
-  return f"{os.getenv('TMP_DIR','/data/out')}/{output_file}"
+  return output_file
 
 def parse_email_body(eml_file,**kwargs):
   xpath = '//div/p'
@@ -23,14 +25,14 @@ def parse_email_body(eml_file,**kwargs):
 
     unmatch_date_el = doc.xpath('//div/p[contains(text(),"with result")]')
     checking_time, unmatch_date = unmatch_date_el[0].text.split('result:')
-    checking_time = re.search(r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}', checking_time.strip())
+    checking_time = TIMESTAMP_RE.search(checking_time.strip())
 
     if checking_time:
       checking_time = checking_time[0]
     else:
       checking_time = os.getenv('DSTART')
 
-    unmatch_date = re.search(r'\d{4}-\d{2}-\d{2}', unmatch_date.strip())
+    unmatch_date = TIMESTAMP_RE.search(unmatch_date.strip())
     if unmatch_date:
       unmatch_date = unmatch_date[0]
     else:
@@ -48,7 +50,7 @@ def parse_email_body(eml_file,**kwargs):
 
       ids = ids.strip().split(',')
       for id in ids:
-        discrepancy = {'checking_time': checking_time, 'match_date': unmatch_date, 'discrepancy_at': source}
+        discrepancy = {'checking_timestamp': checking_time, 'unmatched_timestamp': unmatch_date, 'discrepancy_description': source}
         discrepancy['transaction_id'] = id.strip()
         discrepancies.append(discrepancy)
     return save_to_file(discrepancies,f"{kwargs.get('filename_format')}.csv")
