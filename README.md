@@ -157,6 +157,12 @@ Used as validation.
 
 * To add ETL class
 1. create class that inherit ETLClass
-2. Make sure creating function `perform` with input source filename and returning the result filename ( we work on file based operation) 
+2. Make sure creating function `perform` with input source filename and returning the result filename ( __we work on file based operation__ ) , please add `**kwargs` in function parameters, to accept all parameter from transform config part. e.g:
+ ```
+def transform(input_file, **kwargs):
+  # process the file
+  # output_file = process_file
+  return output_file
+````
 3. Add created `class_name` (snake_case) as the value of `transfrom_model` in config
 4. TEST,TEST,TEST 
