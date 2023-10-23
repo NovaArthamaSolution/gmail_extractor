@@ -38,6 +38,7 @@ file_to_extract:
       allowed:
         - attachment
         - url_in_body
+        - body
     file_pattern:
       type: string   
       required: false
@@ -70,6 +71,7 @@ transform:
 load_destination:
   oneof:
   - type: dict
+    nullable: true
     schema:
       protocol:
         required: true
@@ -143,6 +145,7 @@ load_destination:
           type: string
           dependencies: table_id
   - type: list
+    nullable: true
     schema:
       type: dict
       schema:
