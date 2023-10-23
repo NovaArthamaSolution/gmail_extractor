@@ -1,0 +1,22 @@
+mail_filter:
+  # from: wallstreet@midtrans.com
+  subject: 'BQ vs Wallstreet Result: Discrepancy Found for checking time'
+  after: {{ datetime_start.timestamp()  | int }}
+  before: {{ datetime_end.timestamp()  | int }}
+
+file_to_extract:
+  source : body
+  # url_xpath: //a[text()='here']
+  # password_xpath: "//strong"
+
+transform:
+  transform_model: parse_email_body
+  filename_format: WALLSTREET_UNMATCH{{ datetime_start.strftime("%y%m%d%H%M%S") }}
+
+load_destination: []
+#   protocol: sftp
+#   hostname: ftp.blackline.com
+#   username: sapgojek
+#   port: 22
+#   private_key: /root/.ssh/id_rsa.finrec
+#   dir: /SB/TEST

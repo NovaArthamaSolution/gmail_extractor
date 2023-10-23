@@ -132,7 +132,7 @@ def gmail2bq(config):
 
 def process_file_transform(filenames, transform_config):
   etlfnames = []
-  transform, = get_udf(transform_config.get('transform_model','').lower())
+  transform, = get_udf(transform_config.pop('transform_model','').lower())
   if transform:
       
     print(f"\nProcessing file {transform} transformation to {filenames} ")
