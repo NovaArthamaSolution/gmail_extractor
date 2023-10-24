@@ -13,7 +13,7 @@ file_to_extract:
 transform:
   filename_format: GDRIVE_{{ now.strftime("%y%m%d%H%M%S") }}.html
 
-load_destination:
+load_destination: []
 #   protocol: sftp
 #   hostname: ftp.blackline.com
 #   username: sapgojek
