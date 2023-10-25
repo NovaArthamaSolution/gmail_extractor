@@ -36,7 +36,7 @@ testing:unit:
     - schedules
   tags:
     - docker
-   - docker_artifactory
+    - docker_artifactory
   variables:
     env : TEST_CONFIG
   artifacts:
@@ -95,7 +95,7 @@ build:tagged:
   #   DOCKER_DRIVER: overlay2
   tags:
     - docker
-   - docker_artifactory
+    - docker_artifactory
 #   - docker_gcr
     # - dind
   variables:
@@ -117,7 +117,7 @@ run_schedules:
     - schedules
   tags:
     - docker
-   - docker_artifactory
+    - docker_artifactory
   stage: scheduled
   # variables:
   #   GOOGLE_APPLICATION_CREDENTIALS: /root/gcloud-credential.json
