@@ -53,7 +53,7 @@ def parse_email_body(eml_file,**kwargs):
         discrepancy = {'checking_timestamp': checking_time, 'unmatched_timestamp': unmatch_date, 'discrepancy_description': source}
         discrepancy['transaction_id'] = id.strip()
         discrepancies.append(discrepancy)
-    return save_to_file(discrepancies,f"{kwargs.get('filename_format')}.csv")
+    return save_to_file(discrepancies,f"{os.getenv('JOB_OUTPUT_SUBDIR','/data/out')}/{kwargs.get('filename_format')}.csv")
   
   except Exception as ex:
       print(f"Ex:{ex}")
