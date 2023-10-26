@@ -1,6 +1,6 @@
 mail_filter:
   from: coupa.com
-  subject: "NPO Spending"
+  subject: "PO Spending"
   attachment: true
   after: {{ datetime_start.timestamp() | int  - 25200 }}
   before:  {{ datetime_end.timestamp() | int  - 25200 }}

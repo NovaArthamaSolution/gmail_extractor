@@ -47,7 +47,7 @@ class GmailApp():
 
     
     def get_emails(self,**kwargs):
-        q=[DEFAULT_FILTER]
+        q=[DEFAULT_FILTER] if os.getenv('env') != 'TEST_CONFIG' else []
         if kwargs.get('from_',None):
             q.append('from: %s ' % kwargs.get('from_'))
         if kwargs.get('to',None):

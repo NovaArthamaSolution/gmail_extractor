@@ -46,7 +46,7 @@ def xlsx2csv(filepath,**config):
             row = sh.row_values(rownum)
             for idx,tipe in enumerate(types):
                 if tipe == 1 :
-                    row[idx] = str(row[idx]).replace("\n"," ")
+                    row[idx] = str(row[idx]).replace("\n"," ").replace("\t",' ').replace('"','\"')
                 if tipe == 2 :
                     row[idx] = round(row[idx])
                 if tipe == 3 :
