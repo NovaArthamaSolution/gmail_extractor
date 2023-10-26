@@ -40,7 +40,9 @@ class AppConfig(dict):
         self.dry_run = str2bool(get_env_config("DRY_RUN", "false"))
         self.xcom_path = get_env_config("XCOM_PATH", self.DEFAULT_XCOM_PATH)
 
-        os.environ['JOB_DIR'] = os.path.dirname(self.config_file)
+        self.JOB_INPUT_SUBDIR = os.path.dirname(self.config_file)
+        os.environ['JOB_INPUT_SUBDIR'] = self.JOB_INPUT_SUBDIR
+        os.environ['JOB_OUTPUT_SUBDIR']= self.JOB_OUTPUT_SUBDIR 
         self._parse_datetime_vars()
         self._render()
         self._normalize()
@@ -48,7 +50,7 @@ class AppConfig(dict):
     def _normalize(self):
         os.environ['DSTART'] = self.dstart.strftime("%Y-%m-%d")
         os.environ['PARTITION'] = self.dstart.strftime("%Y%m%d")
-
+        
     def _parse_datetime_vars(self):
         default_execution_time = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
         try:

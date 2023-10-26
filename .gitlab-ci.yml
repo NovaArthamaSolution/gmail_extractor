@@ -96,7 +96,7 @@ build:tagged:
   tags:
     - docker
     - docker_artifactory
-    - docker_gcr
+#   - docker_gcr
     # - dind
   variables:
     tmp_dir: tmp
