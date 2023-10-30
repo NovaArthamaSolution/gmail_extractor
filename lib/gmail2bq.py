@@ -45,7 +45,7 @@ def main():
 
   appconfig = AppConfig(config_fullpath,datetime_start,datetime_end)
   
-  print(f"Starting GMAIL Extractor with config file {config_fullpath} for {d_start} and {d_end}")
+  print(f"Starting GMAIL Extractor with config file {config_fullpath} for {d_start} and {d_end} at {datetime.now()}")
 
   ret = gmail2bq( appconfig )
   
@@ -127,7 +127,7 @@ def gmail2bq(config):
     if os.getenv('env') != 'TEST_CONFIG' and failed == 0 :
       [ gMailApp.mark_label(email['id'],processed_label_id) for email in emails ]
   else:
-    if  datetime.now().hour >= config.get('ignore_after',23) : return True
+    if  datetime.now().hour >= config.__dict__.get('ignore_after',23) : return 0
     raise Exception("No expected files  match found from email")      
   
   return failed
